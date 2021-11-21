@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
 // @ desc       POST expense
 // @ access     Public
 router.post('/', (req, res) => {
-    console.log(req.body);
     const newExpense = new Expense({
         sum: req.body.sum,
         counterparty: req.body.counterparty

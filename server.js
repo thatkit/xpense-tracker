@@ -5,6 +5,7 @@ require('dotenv').config({ path: './config/.env' });
 const expenses = require('./routes/api/expenses');
 
 const app = express();
+app.use(express.json());
 
 // Connect to MongoDB
 const db = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.fmalu.mongodb.net/xpense-tracker?retryWrites=true&w=majority`;

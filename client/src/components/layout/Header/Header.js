@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     Navbar,
@@ -7,39 +7,48 @@ import {
     Collapse,
     Nav,
     NavItem,
-    NavLink,
-    NavbarText
+    NavLink
 } from 'reactstrap';
 
-export const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
+export class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.myRef = React.createRef();
+        this.isOpen = React.createRef();
+        this.logger = this.logger.bind(this);
+    }
 
-    const toggle = () => setIsOpen(!isOpen);
+    logger() {
+        console.log(this.isOpen)
+    }
 
-    return (
-        <Navbar
-            color="light"
-            expand="md"
-            light
-        >
-            <NavbarBrand href="/">
-                Xpense Tracker
-            </NavbarBrand>
-            <NavbarToggler onClick={toggle} />
-            <Collapse isOpen={isOpen} navbar>
-                <Nav className="me-auto" navbar>
-                    <NavItem>
-                        <NavLink href="https://github.com/thatkit">
-                            Github
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink>
-                            Github
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-            </Collapse>
-        </Navbar>
-    )
+    render() {
+        return (
+            <Navbar
+                color="light"
+                expand="md"
+                light
+                ref={this.myRef.current}
+            >
+                <NavbarBrand onClick={this.logger}>
+                    Xpense Tracker
+                </NavbarBrand>
+                <NavbarToggler onClick={function noRefCheck(){}} />
+                <Collapse navbar>
+                    <Nav className="me-auto" navbar>
+                        <NavItem>
+                            <NavLink href="https://github.com/thatkit">
+                                Github
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>
+                                Github
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+            </Navbar>
+        )
+    }
 }

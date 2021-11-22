@@ -4,6 +4,7 @@
   "description": "Expense tracker for personal needs",
   "main": "server.js",
   "scripts": {
+    "client": "npm run start --prefix client",
     "server": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

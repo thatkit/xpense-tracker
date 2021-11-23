@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     Navbar,
@@ -10,45 +10,42 @@ import {
     NavLink
 } from 'reactstrap';
 
-export class Header extends React.Component {
-    constructor(props) {
-        super(props);
-        this.myRef = React.createRef();
-        this.isOpen = React.createRef();
-        this.logger = this.logger.bind(this);
-    }
+export const Header = (props) => {
+    // Collapse toggle behaviour
+    const [isOpen, setIsOpen] = useState(false);
+    const toggler = () => setIsOpen(!isOpen);
 
-    logger() {
-        console.log(this.isOpen)
-    }
-
-    render() {
-        return (
-            <Navbar
-                color="light"
-                expand="md"
-                light
-                ref={this.myRef.current}
+    return (
+        <div>
+        <Navbar
+            color="dark"
+            dark
+        >
+            <NavbarBrand
+                className="me-auto"
+                href="/"
             >
-                <NavbarBrand onClick={this.logger}>
-                    Xpense Tracker
-                </NavbarBrand>
-                <NavbarToggler onClick={function noRefCheck(){}} />
-                <Collapse navbar>
-                    <Nav className="me-auto" navbar>
-                        <NavItem>
-                            <NavLink href="https://github.com/thatkit">
-                                Github
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>
-                                Github
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
-                </Collapse>
-            </Navbar>
-        )
-    }
+                Xpense Tracker
+            </NavbarBrand>
+            <NavbarToggler
+                className="me-2"
+                onClick={toggler}
+            />
+            <Collapse isOpen={isOpen} navbar>
+                <Nav navbar>
+                    <NavItem>
+                        <NavLink href="/components/">
+                            Something's something
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="https://github.com/thatkit">
+                            GitHub
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+            </Collapse>
+        </Navbar>
+        </div>
+    )
 }

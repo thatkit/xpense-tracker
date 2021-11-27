@@ -20,6 +20,7 @@ export const Header = (props) => {
         <Navbar
             color="dark"
             dark
+            expand="sm"
         >
             <NavbarBrand
                 className="me-auto"
@@ -31,11 +32,20 @@ export const Header = (props) => {
                 className="me-2"
                 onClick={toggler}
             />
-            <Collapse isOpen={isOpen} navbar>
+            <Collapse
+                isOpen={isOpen}
+                navbar
+
+            >
                 <Nav navbar>
                     <NavItem>
                         <NavLink href="/components/">
                             Something's something
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink href="https://github.com/thatkit">
+                            GitHub
                         </NavLink>
                     </NavItem>
                     <NavItem>

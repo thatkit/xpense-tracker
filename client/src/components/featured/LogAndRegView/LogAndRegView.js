@@ -1,3 +1,4 @@
+// React imports
 import { useState } from 'react';
 import {
     Container,
@@ -7,20 +8,28 @@ import {
     Label,
     Button
 } from 'reactstrap';
+// Redux imports
+import { useSelector, useDispatch } from 'react-redux';
+import { logIn, logOut } from './loginSlice';
 
 export const LogAndRegView = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
+    const isLoggedIn = useSelector(state => state.login.isLoggedIn);
+    const dispatch = useDispatch();
+
     // Login logic
     const login = () => {
         console.log(`logged as ${email}:${password}`);
+        dispatch(logIn());
     }
 
     // Register logic
     const register = () => {
         console.log(`registered as ${email}:${password}`);
     }
+    
     return (
         <Container style={{margin: '5rem auto'}}>
             <Form inline>

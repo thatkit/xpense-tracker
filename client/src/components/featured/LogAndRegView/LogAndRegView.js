@@ -9,14 +9,13 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-import { useSelector, useDispatch } from 'react-redux';
-import { logIn, logOut } from './loginSlice';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../../redux/slices/loginSlice';
 
 export const LogAndRegView = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
-    const isLoggedIn = useSelector(state => state.login.isLoggedIn);
     const dispatch = useDispatch();
 
     // Login logic

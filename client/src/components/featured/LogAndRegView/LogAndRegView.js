@@ -10,18 +10,19 @@ import {
 } from 'reactstrap';
 // Redux imports
 import { useDispatch } from 'react-redux';
-import { logIn } from '../../../redux/slices/loginSlice';
-
+import { fetchUserByEmail } from '../../../redux/slices/loginSlice';
 export const LogAndRegView = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-
+    
     const dispatch = useDispatch();
 
     // Login logic
-    const login = () => {
-        console.log(`logged as ${email}:${password}`);
-        dispatch(logIn());
+    const login = async () => {
+        // if GET request returns this user, then login success
+        // if GET request doesn't return this user, then "the user doesn't exist"
+        let users = await dispatch(fetchUserByEmail());
+        console.log(users)
     }
 
     // Register logic

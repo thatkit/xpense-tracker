@@ -10,9 +10,10 @@ const User = require('../../models/Users');
 // @ access     Public
 
 router.get('/', (req, res) => {
+    console.log('GET request')
     User
-        .find({ email: req.body.email })
-        .then(user => res.json(user))
+        .find()
+        .then(users => res.json(users))
         .catch(err => console.log(err));
 });
 

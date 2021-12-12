@@ -18,11 +18,10 @@ export const LogAndRegView = () => {
     const dispatch = useDispatch();
 
     // Login logic
-    const login = async () => {
+    const login = () => {
         // if GET request returns this user, then login success
         // if GET request doesn't return this user, then "the user doesn't exist"
-        let users = await dispatch(fetchUserByEmail());
-        console.log(users)
+        dispatch(fetchUserByEmail(email));
     }
 
     // Register logic

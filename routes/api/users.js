@@ -9,11 +9,11 @@ const User = require('../../models/Users');
 // @ desc       GET user with the specified email
 // @ access     Public
 
-router.get('/', (req, res) => {
-    console.log('GET request')
+router.get('/:email', (req, res) => {
     User
         .find()
-        .then(users => res.json(users))
+        .then(users => users.filter(user => user.email === req.params.email))
+        .then(user => res.json(user))
         .catch(err => console.log(err));
 });
 

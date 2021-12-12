@@ -3,8 +3,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // @ action     fetchUserByEmail
 export const fetchUserByEmail = createAsyncThunk(
     'users/fetchUserByEmail',
-    async (arg, thunkAPI) => {
-        let response = await fetch('/api/users');
+    async (email, thunkAPI) => {
+        let response = await fetch(`/api/users/${email}`);
         response = await response.json();
         return response;
     }
@@ -15,8 +15,7 @@ export const loginSlice = createSlice({
     initialState: {
         isLoggedIn: false,
         fetchingUser: false,
-        fetchingUserError: false,
-        users: []
+        fetchingUserError: false
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -24,7 +23,6 @@ export const loginSlice = createSlice({
             state.isLoggedIn = true;
             state.fetchingUser = false;
             state.fetchingUserError = false;
-            state.users.push(action.payload);
         });
         builder.addCase(fetchUserByEmail.pending, (state) => {
             state.isLoggedIn = false;
@@ -39,7 +37,5 @@ export const loginSlice = createSlice({
         
     }
 });
-
-console.log(loginSlice.actions)
 
 export default loginSlice.reducer;

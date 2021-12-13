@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // @ action     fetchUserByEmail
 export const fetchUserByCredentials = createAsyncThunk(
-    'users/fetchUserByEmail',
+    'user/fetchUserByEmail',
     async ({ email, password }, thunkAPI) => {
         let response = await fetch(`/api/users/${email}/${password}`);
         response = await response.json();
@@ -10,8 +10,8 @@ export const fetchUserByCredentials = createAsyncThunk(
     }
 );
 
-export const loginSlice = createSlice({
-    name: 'users',
+export const userSlice = createSlice({
+    name: 'user',
     initialState: {
         isLoggedIn: false,
         fetchingUser: false,
@@ -38,4 +38,4 @@ export const loginSlice = createSlice({
     }
 });
 
-export default loginSlice.reducer;
+export default userSlice.reducer;

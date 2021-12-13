@@ -19,8 +19,6 @@ export const LogAndRegView = () => {
 
     // Login logic
     const login = () => {
-        // if GET request returns this user, then login success
-        // if GET request doesn't return this user, then "the user doesn't exist"
         dispatch(fetchUserByCredentials({ email, password }));
     }
 

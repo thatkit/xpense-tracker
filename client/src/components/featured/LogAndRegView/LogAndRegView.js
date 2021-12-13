@@ -1,5 +1,5 @@
 // React imports
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Container,
     Form,
@@ -10,24 +10,29 @@ import {
 } from 'reactstrap';
 // Redux imports
 import { useDispatch } from 'react-redux';
-import { fetchUserByEmail } from '../../../redux/slices/loginSlice';
+import { useSelector } from 'react-redux';
+import { fetchUserByCredentials } from '../../../redux/slices/loginSlice';
+import { addNewUserCredentials } from '../../../redux/slices/loginSlice';
 export const LogAndRegView = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     
+    const isAlreadyRegistered = useSelector(state => state.user.isRegisteredUser);
+    // useEffect(() => console.log(isAlreadyRegistered), [isAlreadyRegistered]);
+
     const dispatch = useDispatch();
 
     // Login logic
-    const login = async () => {
-        // if GET request returns this user, then login success
-        // if GET request doesn't return this user, then "the user doesn't exist"
-        let users = await dispatch(fetchUserByEmail());
-        console.log(users)
+    const login = () => {
+        dispatch(fetchUserByCredentials({ email, password }));
     }
 
     // Register logic
     const register = () => {
-        console.log(`registered as ${email}:${password}`);
+        dispatch(fetchUserByCredentials({ email, password }));
+        isAlreadyRegistered 
+            ? console.log('The user already exists')
+            : dispatch(addNewUserCredentials({ email, password }));
     }
     
     return (

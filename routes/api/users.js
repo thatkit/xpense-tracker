@@ -6,6 +6,17 @@ const router = express.Router();
 const User = require('../../models/Users');
 
 // @ route      GET api/users
+// @ desc       GET all users
+// @ access     Private
+
+router.get('/', (req, res) => {
+    User
+        .find()
+        .then(users => res.json(users))
+        .catch(err => console.log(err));
+});
+
+// @ route      GET api/users/:email/:password
 // @ desc       GET user with the specified email
 // @ access     Public
 

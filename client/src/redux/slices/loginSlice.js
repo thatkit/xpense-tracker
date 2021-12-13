@@ -1,10 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// @ action     fetchUserByEmail
+// @ action     fetchUserByCredentials
+// @ GET        api/users/:email/:password
 export const fetchUserByCredentials = createAsyncThunk(
-    'user/fetchUserByEmail',
+    'user/fetchUserByCredentials',
     async ({ email, password }, thunkAPI) => {
         let response = await fetch(`/api/users/${email}/${password}`);
+        response = await response.json();
+        return response;
+    }
+);
+
+// @ action     addNewUserCredentials
+// @ POST       api/users
+export const addNewUserCredentials = createAsyncThunk(
+    'user/addNewUserCredentials',
+    async ({ email, password }, thunkAPI) => {
+        let response = await fetch(`/api/users`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
         response = await response.json();
         return response;
     }
@@ -13,28 +29,43 @@ export const fetchUserByCredentials = createAsyncThunk(
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        isLoggedIn: false,
+        isRegisteredUser: false,
         fetchingUser: false,
-        fetchingUserError: false
+        fetchingUserError: false,
+        registeringUser: false,
+        registeringUserError: false,
     },
     reducers: {},
     extraReducers: (builder) => {
+        // @ reducer    fetchUserByCredentials
         builder.addCase(fetchUserByCredentials.fulfilled, (state) => {
-            state.isLoggedIn = true;
+            state.isRegisteredUser = true;
             state.fetchingUser = false;
             state.fetchingUserError = false;
         });
         builder.addCase(fetchUserByCredentials.pending, (state) => {
-            state.isLoggedIn = false;
+            state.isRegisteredUser = false;
             state.fetchingUser = true;
             state.fetchingUserError = false;
         });
         builder.addCase(fetchUserByCredentials.rejected, (state) => {
-            state.isLoggedIn = false;
+            state.isRegisteredUser = false;
             state.fetchingUser = false;
             state.fetchingUserError = true;
         });
-        
+        // @ reducer    addNewUserCredentials
+        builder.addCase(addNewUserCredentials.fulfilled, (state) => {
+            state.registeringUser = false;
+            state.registeringUserError = false;
+        });
+        builder.addCase(addNewUserCredentials.pending, (state) => {
+            state.registeringUser = true;
+            state.registeringUserError = false;
+        });
+        builder.addCase(addNewUserCredentials.rejected, (state) => {
+            state.registeringUser = false;
+            state.registeringUserError = true;
+        });
     }
 });
 

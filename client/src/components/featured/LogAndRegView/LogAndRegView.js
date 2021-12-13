@@ -1,5 +1,5 @@
 // React imports
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
     Container,
     Form,
@@ -18,7 +18,6 @@ export const LogAndRegView = () => {
     const [password, setPassword] = useState(null);
     
     const isAlreadyRegistered = useSelector(state => state.user.isRegisteredUser);
-    // useEffect(() => console.log(isAlreadyRegistered), [isAlreadyRegistered]);
 
     const dispatch = useDispatch();
 
@@ -30,9 +29,14 @@ export const LogAndRegView = () => {
     // Register logic
     const register = () => {
         dispatch(fetchUserByCredentials({ email, password }));
-        isAlreadyRegistered 
-            ? console.log('The user already exists')
-            : dispatch(addNewUserCredentials({ email, password }));
+        console.log(isAlreadyRegistered)
+        if (isAlreadyRegistered) {
+            console.log('The user already exists');
+            return;
+        }
+        dispatch(addNewUserCredentials({ email, password }));
+        console.log('New user registered');
+        return;
     }
     
     return (

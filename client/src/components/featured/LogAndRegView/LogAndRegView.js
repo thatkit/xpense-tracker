@@ -1,5 +1,5 @@
 // React imports
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Container,
     Form,
@@ -9,15 +9,18 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserByCredentials } from '../../../redux/slices/loginSlice';
 import { addNewUserCredentials } from '../../../redux/slices/loginSlice';
+
 export const LogAndRegView = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     
-    const isAlreadyRegistered = useSelector(state => state.user.isRegisteredUser);
+    const user = useSelector(state => state.user);
+    useEffect(() => {
+        console.log('render')
+    }, [user.isRegisteredUser]);
 
     const dispatch = useDispatch();
 
@@ -29,14 +32,9 @@ export const LogAndRegView = () => {
     // Register logic
     const register = () => {
         dispatch(fetchUserByCredentials({ email, password }));
-        console.log(isAlreadyRegistered)
-        if (isAlreadyRegistered) {
-            console.log('The user already exists');
-            return;
-        }
-        dispatch(addNewUserCredentials({ email, password }));
-        console.log('New user registered');
-        return;
+        
+        
+        
     }
     
     return (

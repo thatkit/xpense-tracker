@@ -23,8 +23,21 @@ router.get('/', (req, res) => {
 router.get('/:email/:password', (req, res) => {
     User
         .find()
-        .then(users => users.filter(user => user.email === req.params.email && user.password === req.params.password))
-        .then(user => res.json(user[0]))
+        .then(users => {
+            users
+                .filter(user => user.email === req.params.email && user.password === req.params.password)
+                .length
+                // returns this if the users arrays IS NOT empty === if there IS such a user
+                ? res.json({
+                    message: 'the user already exists',
+                    isRegistered: true
+                })
+                // returns this if the users arrays IS empty === if there IS NO such a user
+                : res.json({
+                    message: 'the user does not exist',
+                    isRegistered: false
+                });
+        })
         .catch(err => console.log(err));
 });
 

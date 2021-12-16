@@ -19,22 +19,23 @@ export const LogAndRegView = () => {
     
     const user = useSelector(state => state.user);
     useEffect(() => {
-        console.log('render')
-    }, [user.isRegisteredUser]);
+        dispatch(fetchUserByCredentials({ email, password }));
+    }, [email, password]);
 
     const dispatch = useDispatch();
 
     // Login logic
     const login = () => {
-        dispatch(fetchUserByCredentials({ email, password }));
+        user.isRegisteredUser 
+            ? console.log('Login successfull')
+            : console.log('Login failed: the user doesn\'t exist');
     }
 
     // Register logic
     const register = () => {
-        dispatch(fetchUserByCredentials({ email, password }));
-        
-        
-        
+        !user.isRegisteredUser 
+            ? console.log('Signed up')
+            : console.log('Couldn\'t sign up: the user already exists');
     }
     
     return (

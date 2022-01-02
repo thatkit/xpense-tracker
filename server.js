@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 mongoose
-    .connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.fmalu.mongodb.net/mern-shopping-list?retryWrites=true&w=majority`)
+    .connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.fmalu.mongodb.net/xpense-tracker?retryWrites=true&w=majority`)
     .then(() => console.log('MongoDB connected'))
     .catch(e => console.log(e));
 

@@ -1,59 +1,82 @@
+const bcrypt = require('bcryptjs');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// User model
-const User = require('../../models/Users');
+// User Model
+const User = require('../../models/User');
 
-// @ route      GET api/users
-// @ desc       GET all users
-// @ access     Private
+// @route           POST api/users
+// @description     Register new user
+// @access          Public
+router.post('/', (req, res) => {
+    const { name, email, password } = req.body;
 
-router.get('/', (req, res) => {
-    User
-        .find()
-        .then(users => res.json(users))
-        .catch(err => console.log(err));
-});
+    if (!name || !email || !password) {
+        return res
+            .status(400)
+            .json({ message: 'Please, fill out all fields' });
+    }
 
-// @ route      GET api/users/:email/:password
-// @ desc       GET user with the specified email
-// @ access     Public
+    User.findOne({ email })
+        .then(user => {
+            if (user) return res.status(400).json({ message: 'User already exists' });
 
-router.get('/:email/:password', (req, res) => {
-    User
-        .find()
-        .then(users => {
-            users
-                .filter(user => user.email === req.params.email && user.password === req.params.password)
-                .length
-                // returns this if the users arrays IS NOT empty === if there IS such a user
-                ? res.json({
-                    message: 'the user already exists',
-                    isRegistered: true
-                })
-                // returns this if the users arrays IS empty === if there IS NO such a user
-                : res.json({
-                    message: 'the user does not exist',
-                    isRegistered: false
+            const newUser = new User({
+                name,
+                email,
+                password
+            });
+
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+
+                    newUser.password = hash;
+
+                    newUser.save().then(user => {
+                        jwt.sign(
+                            { id: user._id },
+                            process.env.JWT_SECRET,
+                            { expiresIn: 1800 },
+                            (err, token) => {
+                                if (err) throw err;
+                                res.status(200).json({
+                                    token,
+                                    user: {
+                                        id: user._id,
+                                        name: user.name,
+                                        email: user.email
+                                    }
+                                });
+                            }
+                        );
+                    });
                 });
+            })
         })
         .catch(err => console.log(err));
 });
 
-// @ route      POST api/users
-// @ desc       POST new user
-// @ access     Public
+// @route           GET api/users
+// @description     GET All Users
+// @access          Admin
+router.get('/', (req, res) => {
+    User
+        .find()
+        .sort({ date: 1 })
+        .then(users => res.json(users))
+});
 
-router.post('/', (req, res) => {
-    const newUser = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-    newUser
-        .save()
-        .then(user => res.json(user))
-        .catch(err => console.log(err));
+// @route           DELETE api/users/:id
+// @description     Delete An Item
+// @access          Public
+router.delete('/:id', (req, res) => {
+    Item
+        .findById(req.params.id)
+        .then(item => item.remove().then(() => res.json({ id: req.params.id })))
+        .catch(e => res.status(404).json({success: false}));
 });
 
 module.exports = router;

@@ -5,6 +5,7 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export const ListsDropdown = (props) => {
     // Collapse toggle behaviour
@@ -19,10 +20,10 @@ export const ListsDropdown = (props) => {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem>
-                        List 1
+                        <Link to="login">Login</Link>
                     </DropdownItem>
                     <DropdownItem>
-                        List 2
+                        <Link to="register">Register</Link>
                     </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem>

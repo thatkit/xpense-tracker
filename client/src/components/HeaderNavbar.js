@@ -6,7 +6,7 @@ import {
 import { NavIfLogged } from './NavIfLogged';
 import { NavIfNOTLogged } from './NavIfNOTLogged';
 
-export const HeaderNavbar = (props) => {
+export const HeaderNavbar = () => {
     const loggedIn = true; // just for now
 
     return (

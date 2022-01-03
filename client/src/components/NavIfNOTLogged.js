@@ -5,12 +5,17 @@ import {
 
 export const NavIfNOTLogged = () => {
     return (
-        <div>
+        <>
             <NavItem>
-                <NavLink href="https://github.com/thatkit" target="_blank">
-                    Please, log in or register
+                <NavLink href="/">
+                    Xpense-Tracker by thatkit
                 </NavLink>
             </NavItem>
-        </div>
+            <NavItem>
+                <NavLink href="https://github.com/thatkit" target="_blank">
+                    Github
+                </NavLink>
+            </NavItem>
+        </>
     )
 }

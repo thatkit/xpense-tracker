@@ -9,7 +9,7 @@ const catchCallback = require('../../helpers/errorHandling');
 // @route           POST api/items
 // @description     Create an item
 // @access          Private
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
     // Creating ID for the item
     const itemId = new mongoose.Types.ObjectId();
 
@@ -37,14 +37,14 @@ router.post('/', (req, res) => {
 // @route           PUT api/items
 // @description     Update an item
 // @access          Private
-router.put('/', (req, res) => {
+router.put('/', auth, (req, res) => {
     res.send('updating item...');
 });
 
 // @route           DELETE api/items/:id
 // @description     Delete an item
 // @access          Private
-router.delete('/:itemId', (req, res) => {
+router.delete('/:itemId', auth, (req, res) => {
     // Removing the item from Item model
     Item
         .findById(req.params.itemId)

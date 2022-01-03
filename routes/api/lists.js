@@ -9,7 +9,7 @@ const catchCallback = require('../../helpers/errorHandling');
 // @route           GET api/lists
 // @description     GET a list
 // @access          Private
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     List
         .findById(req.body.listId)
         .populate('items')
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 // @route           POST api/lists
 // @description     Create a list
 // @access          Private
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
     // Creating ID for the list
     const listId = new mongoose.Types.ObjectId();
     
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
 // @route           DELETE api/lists/:id
 // @description     Delete a list
 // @access          Private
-router.delete('/:listId', (req, res) => {
+router.delete('/:listId', auth, (req, res) => {
     // Removing the list from List model
     List
         .findById(req.params.listId)

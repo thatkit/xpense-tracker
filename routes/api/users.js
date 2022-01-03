@@ -60,17 +60,6 @@ router.post('/', (req, res) => {
 // @route           GET api/users
 // @description     GET All Users
 // @access          ADMIN
-router.get('/', (req, res) => {
-    User
-        .findById(req.body.userId)
-        .populate('lists')
-        .then(users => res.json(users))
-        .catch(catchCallback);
-});
-
-// @route           GET api/users
-// @description     GET All Users
-// @access          ADMIN
 router.get('/all', (req, res) => {
     User
         .find()

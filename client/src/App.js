@@ -1,17 +1,11 @@
-// React imports
-import { useState } from 'react';
-// Components inports
-import { MainView } from './components/featured/MainView/MainView';
-import { LogAndRegView } from './components/featured/LogAndRegView/LogAndRegView';
-import { Header } from './components/layout/Header/Header';
+import { HeaderNavbar } from './components/HeaderNavbar'
+import { MainView } from './components/MainView'
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   return (
     <div>
-      <Header />
-      {isLoggedIn ? <MainView /> : <LogAndRegView />}
+      <HeaderNavbar />
+      <MainView />
     </div>
   )
 }

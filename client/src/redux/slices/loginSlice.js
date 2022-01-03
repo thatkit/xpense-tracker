@@ -26,7 +26,7 @@ export const addNewUserCredentials = createAsyncThunk(
     }
 );
 
-export const userSlice = createSlice({
+export const currentUserSlice = createSlice({
     name: 'user',
     initialState: {
         isRegisteredUser: false,
@@ -69,4 +69,4 @@ export const userSlice = createSlice({
     }
 });
 
-export default userSlice.reducer;
+export default currentUserSlice.reducer;

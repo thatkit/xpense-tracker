@@ -8,7 +8,6 @@ const ListSchema = new Schema({
         required: true,
         unique: true
     },
-    // user_id, // wtf
     items: [{
         type: Schema.Types.ObjectId,
         ref: 'item'

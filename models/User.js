@@ -7,6 +7,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    lists: [{
+        type: Schema.Types.ObjectId,
+        ref: 'list'
+    }],
     email: {
         type: String,
         unique: true,

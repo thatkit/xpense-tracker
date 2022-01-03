@@ -1,11 +1,9 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const jwt = require('jsonwebtoken');
-
 const router = express.Router();
-
-// User Model
-const User = require('../../models/User');
+const User = require('../../models/User'); // User Model
+const catchCallback = require('../../helpers/errorHandling');
 
 // @route           POST api/users
 // @description     Register new user
@@ -61,22 +59,23 @@ router.post('/', (req, res) => {
 
 // @route           GET api/users
 // @description     GET All Users
-// @access          Admin
+// @access          ADMIN
 router.get('/', (req, res) => {
     User
-        .find()
-        .sort({ date: 1 })
+        .findById(req.body.userId)
+        .populate('lists')
         .then(users => res.json(users))
+        .catch(catchCallback);
 });
 
-// @route           DELETE api/users/:id
-// @description     Delete An Item
-// @access          Public
-router.delete('/:id', (req, res) => {
-    Item
-        .findById(req.params.id)
-        .then(item => item.remove().then(() => res.json({ id: req.params.id })))
-        .catch(e => res.status(404).json({success: false}));
+// @route           GET api/users
+// @description     GET All Users
+// @access          ADMIN
+router.get('/all', (req, res) => {
+    User
+        .find()
+        .then(users => res.json(users))
+        .catch(catchCallback);
 });
 
 module.exports = router;

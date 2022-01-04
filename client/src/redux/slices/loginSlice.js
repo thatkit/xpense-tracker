@@ -26,7 +26,7 @@ export const addNewUserCredentials = createAsyncThunk(
     }
 );
 
-export const userSlice = createSlice({
+export const currentUserSlice = createSlice({
     name: 'user',
     initialState: {
         isRegisteredUser: false,
@@ -38,8 +38,8 @@ export const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         // @ reducer    fetchUserByCredentials
-        builder.addCase(fetchUserByCredentials.fulfilled, (state) => {
-            state.isRegisteredUser = true;
+        builder.addCase(fetchUserByCredentials.fulfilled, (state, { payload }) => {
+            state.isRegisteredUser = payload.isRegistered;
             state.fetchingUser = false;
             state.fetchingUserError = false;
         });
@@ -69,4 +69,4 @@ export const userSlice = createSlice({
     }
 });
 
-export default userSlice.reducer;
+export default currentUserSlice.reducer;

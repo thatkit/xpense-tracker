@@ -1,5 +1,7 @@
 // React imports
-import { useState } from 'react';
+// import { curryGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
     Container,
     Form,
@@ -9,35 +11,36 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { fetchUserByCredentials } from '../../../redux/slices/loginSlice';
-import { addNewUserCredentials } from '../../../redux/slices/loginSlice';
-export const LogAndRegView = () => {
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchUserByCredentials } from '../../redux/slices/loginSlice';
+// import { addNewUserCredentials } from '../../redux/slices/loginSlice';
+
+export const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+
+    const login = () => console.log('login'); // REDUX dispatch action
     
-    const isAlreadyRegistered = useSelector(state => state.user.isRegisteredUser);
+    // const user = useSelector(state => state.user);
+    // useEffect(() => {
+    //     dispatch(fetchUserByCredentials({ email, password }));
+    // }, [email, password]);
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    // Login logic
-    const login = () => {
-        dispatch(fetchUserByCredentials({ email, password }));
-    }
+    // // Login logic
+    // const login = () => {
+    //     user.isRegisteredUser 
+    //         ? console.log('Login successfull')
+    //         : console.log('Login failed: the user doesn\'t exist');
+    // }
 
-    // Register logic
-    const register = () => {
-        dispatch(fetchUserByCredentials({ email, password }));
-        console.log(isAlreadyRegistered)
-        if (isAlreadyRegistered) {
-            console.log('The user already exists');
-            return;
-        }
-        dispatch(addNewUserCredentials({ email, password }));
-        console.log('New user registered');
-        return;
-    }
+    // // Register logic
+    // const register = () => {
+    //     !user.isRegisteredUser 
+    //         ? console.log('Signed up')
+    //         : console.log('Couldn\'t sign up: the user already exists');
+    // }
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -73,11 +76,10 @@ export const LogAndRegView = () => {
                         style={{width: '6rem'}}
                         onClick={login}
                     >Login</Button>
-                    <p>or</p>
-                    <Button 
+                    <Link
+                        to="../register"
                         style={{width: '6rem'}}
-                        onClick={register}
-                    >Register</Button>
+                    >or register</Link>
                 </div>
             </Form>
         </Container>

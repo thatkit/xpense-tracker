@@ -8,6 +8,7 @@ import {
     Col,
     Button
 } from 'reactstrap';
+import { FormModule } from './FormModule';
 
 export const List = (props) => {
     const [isActive, setIsActive] = useState(false);
@@ -41,7 +42,15 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <Button color="success">Add new item</Button>
+            <FormModule 
+                header="Add new item"
+                inputFields={[
+                    { name: 'name', type: String, required: true },
+                    { name: 'desc', type: String, required: false },
+                    { name: 'sum', type: Number, required: true },
+                    { name: 'date', type: Date, required: true }
+                ]}
+            />
         </>
     )
 }

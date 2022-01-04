@@ -1,3 +1,8 @@
+import {
+    Container,
+    Row,
+    Col
+} from 'reactstrap';
 import { List } from '../List';
 import { Overview } from '../Overview';
 
@@ -19,15 +24,21 @@ export const ListBoard = () => {
   
     return (
         <>
-            <List 
-                items={lists.items}
-            />
-            <Overview 
-                name={lists.name}
-                totalBudget={lists.totalBudget}
-                totalCosts={lists.totalCosts}
-                remainder={lists.remainder}
-            />
+            <Row>
+                <Col xs="12" sm="8">
+                    <List 
+                        items={lists.items}
+                    />
+                </Col>
+                <Col xs="12" sm="4">
+                    <Overview 
+                        name={lists.name}
+                        totalBudget={lists.totalBudget}
+                        totalCosts={lists.totalCosts}
+                        remainder={lists.remainder}
+                    />
+                </Col>
+            </Row>
         </>
     )
 }

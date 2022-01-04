@@ -14,7 +14,7 @@ export const HeaderNavbar = () => {
             <Navbar
                 color="dark"
                 dark
-                expand="sm"
+                expand="xs"
             >
                 <Nav navbar style={{
                     width: '100vw',

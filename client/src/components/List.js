@@ -7,7 +7,7 @@ import {
     Row,
     Col
 } from 'reactstrap';
-import { FormModule } from './FormModule';
+import { NewItemFormModule } from './NewItemFormModule';
 
 export const List = (props) => {
     const [isActive, setIsActive] = useState(false);
@@ -41,7 +41,7 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <FormModule 
+            <NewItemFormModule 
                 header="Add new item"
                 inputFields={[
                     { name: 'name', type: String, required: true },

@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleListsDropdown } from '../redux/slices/uiSlice';
 import {
     Dropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { FormModule } from './FormModule';
+import { NewListFormModule } from './NewListFormModule';
 
 export const ListsDropdown = (props) => {
+    const dispatch = useDispatch();
+
     // Collapse toggle behaviour
-    const [isOpen, setIsOpen] = useState(false);
-    const toggler = () => setIsOpen(!isOpen);
+    const isOpen = useSelector(state => state.ui.listsDropdownIsOpen);
+    const toggler = () => dispatch(toggleListsDropdown());
 
     // mockup users collection
     const users = {
@@ -23,7 +26,7 @@ export const ListsDropdown = (props) => {
     }
 
     return (
-        <Dropdown isOpen={isOpen} toggle={toggler}>
+        <Dropdown isOpen={isOpen} toggle={toggler} setActiveFromChild>
             <DropdownToggle caret>
                 Expenses lists
             </DropdownToggle>
@@ -42,7 +45,7 @@ export const ListsDropdown = (props) => {
                         </DropdownItem>
                     )
                 })}
-                <FormModule
+                <NewListFormModule
                     header="Add new list"
                     inputFields={[
                         { name: 'name', type: String, required: true },

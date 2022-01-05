@@ -11,7 +11,7 @@ import {
     Label
 } from 'reactstrap';
 
-export const FormModule = (props) => {
+export const NewItemFormModule = (props) => {
     // Toggle logic
     const [isPopped, setIsPopped] = useState(false);
     const toggler = () => setIsPopped(!isPopped);

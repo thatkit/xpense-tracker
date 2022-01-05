@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleListsDropdown } from '../redux/slices/uiSlice';
+import { NewListFormModule } from './NewListFormModule';
 import {
     Dropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import { NewListFormModule } from './NewListFormModule';
 
 export const ListsDropdown = (props) => {
     const dispatch = useDispatch();

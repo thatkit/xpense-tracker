@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -12,23 +14,21 @@ import {
 } from 'reactstrap';
 
 export const NewItemFormModule = (props) => {
-    // Toggle logic
-    const [isPopped, setIsPopped] = useState(false);
-    const toggler = () => setIsPopped(!isPopped);
+    const dispatch = useDispatch();
 
     // Inner state for inputs
-    const initialInputFields = {};
-    props.inputFields.forEach(({ name }) => {
-        Object.defineProperty(initialInputFields, name, {
-            value: '',
-            writable: true
-        });
-    });
-    const [inputFields, setInputFields] = useState(initialInputFields);
+    const [itemNameInput, setItemNameInput] = useState('');
+    const [itemDescInput, setItemDescInput] = useState('');
+    const [itemSumInput, setItemSumInput] = useState(0);
+    const [itemDateInput, setItemDateInput] = useState('');
+
+    // Toggle behaviour
+    const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
+    const toggler = () => dispatch(toggleNewItemFormModule());
 
     // Mimic send POST request
     const post = () => {
-        console.log(inputFields);
+        console.log(itemNameInput, itemDescInput, itemSumInput, itemDateInput);
     }
 
     return (
@@ -36,31 +36,55 @@ export const NewItemFormModule = (props) => {
             <Button
                 color="success"
                 onClick={toggler}
-            >{props.header}</Button>
+            >Add new item</Button>
 
             <Modal
-                backdrop="static"
                 centered
-                isOpen={isPopped}
+                isOpen={isOpen}
                 toggle={toggler}
             >
-                <ModalHeader>{props.header}</ModalHeader>
+                <ModalHeader>Add new item</ModalHeader>
                 <ModalBody>
-                    <Form inline>{props.inputFields.map(field => {
-                        return (<FormGroup floating key={field.name}>
+                    <Form inline>
+                        <FormGroup floating>
                             <Input 
-                                id={field.name}
-                                name={field.name}
-                                placeholder={field.name.toUpperCase()}
-                                required={field.required}
-                                onChange={({ target }) => setInputFields(prevInputFields => ({
-                                    ...prevInputFields,
-                                    [field.name]: target.value
-                                }))}
+                                id='name'
+                                name='name'
+                                placeholder='Name'
+                                required
+                                onChange={({ target }) => setItemNameInput(target.value)}
                             />
-                            <Label for={field.name}>{field.name}</Label>
-                        </FormGroup>);
-                    })}</Form>
+                            <Label for="name">Name</Label>
+                        </FormGroup>
+                        <FormGroup floating>
+                            <Input 
+                                id='desc'
+                                name='desc'
+                                placeholder='Description'
+                                onChange={({ target }) => setItemDescInput(target.value)}
+                            />
+                            <Label for="desc">Description</Label>
+                        </FormGroup>
+                        <FormGroup floating>
+                            <Input 
+                                id='sum'
+                                name='sum'
+                                placeholder='Sum'
+                                required
+                                onChange={({ target }) => setItemSumInput(target.value)}
+                            />
+                            <Label for="sum">Sum</Label>
+                        </FormGroup>
+                        <FormGroup floating>
+                            <Input 
+                                id='date'
+                                name='date'
+                                placeholder='Date'
+                                onChange={({ target }) => setItemDateInput(target.value)}
+                            />
+                            <Label for="date">Date</Label>
+                        </FormGroup>
+                    </Form>
                 </ModalBody>
                 <ModalFooter>
                     <Button

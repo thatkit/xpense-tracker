@@ -10,8 +10,8 @@ import {
 import { NewItemFormModule } from './NewItemFormModule';
 
 export const List = (props) => {
+    // highlught on click
     const [isActive, setIsActive] = useState(false);
-    
     const clicker = e => {
         setIsActive(!isActive);
     }
@@ -41,15 +41,7 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <NewItemFormModule 
-                header="Add new item"
-                inputFields={[
-                    { name: 'name', type: String, required: true },
-                    { name: 'desc', type: String, required: false },
-                    { name: 'sum', type: Number, required: true },
-                    { name: 'date', type: Date, required: true }
-                ]}
-            />
+            <NewItemFormModule />
         </>
     )
 }

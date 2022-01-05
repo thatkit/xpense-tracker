@@ -13,22 +13,22 @@ import {
 
 export const FormModule = (props) => {
     // Toggle logic
-    const [isOpen, setIsOpen] = useState(false);
-    const toggler = () => setIsOpen(!isOpen);
+    const [isPopped, setIsPopped] = useState(false);
+    const toggler = () => setIsPopped(!isPopped);
 
     // Inner state for inputs
-    const initialState = new Object();
+    const initialInputFields = {};
     props.inputFields.forEach(({ name }) => {
-        Object.defineProperty(initialState, name, {
-            value: 'hi there',
+        Object.defineProperty(initialInputFields, name, {
+            value: '',
             writable: true
         });
     });
-    const [state, setState] = useState(initialState);
+    const [inputFields, setInputFields] = useState(initialInputFields);
 
     // Mimic send POST request
     const post = () => {
-        console.log(state);
+        console.log(inputFields);
     }
 
     return (
@@ -36,11 +36,12 @@ export const FormModule = (props) => {
             <Button
                 color="success"
                 onClick={toggler}
-            >Click Me</Button>
+            >{props.header}</Button>
 
             <Modal
+                backdrop="static"
                 centered
-                isOpen={isOpen}
+                isOpen={isPopped}
                 toggle={toggler}
             >
                 <ModalHeader>{props.header}</ModalHeader>
@@ -52,8 +53,8 @@ export const FormModule = (props) => {
                                 name={field.name}
                                 placeholder={field.name.toUpperCase()}
                                 required={field.required}
-                                onChange={({ target }) => setState(prevState => ({
-                                    ...prevState,
+                                onChange={({ target }) => setInputFields(prevInputFields => ({
+                                    ...prevInputFields,
                                     [field.name]: target.value
                                 }))}
                             />

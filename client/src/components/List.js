@@ -5,8 +5,7 @@ import {
     ListGroupItemHeading,
     ListGroupItemText,
     Row,
-    Col,
-    Button
+    Col
 } from 'reactstrap';
 import { FormModule } from './FormModule';
 

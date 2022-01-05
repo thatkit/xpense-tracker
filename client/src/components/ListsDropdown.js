@@ -26,7 +26,7 @@ export const ListsDropdown = (props) => {
     }
 
     return (
-        <Dropdown isOpen={isOpen} toggle={toggler} setActiveFromChild>
+        <Dropdown isOpen={isOpen} toggle={toggler}>
             <DropdownToggle caret>
                 Expenses lists
             </DropdownToggle>
@@ -45,13 +45,7 @@ export const ListsDropdown = (props) => {
                         </DropdownItem>
                     )
                 })}
-                <NewListFormModule
-                    header="Add new list"
-                    inputFields={[
-                        { name: 'name', type: String, required: true },
-                        { name: 'budget', type: Number, required: true }
-                    ]}
-                />
+                <NewListFormModule />
             </DropdownMenu>
         </Dropdown>
     )

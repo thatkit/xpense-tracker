@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleNewListFormModule } from '../redux/slices/uiSlice';
+import { toggleListsDropdown, toggleNewListFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -16,17 +16,20 @@ import {
 export const NewListFormModule = (props) => {
     const dispatch = useDispatch();
 
-    // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.newListFormModuleIsOpen);
-    const toggler = () => dispatch(toggleNewListFormModule());
-
     // Inner state for inputs
     const [listNameInput, setListNameInput] = useState('');
     const [listBudgetInput, setListBudgetInput] = useState(0);
 
+    // Toggle behaviour
+    const isOpen = useSelector(state => state.ui.newListFormModuleIsOpen);
+    const toggler = () => {
+        dispatch(toggleListsDropdown());
+        dispatch(toggleNewListFormModule());
+    }
+
     // Mimic send POST request
     const post = () => {
-        console.log(listNameInput, listBudgetInput);
+        console.table(listNameInput, listBudgetInput);
     }
 
     return (
@@ -34,15 +37,14 @@ export const NewListFormModule = (props) => {
             <Button
                 color="success"
                 onClick={toggler}
-            >{props.header}</Button>
+            >Add new list</Button>
 
             <Modal
-                backdrop="static"
                 centered
                 isOpen={isOpen}
                 toggle={toggler}
             >
-                <ModalHeader>{props.header}</ModalHeader>
+                <ModalHeader toggle={toggler}>Add new list</ModalHeader>
                 <ModalBody>
                     <Form inline>
                     <FormGroup floating>

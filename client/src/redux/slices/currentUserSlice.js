@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getCookies } from '../../helpers/cookies';
 
 // @ action     loginUser
 // @ desc       Login user to receive JWT
@@ -24,20 +25,29 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-// // @ action     postNewUser
-// // @ POST       api/users/register
-// export const postNewUser = createAsyncThunk(
-//     'user/postNewUser',
-//     async ({ name, email, password }, thunkAPI) => {
-//         let response = await fetch('/api/users', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ email, password })
-//         });
-//         response = await response.json();
-//         return response;
-//     }
-// );
+// @ action     fetchUser
+// @ desc       Fetch user with JWT
+// @ GET        api/users/login
+export const fetchUser = createAsyncThunk(
+    'user/fetchUser',
+    async (jwtToken = getCookies('jwt_token'), thunkAPI) => {
+        let response = await fetch('/api/users/login', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': jwtToken
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
 
 export const currentUserSlice = createSlice({
     name: 'user',
@@ -48,13 +58,7 @@ export const currentUserSlice = createSlice({
         loggingErrorMes: null,
         userData: null
     },
-    reducers: {
-        // @ reducer    authUser
-        authUser(state, { payload }) {
-            console.log(state.isLoginned);
-            console.log(payload);
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         // @ reducer    loginUser
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
@@ -80,34 +84,29 @@ export const currentUserSlice = createSlice({
             loggingErrorMes: error.message,
             logging: false
         }));
-        // builder.addCase(fetchUserByCredentials.fulfilled, (state, { payload }) => {
-        //     state.isRegisteredUser = payload.isRegistered;
-        //     state.fetchingUser = false;
-        //     state.fetchingUserError = false;
-        // });
-        // builder.addCase(fetchUserByCredentials.pending, (state) => {
-        //     state.isRegisteredUser = false;
-        //     state.fetchingUser = true;
-        //     state.fetchingUserError = false;
-        // });
-        // builder.addCase(fetchUserByCredentials.rejected, (state) => {
-        //     state.isRegisteredUser = false;
-        //     state.fetchingUser = false;
-        //     state.fetchingUserError = true;
-        // });
-        // // @ reducer    addNewUserCredentials
-        // builder.addCase(addNewUserCredentials.fulfilled, (state) => {
-        //     state.registeringUser = false;
-        //     state.registeringUserError = false;
-        // });
-        // builder.addCase(addNewUserCredentials.pending, (state) => {
-        //     state.registeringUser = true;
-        //     state.registeringUserError = false;
-        // });
-        // builder.addCase(addNewUserCredentials.rejected, (state) => {
-        //     state.registeringUser = false;
-        //     state.registeringUserError = true;
-        // });
+        // @ reducer    fetchUser
+        builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
+            return {
+                ...state,
+                isLoginned: true,
+                userData: payload,
+                logging: false
+            }
+        });
+        builder.addCase(fetchUser.pending, (state) => ({
+            ...state,
+            logging: true,
+            loggingError: false,
+            loggingErrorMes: null,
+            isLoginned: false,
+            userData: null
+        }));
+        builder.addCase(fetchUser.rejected, (state, { error }) => ({
+            ...state,
+            loggingError: true,
+            loggingErrorMes: error.message,
+            logging: false
+        }));
     }
 });
 

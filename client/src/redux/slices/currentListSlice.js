@@ -28,7 +28,13 @@ export const fetchList = createAsyncThunk(
 export const currentListSlice = createSlice({
     name: 'list',
     initialState: {
-        listData: null,
+        listData: {
+            _id: '',
+            name: '',
+            totalBudget: 0,
+            totalCosts: 0,
+            items: []
+        },
         listFetching: false,
         listFetchingErr: false,
         listFetchingErrMes: null

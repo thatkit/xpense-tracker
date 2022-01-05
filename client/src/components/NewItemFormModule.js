@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { sendItem } from '../redux/slices/currentListSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
@@ -26,9 +27,14 @@ export const NewItemFormModule = (props) => {
     const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
     const toggler = () => dispatch(toggleNewItemFormModule());
 
-    // Mimic send POST request
-    const post = () => {
-        console.log(itemNameInput, itemDescInput, itemSumInput, itemDateInput);
+    // Send (add) a new item
+    const sendItem = () => {
+        dispatch(sendItem({
+            listId: props.listId,
+            name: itemNameInput,
+            desc: itemDescInput,
+            sum: itemSumInput
+        }));
     }
 
     return (
@@ -75,21 +81,12 @@ export const NewItemFormModule = (props) => {
                             />
                             <Label for="sum">Sum</Label>
                         </FormGroup>
-                        <FormGroup floating>
-                            <Input 
-                                id='date'
-                                name='date'
-                                placeholder='Date'
-                                onChange={({ target }) => setItemDateInput(target.value)}
-                            />
-                            <Label for="date">Date</Label>
-                        </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={post}
+                        onClick={sendItem}
                     >Add</Button>
                     {' '}
                     <Button onClick={toggler}>

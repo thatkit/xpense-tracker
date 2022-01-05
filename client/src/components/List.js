@@ -41,7 +41,7 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <NewItemFormModule />
+            <NewItemFormModule listId={props.listId} />
         </>
     )
 }

@@ -25,6 +25,7 @@ export const ListBoard = () => {
                 <Col xs="12" sm="8">
                     <List 
                         items={list.items}
+                        listId={data.listId}
                     />
                 </Col>
                 <Col xs="12" sm="4">

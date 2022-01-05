@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useSelector } from 'react-redux';
 import {
     Navbar,
     Nav
@@ -7,7 +7,7 @@ import { NavIfLogged } from './NavIfLogged';
 import { NavIfNOTLogged } from './NavIfNOTLogged';
 
 export const HeaderNavbar = () => {
-    const loggedIn = true; // just for now
+    const isLoginned = useSelector(({ currentUser }) => currentUser.isLoginned);
 
     return (
         <div>
@@ -23,7 +23,7 @@ export const HeaderNavbar = () => {
                 }}>
 
                 {
-                    loggedIn
+                    isLoginned
                     ? <NavIfLogged />
                     : <NavIfNOTLogged />
                 }

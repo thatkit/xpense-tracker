@@ -4,6 +4,7 @@ import { fetchUser } from './redux/slices/currentUserSlice';
 import { getCookies } from './helpers/cookies';
 import { HeaderNavbar } from './components/HeaderNavbar'
 import { MainView } from './components/MainView'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   // Automatically login user if there's JWT token saved in cookies

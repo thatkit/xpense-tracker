@@ -66,7 +66,7 @@ export const currentUserSlice = createSlice({
             return {
                 ...state,
                 isLoginned: true,
-                userData: payload,
+                userData: payload.user,
                 logging: false
             }
         });

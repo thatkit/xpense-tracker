@@ -49,6 +49,32 @@ export const fetchUser = createAsyncThunk(
     }
 );
 
+// @ action     fetchLists
+// @ desc       Fetch user's lists with JWT
+// @ GET        api/lists
+export const fetchLists = createAsyncThunk(
+    'user/fetchLists',
+    async ({ listId, jwtToken = getCookies('jwt_token')}, thunkAPI) => {
+        console.log(listId, jwtToken)
+        let response = await fetch('/api/lists', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': jwtToken
+            },
+            body: { listId }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 export const currentUserSlice = createSlice({
     name: 'user',
     initialState: {
@@ -56,7 +82,10 @@ export const currentUserSlice = createSlice({
         logging: false,
         loggingError: false,
         loggingErrorMes: null,
-        userData: null
+        userData: null,
+        listFetching: false,
+        listFetchingErr: null,
+        listFetchingErrMes: null
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -106,6 +135,29 @@ export const currentUserSlice = createSlice({
             loggingError: true,
             loggingErrorMes: error.message,
             logging: false
+        }));
+        // @ reducer    fetchLists
+        builder.addCase(fetchLists.fulfilled, (state, { payload }) => {
+            console.log(payload)
+            return {
+                ...state,
+                lists: payload,
+                listFetching: false,
+                listFetchingErr: null,
+                listFetchingErrMes: null,
+            }
+        });
+        builder.addCase(fetchLists.pending, (state) => ({
+            ...state,
+            listFetching: true,
+            listFetchingErr: false,
+            listFetchingErrMes: null,
+        }));
+        builder.addCase(fetchLists.rejected, (state, { error }) => ({
+            ...state,
+            listFetchingErr: true,
+            listFetchingErrMes: error.message,
+            listFetching: false
         }));
     }
 });

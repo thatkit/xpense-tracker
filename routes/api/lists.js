@@ -9,9 +9,9 @@ const catchCallback = require('../../helpers/errorHandling');
 // @route           GET api/lists
 // @description     GET a list
 // @access          Private
-router.get('/', auth, (req, res) => {
+router.get('/:listId', auth, (req, res) => {
     List
-        .findById(req.body.listId)
+        .findById(req.params.listId)
         .populate('items')
         .then(list => res.json(list))
         .catch(catchCallback);

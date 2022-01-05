@@ -5,13 +5,13 @@ import {
     ListGroupItemHeading,
     ListGroupItemText,
     Row,
-    Col,
-    Button
+    Col
 } from 'reactstrap';
+import { NewItemFormModule } from './NewItemFormModule';
 
 export const List = (props) => {
+    // highlught on click
     const [isActive, setIsActive] = useState(false);
-    
     const clicker = e => {
         setIsActive(!isActive);
     }
@@ -41,7 +41,7 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <Button color="success">Add new item</Button>
+            <NewItemFormModule listId={props.listId} />
         </>
     )
 }

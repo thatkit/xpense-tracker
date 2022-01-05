@@ -1,19 +1,22 @@
+import { useSelector } from 'react-redux';
 import {
     NavItem,
-    NavLink
+    Button
 } from 'reactstrap';
 import { ListsDropdown } from './ListsDropdown'
 
 export const NavIfLogged = () => {
+    const userName = useSelector(({ currentUser }) => currentUser.userData.name);
+
     return (
         <>
             <NavItem>
                 <ListsDropdown />
             </NavItem>
             <NavItem>
-                <NavLink href="https://github.com/thatkit" target="_blank">
-                        User
-                </NavLink>
+                <Button>
+                    {userName || 'User name'}
+                </Button>
             </NavItem>
         </>
     )

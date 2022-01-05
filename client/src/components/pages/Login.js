@@ -1,6 +1,5 @@
 // React imports
-// import { curryGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Container,
@@ -11,37 +10,16 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchUserByCredentials } from '../../redux/slices/loginSlice';
-// import { addNewUserCredentials } from '../../redux/slices/loginSlice';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../redux/slices/currentUserSlice';
 
 export const Login = () => {
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const login = () => console.log('login'); // REDUX dispatch action
-    
-    // const user = useSelector(state => state.user);
-    // useEffect(() => {
-    //     dispatch(fetchUserByCredentials({ email, password }));
-    // }, [email, password]);
-
-    // const dispatch = useDispatch();
-
-    // // Login logic
-    // const login = () => {
-    //     user.isRegisteredUser 
-    //         ? console.log('Login successfull')
-    //         : console.log('Login failed: the user doesn\'t exist');
-    // }
-
-    // // Register logic
-    // const register = () => {
-    //     !user.isRegisteredUser 
-    //         ? console.log('Signed up')
-    //         : console.log('Couldn\'t sign up: the user already exists');
-    // }
-    
+    const dispatch = useDispatch();
+    const login = () => dispatch(loginUser({ email, password }));
+  
     return (
         <Container style={{margin: '5rem auto'}}>
             <Form inline>

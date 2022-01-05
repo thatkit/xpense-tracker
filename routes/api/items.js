@@ -65,7 +65,7 @@ router.delete('/:itemId', auth, (req, res) => {
 // @route           GET api/items
 // @description     GET All Items
 // @access          ADMIN
-router.get('/', (req, res) => {
+router.get('/all', (req, res) => {
     Item
         .find()
         .sort({ date: 1 })

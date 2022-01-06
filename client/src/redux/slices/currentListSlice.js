@@ -61,10 +61,38 @@ export const sendItem = createAsyncThunk(
     }
 );
 
+// @ action     removeItem
+// @ desc       Remove an item from user's current list with JWT
+// @ DELETE     api/items/:itemId
+export const removeItem = createAsyncThunk(
+    'list/removeItem',
+    async (arg, thunkAPI) => {
+        const { currentList, ui } = thunkAPI.getState();
+        const jwtToken = getCookies('jwt_token');
+
+        let response = await fetch(`/api/items/${ui.currentItem._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': jwtToken
+            },
+            body: JSON.stringify({ listId: currentList.listData._id })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 export const currentListSlice = createSlice({
     name: 'list',
     initialState: {
-        // list props
+        // list GET
         listData: {
             _id: '',
             name: '',
@@ -75,11 +103,16 @@ export const currentListSlice = createSlice({
         listFetching: false,
         listFetchingErr: false,
         listFetchingErrMes: null,
-        // item props
+        // item POST
         itemSent: false,
         itemSending: false,
         itemSendingErr: false,
-        itemSendingErrMes: null
+        itemSendingErrMes: null,
+        // item DELETE
+        itemRemoved: false,
+        itemRemoving: false,
+        itemRemovingErr: false,
+        itemRemovingErrMes: null
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -128,6 +161,30 @@ export const currentListSlice = createSlice({
             itemSending: false,
             itemSendingErr: true,
             itemSendingErrMes: error.message
+        }));
+        // @ reducer    removeItem
+        builder.addCase(removeItem.fulfilled, (state, { payload }) => {
+            return {
+                ...state,
+                itemRemoved: true,
+                itemRemoving: false,
+                itemRemovingErr: false,
+                itemRemovingErrMes: null
+            }
+        });
+        builder.addCase(removeItem.pending, (state, { payload }) => ({
+            ...state,
+            itemRemoved: false,
+            itemRemoving: true,
+            itemSendingErr: false,
+            itemSendingErrMes: null
+        }));
+        builder.addCase(removeItem.rejected, (state, { error }) => ({
+            ...state,
+            itemRemoved: false,
+            itemRemoving: false,
+            itemRemovingErr: true,
+            itemRemovingErrMes: error.message
         }));
     }
 });

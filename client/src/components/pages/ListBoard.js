@@ -12,10 +12,11 @@ import { Overview } from '../Overview';
 export const ListBoard = () => {
     const dispatch = useDispatch();
     const data = useParams();
+    const isNewItemAdded = useSelector(({ currentList }) => currentList.itemSent);
     useEffect(() => {
         dispatch(fetchList({ listId: data.listId }));
-    }, [dispatch, data]);
-    
+    }, [dispatch, data, isNewItemAdded]);
+
     // Current list data
     const list = useSelector(({ currentList }) => currentList.listData);
   

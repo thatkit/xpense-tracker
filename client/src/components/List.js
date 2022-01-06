@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     ListGroup,
     ListGroupItem,
@@ -10,11 +9,6 @@ import {
 import { NewItemFormModule } from './NewItemFormModule';
 
 export const List = (props) => {
-    // highlught on click
-    const [isActive, setIsActive] = useState(false);
-    const clicker = e => {
-        setIsActive(!isActive);
-    }
 
     return (
         <>
@@ -24,9 +18,6 @@ export const List = (props) => {
                         key={item._id}
                         action
                         tag="button"
-                        onMouseDown={clicker}
-                        onMouseUp={clicker}
-                        active={isActive}
                     >
                         <Row>
                             <Col>

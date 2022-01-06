@@ -30,19 +30,25 @@ export const fetchList = createAsyncThunk(
 // @ POST       api/items
 export const sendItem = createAsyncThunk(
     'list/sendItem',
-    async ({ itemData, jwtToken = getCookies('jwt_token')}, thunkAPI) => {
+    async ({
+        listId,
+        name,
+        desc,
+        sum,
+        jwtToken = getCookies('jwt_token')
+    }, thunkAPI) => {
         let response = await fetch('/api/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'x-auth-token': jwtToken
             },
-            body: {
-                listId: itemData.listId,
-                name: itemData.name,
-                desc: itemData.desc,
-                sum: itemData.sum
-            }
+            body: JSON.stringify({
+                listId,
+                name,
+                desc,
+                sum
+            })
         });
 
         if (response.status !== 200) {

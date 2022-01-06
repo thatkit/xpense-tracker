@@ -21,20 +21,20 @@ export const NewItemFormModule = (props) => {
     const [itemNameInput, setItemNameInput] = useState('');
     const [itemDescInput, setItemDescInput] = useState('');
     const [itemSumInput, setItemSumInput] = useState(0);
-    const [itemDateInput, setItemDateInput] = useState('');
 
     // Toggle behaviour
     const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
     const toggler = () => dispatch(toggleNewItemFormModule());
 
     // Send (add) a new item
-    const sendItem = () => {
+    const addItem = () => {
         dispatch(sendItem({
             listId: props.listId,
             name: itemNameInput,
             desc: itemDescInput,
             sum: itemSumInput
         }));
+        toggler();
     }
 
     return (
@@ -86,7 +86,7 @@ export const NewItemFormModule = (props) => {
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={sendItem}
+                        onClick={addItem}
                     >Add</Button>
                     {' '}
                     <Button onClick={toggler}>

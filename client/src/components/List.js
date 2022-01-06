@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentItem, removeCurrentItem } from '../redux/slices/uiSlice';
 import {
     ListGroup,
     ListGroupItem,
@@ -6,17 +7,16 @@ import {
     ListGroupItemText,
     Row,
     Col,
-    Button
+    Badge
 } from 'reactstrap';
 import { NewItemFormModule } from './NewItemFormModule';
 
 export const List = (props) => {
     // Bottom 'Edit' and 'Remove' menu
-    const [isOpen, setIsOpen] = useState(false);
-    const toggler = (e, id) => {
-        console.log(id)
-        setIsOpen(!isOpen);
-    }
+    const dispatch = useDispatch();
+    const isCurrentItemId = useSelector(({ ui }) => ui.currentItem._id);
+    const openMenu = (e, id) => dispatch(setCurrentItem(id));
+    const closeMenu = () => dispatch(removeCurrentItem());
 
     return (
         <>
@@ -27,7 +27,8 @@ export const List = (props) => {
                         id={item._id}
                         action
                         tag="button"
-                        onClick={(e, id) => toggler(e, item._id)}
+                        onMouseEnter={(e, id) => openMenu(e, item._id)}
+                        onMouseLeave={closeMenu}
                     >
                         <Row>
                             <Col>
@@ -39,10 +40,10 @@ export const List = (props) => {
                                 <ListGroupItemText>{item.date}</ListGroupItemText>                      
                             </Col>
                         </Row>
-                        {isOpen && (
+                        {isCurrentItemId === item._id && (
                             <Row>
-                                <Col><Button color="warning">Edit</Button></Col>
-                                <Col><Button color="danger">Remove</Button></Col>
+                                <Col><Badge color="warning">Edit</Badge></Col>
+                                <Col><Badge color="danger">Remove</Badge></Col>
                             </Row>
                         )}
                     </ListGroupItem>

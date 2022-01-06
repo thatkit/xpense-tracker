@@ -163,7 +163,7 @@ export const currentListSlice = createSlice({
             itemSendingErrMes: error.message
         }));
         // @ reducer    removeItem
-        builder.addCase(removeItem.fulfilled, (state, { payload }) => {
+        builder.addCase(removeItem.fulfilled, (state) => {
             return {
                 ...state,
                 itemRemoved: true,
@@ -172,7 +172,7 @@ export const currentListSlice = createSlice({
                 itemRemovingErrMes: null
             }
         });
-        builder.addCase(removeItem.pending, (state, { payload }) => ({
+        builder.addCase(removeItem.pending, (state) => ({
             ...state,
             itemRemoved: false,
             itemRemoving: true,

@@ -41,7 +41,7 @@ router.put('/', auth, (req, res) => {
     res.send('updating item...');
 });
 
-// @route           DELETE api/items/:id
+// @route           DELETE api/items/:itemId
 // @description     Delete an item
 // @access          Private
 router.delete('/:itemId', auth, (req, res) => {

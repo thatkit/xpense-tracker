@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendItem } from '../redux/slices/currentListSlice';
+import { sendItem, updateItem } from '../redux/slices/currentListSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,

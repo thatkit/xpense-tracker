@@ -22,9 +22,10 @@ export const ListsDropdown = () => {
     const lists = useSelector(({ currentUser }) => currentUser.userData.lists);
 
     // Autoupdate when first loggin in
+    const isLoginned = useSelector(({ currentUser }) => currentUser.isLoginned);
     useEffect(() => {
         dispatch(fetchLists());
-    }, [dispatch, lists]);
+    }, [dispatch, isLoginned]);
 
     return (
         <Dropdown isOpen={isOpen} toggle={toggler}>

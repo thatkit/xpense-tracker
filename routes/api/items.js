@@ -38,10 +38,17 @@ router.post('/', auth, (req, res) => {
 // @description     Update an item
 // @access          Private
 router.put('/', auth, (req, res) => {
-    res.send('updating item...');
+    Item
+        .findByIdAndUpdate(req.body.itemId, {
+            name: req.body.name,
+            desc: req.body.desc,
+            sum: req.body.sum
+        }, { returnDocument: 'after' })
+        .then(item => res.json(item))
+        .catch(catchCallback);
 });
 
-// @route           DELETE api/items/:id
+// @route           DELETE api/items/:itemId
 // @description     Delete an item
 // @access          Private
 router.delete('/:itemId', auth, (req, res) => {

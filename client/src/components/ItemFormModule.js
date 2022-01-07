@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendItem } from '../redux/slices/currentListSlice';
+import { sendItem, updateItem } from '../redux/slices/currentListSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
@@ -11,10 +11,11 @@ import {
     Form,
     FormGroup,
     Input,
-    Label
+    Label,
+    Badge
 } from 'reactstrap';
 
-export const NewItemFormModule = (props) => {
+export const ItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Inner state for inputs
@@ -27,23 +28,50 @@ export const NewItemFormModule = (props) => {
     const toggler = () => dispatch(toggleNewItemFormModule());
 
     // Send (add) a new item
-    const addItem = () => {
-        dispatch(sendItem({
-            listId: props.listId,
-            name: itemNameInput,
-            desc: itemDescInput,
-            sum: itemSumInput
-        }));
-        toggler();
+    const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
+    const addOrEditItem = () => {
+        console.log(props.actionName)
+        // // if ADD
+        // props.actionName === 'add' && dispatch(sendItem({
+        //     listId: props.listId,
+        //     name: itemNameInput,
+        //     desc: itemDescInput,
+        //     sum: itemSumInput
+        // }));
+        // // if EDIT
+        // props.actionName === 'edit' && console.log(currentItemId)
+        // // props.actionName === 'edit' && dispatch(updateItem({
+        // //     itemId: props.listId,
+        // //     name: itemNameInput,
+        // //     desc: itemDescInput,
+        // //     sum: itemSumInput
+        // // }));
+        // toggler();
+        // // removing values from inputs 
+        // setItemNameInput('');
+        // setItemDescInput('');
+        // setItemSumInput(0);
     }
 
     return (
-        <div>
-            <Button
-                color="success"
-                onClick={toggler}
-            >Add new item</Button>
+        <>
+            {/* if ADD */}
+            {props.actionName === 'add' && (
+                <Button
+                    color="success"
+                    onClick={toggler}
+                >Add new item</Button>
+            )}
 
+            {/* if EDIT */}
+            {props.actionName === 'edit' && (
+                <Badge
+                    color="warning"
+                    onClick={toggler}
+                >Edit</Badge>
+            )}
+
+            {/* Modal itself */}
             <Modal
                 centered
                 isOpen={isOpen}
@@ -86,7 +114,7 @@ export const NewItemFormModule = (props) => {
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={addItem}
+                        onClick={addOrEditItem}
                     >Add</Button>
                     {' '}
                     <Button onClick={toggler}>
@@ -94,6 +122,6 @@ export const NewItemFormModule = (props) => {
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     )
 }

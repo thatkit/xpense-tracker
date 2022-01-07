@@ -61,6 +61,41 @@ export const sendItem = createAsyncThunk(
     }
 );
 
+// @ action     updateItem
+// @ desc       Update current item to user's current list with JWT
+// @ PUT        api/items
+export const updateItem = createAsyncThunk(
+    'list/updateItem',
+    async ({
+        itemId,
+        name,
+        desc,
+        sum
+    }, thunkAPI) => {
+        let response = await fetch('/api/items', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({
+                itemId,
+                name,
+                desc,
+                sum
+            })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 // @ action     removeItem
 // @ desc       Remove an item from user's current list with JWT
 // @ DELETE     api/items/:itemId
@@ -103,6 +138,18 @@ export const currentListSlice = createSlice({
         listFetching: false,
         listFetchingErr: false,
         listFetchingErrMes: null,
+        // item actions for 'POST', 'PUT' and 'DELETE' requests 
+        itemActions: {
+            // POST
+            // PUT
+            edit: {
+                isSuccess: false,
+                isProcessing: false,
+                isError: false,
+                errorMes: ''
+            }
+            // DELETE
+        },
         // item POST
         itemSent: false,
         itemSending: false,
@@ -161,6 +208,36 @@ export const currentListSlice = createSlice({
             itemSending: false,
             itemSendingErr: true,
             itemSendingErrMes: error.message
+        }));
+        // @ reducer    addItem
+        builder.addCase(updateItem.fulfilled, ({ itemActions }, { payload }) => {
+            return {
+                ...itemActions,
+                edit: {
+                    isSuccess: true,
+                    isProcessing: false,
+                    isError: false,
+                    errorMes: null
+                }
+            }
+        });
+        builder.addCase(updateItem.pending, ({ itemActions }) => ({
+            ...itemActions,
+            edit: {
+                isSuccess: false,
+                isProcessing: true,
+                isError: false,
+                errorMes: null
+            }
+        }));
+        builder.addCase(updateItem.rejected, ({ itemActions }, { error }) => ({
+            ...itemActions,
+            edit: {
+                isSuccess: false,
+                isProcessing: false,
+                isError: true,
+                errorMes: error.message
+            }
         }));
         // @ reducer    removeItem
         builder.addCase(removeItem.fulfilled, (state) => {

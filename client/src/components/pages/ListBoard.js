@@ -12,10 +12,13 @@ import { Overview } from '../Overview';
 export const ListBoard = () => {
     const dispatch = useDispatch();
     const data = useParams();
+
+    // Autoupdates when an item is edited or removed
     const isNewItemAdded = useSelector(({ currentList }) => currentList.itemSent);
+    const isItemRemoved = useSelector(({ currentList }) => currentList.itemRemoved);
     useEffect(() => {
         dispatch(fetchList({ listId: data.listId }));
-    }, [dispatch, data, isNewItemAdded]);
+    }, [dispatch, data, isNewItemAdded, isItemRemoved]);
 
     // Current list data
     const list = useSelector(({ currentList }) => currentList.listData);

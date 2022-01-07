@@ -54,15 +54,13 @@ export const fetchUser = createAsyncThunk(
 // @ GET        api/lists
 export const fetchLists = createAsyncThunk(
     'user/fetchLists',
-    async ({ listId, jwtToken = getCookies('jwt_token')}, thunkAPI) => {
-        console.log(listId, jwtToken)
+    async ( arg, thunkAPI) => {
         let response = await fetch('/api/lists', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'x-auth-token': jwtToken
-            },
-            body: { listId }
+                'x-auth-token': getCookies('jwt_token')
+            }
         });
 
         if (response.status !== 200) {
@@ -138,7 +136,6 @@ export const currentUserSlice = createSlice({
         }));
         // @ reducer    fetchLists
         builder.addCase(fetchLists.fulfilled, (state, { payload }) => {
-            console.log(payload)
             return {
                 ...state,
                 lists: payload,

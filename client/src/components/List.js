@@ -10,7 +10,7 @@ import {
     Col,
     Badge
 } from 'reactstrap';
-import { NewItemFormModule } from './NewItemFormModule';
+import { ItemFormModule } from './ItemFormModule';
 
 export const List = (props) => {
     const dispatch = useDispatch();
@@ -47,9 +47,10 @@ export const List = (props) => {
                         </Row>
                         {isCurrentItemId === item._id && (
                             <Row>
-                                <Col><Badge
-                                    color="warning"
-                                >Edit</Badge></Col>
+                                <Col><ItemFormModule 
+                                    listId={props.listId}
+                                    actionName="edit"
+                                /></Col>
                                 <Col><Badge
                                     color="danger"
                                     onClick={remove}
@@ -59,7 +60,10 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <NewItemFormModule listId={props.listId} />
+            <ItemFormModule
+                listId={props.listId}
+                actionName="add"
+            />
         </>
     )
 }

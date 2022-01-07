@@ -6,7 +6,7 @@ import {
 import { ListsDropdown } from './ListsDropdown'
 
 export const NavIfLogged = () => {
-    const userName = useSelector(({ currentUser }) => currentUser.userData.name);
+    const user = useSelector(({ currentUser }) => currentUser.userData);
 
     return (
         <>
@@ -15,7 +15,7 @@ export const NavIfLogged = () => {
             </NavItem>
             <NavItem>
                 <Button>
-                    {userName || 'User name'}
+                    {user.name || 'User name'}
                 </Button>
             </NavItem>
         </>

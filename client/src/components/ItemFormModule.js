@@ -28,18 +28,29 @@ export const ItemFormModule = (props) => {
     const toggler = () => dispatch(toggleNewItemFormModule());
 
     // Send (add) a new item
-    const addItem = () => {
-        dispatch(sendItem({
-            listId: props.listId,
-            name: itemNameInput,
-            desc: itemDescInput,
-            sum: itemSumInput
-        }));
-        toggler();
-        // removing values from inputs 
-        setItemNameInput('');
-        setItemDescInput('');
-        setItemSumInput(0);
+    const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
+    const addOrEditItem = () => {
+        console.log(props.actionName)
+        // // if ADD
+        // props.actionName === 'add' && dispatch(sendItem({
+        //     listId: props.listId,
+        //     name: itemNameInput,
+        //     desc: itemDescInput,
+        //     sum: itemSumInput
+        // }));
+        // // if EDIT
+        // props.actionName === 'edit' && console.log(currentItemId)
+        // // props.actionName === 'edit' && dispatch(updateItem({
+        // //     itemId: props.listId,
+        // //     name: itemNameInput,
+        // //     desc: itemDescInput,
+        // //     sum: itemSumInput
+        // // }));
+        // toggler();
+        // // removing values from inputs 
+        // setItemNameInput('');
+        // setItemDescInput('');
+        // setItemSumInput(0);
     }
 
     return (
@@ -103,7 +114,7 @@ export const ItemFormModule = (props) => {
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={addItem}
+                        onClick={addOrEditItem}
                     >Add</Button>
                     {' '}
                     <Button onClick={toggler}>

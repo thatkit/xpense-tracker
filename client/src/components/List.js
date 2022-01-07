@@ -10,7 +10,7 @@ import {
     Col,
     Badge
 } from 'reactstrap';
-import { NewItemFormModule } from './NewItemFormModule';
+import { ItemFormModule } from './ItemFormModule';
 
 export const List = (props) => {
     const dispatch = useDispatch();
@@ -19,11 +19,6 @@ export const List = (props) => {
     const isCurrentItemId = useSelector(({ ui }) => ui.currentItem._id);
     const openMenu = (e, id) => dispatch(setCurrentItem(id));
     const closeMenu = () => dispatch(removeCurrentItem());
-
-    // 'Edit' button
-    const edit = () => {
-        console.log('edit')
-    }
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
@@ -52,10 +47,10 @@ export const List = (props) => {
                         </Row>
                         {isCurrentItemId === item._id && (
                             <Row>
-                                <Col><Badge
-                                    color="warning"
-                                    onClick={edit}
-                                >Edit</Badge></Col>
+                                <Col><ItemFormModule 
+                                    listId={props.listId}
+                                    actionName="edit"
+                                /></Col>
                                 <Col><Badge
                                     color="danger"
                                     onClick={remove}
@@ -65,7 +60,10 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <NewItemFormModule listId={props.listId} />
+            <ItemFormModule
+                listId={props.listId}
+                actionName="add"
+            />
         </>
     )
 }

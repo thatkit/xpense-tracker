@@ -11,10 +11,11 @@ import {
     Form,
     FormGroup,
     Input,
-    Label
+    Label,
+    Badge
 } from 'reactstrap';
 
-export const NewItemFormModule = (props) => {
+export const ItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Inner state for inputs
@@ -42,12 +43,24 @@ export const NewItemFormModule = (props) => {
     }
 
     return (
-        <div>
-            <Button
-                color="success"
-                onClick={toggler}
-            >Add new item</Button>
+        <>
+            {/* if ADD */}
+            {props.actionName === 'add' && (
+                <Button
+                    color="success"
+                    onClick={toggler}
+                >Add new item</Button>
+            )}
 
+            {/* if EDIT */}
+            {props.actionName === 'edit' && (
+                <Badge
+                    color="warning"
+                    onClick={toggler}
+                >Edit</Badge>
+            )}
+
+            {/* Modal itself */}
             <Modal
                 centered
                 isOpen={isOpen}
@@ -98,6 +111,6 @@ export const NewItemFormModule = (props) => {
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     )
 }

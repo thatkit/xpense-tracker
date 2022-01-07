@@ -7,6 +7,16 @@ const List = require('../../models/List'); // List Model
 const catchCallback = require('../../helpers/errorHandling');
 
 // @route           GET api/lists
+// @description     GET all lists
+// @access          Private
+router.get('/', auth, (req, res) => {
+    List
+        .find()
+        .then(lists => res.json(lists))
+        .catch(catchCallback);
+});
+
+// @route           GET api/lists/:listId
 // @description     GET a list
 // @access          Private
 router.get('/:listId', auth, (req, res) => {
@@ -16,6 +26,7 @@ router.get('/:listId', auth, (req, res) => {
         .then(list => res.json(list))
         .catch(catchCallback);
 });
+
 
 // @route           POST api/lists
 // @description     Create a list

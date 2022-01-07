@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleListsDropdown } from '../redux/slices/uiSlice';
+import { fetchLists } from '../redux/slices/currentUserSlice';
 import { NewListFormModule } from './NewListFormModule';
 import {
     Dropdown,
@@ -18,6 +20,11 @@ export const ListsDropdown = () => {
 
     // Lists
     const lists = useSelector(({ currentUser }) => currentUser.userData.lists);
+
+    // Autoupdate when first loggin in
+    useEffect(() => {
+        dispatch(fetchLists());
+    }, [dispatch, lists]);
 
     return (
         <Dropdown isOpen={isOpen} toggle={toggler}>

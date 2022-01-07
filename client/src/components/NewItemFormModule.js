@@ -35,6 +35,10 @@ export const NewItemFormModule = (props) => {
             sum: itemSumInput
         }));
         toggler();
+        // removing values from inputs 
+        setItemNameInput('');
+        setItemDescInput('');
+        setItemSumInput(0);
     }
 
     return (

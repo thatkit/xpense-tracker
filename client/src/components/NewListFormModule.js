@@ -30,6 +30,9 @@ export const NewListFormModule = (props) => {
     // Mimic send POST request
     const post = () => {
         console.table(listNameInput, listBudgetInput);
+        // removing values from inputs
+        setListNameInput('');
+        setListBudgetInput(0);
     }
 
     return (

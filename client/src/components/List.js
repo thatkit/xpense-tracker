@@ -20,6 +20,11 @@ export const List = (props) => {
     const openMenu = (e, id) => dispatch(setCurrentItem(id));
     const closeMenu = () => dispatch(removeCurrentItem());
 
+    // 'Edit' button
+    const edit = () => {
+        console.log('edit')
+    }
+
     // 'Remove' button
     const remove = () => dispatch(removeItem());
 
@@ -49,6 +54,7 @@ export const List = (props) => {
                             <Row>
                                 <Col><Badge
                                     color="warning"
+                                    onClick={edit}
                                 >Edit</Badge></Col>
                                 <Col><Badge
                                     color="danger"

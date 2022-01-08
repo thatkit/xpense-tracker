@@ -7,7 +7,7 @@ import { ListsDropdown } from './ListsDropdown'
 
 export const NavIfLogged = () => {
     const user = useSelector(({ currentUser }) => currentUser.userData);
-
+    
     return (
         <>
             <NavItem>

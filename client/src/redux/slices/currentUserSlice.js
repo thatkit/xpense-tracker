@@ -80,10 +80,12 @@ export const currentUserSlice = createSlice({
         logging: false,
         loggingError: false,
         loggingErrorMes: null,
-        userData: null,
-        listFetching: false,
-        listFetchingErr: null,
-        listFetchingErrMes: null
+        userData: {
+            lists: []
+        },
+        listsFetching: false,
+        listsFetchingErr: null,
+        listsFetchingErrMes: null
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -138,23 +140,23 @@ export const currentUserSlice = createSlice({
         builder.addCase(fetchLists.fulfilled, (state, { payload }) => {
             return {
                 ...state,
-                lists: payload,
-                listFetching: false,
-                listFetchingErr: null,
-                listFetchingErrMes: null,
+                userData: { lists: payload },
+                listsFetching: false,
+                listsFetchingErr: null,
+                listsFetchingErrMes: null,
             }
         });
         builder.addCase(fetchLists.pending, (state) => ({
             ...state,
-            listFetching: true,
-            listFetchingErr: false,
-            listFetchingErrMes: null,
+            listsFetching: true,
+            listsFetchingErr: false,
+            listsFetchingErrMes: null,
         }));
         builder.addCase(fetchLists.rejected, (state, { error }) => ({
             ...state,
-            listFetchingErr: true,
-            listFetchingErrMes: error.message,
-            listFetching: false
+            listsFetchingErr: true,
+            listsFetchingErrMes: error.message,
+            listsFetching: false
         }));
     }
 });

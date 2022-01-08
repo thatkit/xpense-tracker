@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendItem, updateItem } from '../redux/slices/currentListSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
@@ -8,20 +7,12 @@ import {
     ModalBody,
     ModalFooter,
     Button,
-    Form,
-    FormGroup,
-    Input,
-    Label,
     Badge
 } from 'reactstrap';
+import { ItemForm } from './ItemForm';
 
 export const ItemFormModule = (props) => {
     const dispatch = useDispatch();
-
-    // Inner state for inputs
-    const [itemNameInput, setItemNameInput] = useState('');
-    const [itemDescInput, setItemDescInput] = useState('');
-    const [itemSumInput, setItemSumInput] = useState(0);
 
     // Toggle behaviour
     const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
@@ -30,7 +21,7 @@ export const ItemFormModule = (props) => {
     // Send (add) a new item
     const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
     const addOrEditItem = () => {
-        console.log(props.actionName)
+        console.log(props)
         // // if ADD
         // props.actionName === 'add' && dispatch(sendItem({
         //     listId: props.listId,
@@ -77,40 +68,8 @@ export const ItemFormModule = (props) => {
                 isOpen={isOpen}
                 toggle={toggler}
             >
-                <ModalHeader>Add new item</ModalHeader>
-                <ModalBody>
-                    <Form inline>
-                        <FormGroup floating>
-                            <Input 
-                                id='name'
-                                name='name'
-                                placeholder='Name'
-                                required
-                                onChange={({ target }) => setItemNameInput(target.value)}
-                            />
-                            <Label for="name">Name</Label>
-                        </FormGroup>
-                        <FormGroup floating>
-                            <Input 
-                                id='desc'
-                                name='desc'
-                                placeholder='Description'
-                                onChange={({ target }) => setItemDescInput(target.value)}
-                            />
-                            <Label for="desc">Description</Label>
-                        </FormGroup>
-                        <FormGroup floating>
-                            <Input 
-                                id='sum'
-                                name='sum'
-                                placeholder='Sum'
-                                required
-                                onChange={({ target }) => setItemSumInput(target.value)}
-                            />
-                            <Label for="sum">Sum</Label>
-                        </FormGroup>
-                    </Form>
-                </ModalBody>
+                <ModalHeader>{props.actionName}</ModalHeader>
+                <ModalBody><ItemForm /></ModalBody>
                 <ModalFooter>
                     <Button
                         color="success"

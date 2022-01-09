@@ -140,6 +140,7 @@ export const currentListSlice = createSlice({
         listFetchingErrMes: null,
         // item actions for 'POST', 'PUT' and 'DELETE' requests 
         itemActions: {
+            actionName: '',
             // POST
             // PUT
             edit: {
@@ -161,7 +162,13 @@ export const currentListSlice = createSlice({
         itemRemovingErr: false,
         itemRemovingErrMes: null
     },
-    reducers: {},
+    reducers: {
+        // @ reducer    setActionName
+        setActionName({ itemActions }, { payload }) {
+            console.log(payload)
+            itemActions.actionName = payload;
+        }
+    },
     extraReducers: (builder) => {
         // @ reducer    fetchList
         builder.addCase(fetchList.fulfilled, (state, { payload }) => {
@@ -266,4 +273,5 @@ export const currentListSlice = createSlice({
     }
 });
 
+export const { setActionName } = currentListSlice.actions;
 export default currentListSlice.reducer;

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { sendItem, updateItem } from '../redux/slices/currentListSlice';
+import { sendItem, updateItem, setActionName } from '../redux/slices/currentListSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
@@ -16,7 +16,10 @@ export const ItemFormModule = (props) => {
 
     // Toggle behaviour
     const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
-    const toggler = () => dispatch(toggleNewItemFormModule());
+    const toggler = (e, actionName = '') => {
+        dispatch(setActionName(actionName));
+        dispatch(toggleNewItemFormModule());
+    }
 
     // Send (add) a new item
     const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
@@ -50,7 +53,7 @@ export const ItemFormModule = (props) => {
             {props.actionName === 'add' && (
                 <Button
                     color="success"
-                    onClick={toggler}
+                    onClick={(e) => toggler(e, 'add')}
                 >Add new item</Button>
             )}
 
@@ -58,7 +61,7 @@ export const ItemFormModule = (props) => {
             {props.actionName === 'edit' && (
                 <Badge
                     color="warning"
-                    onClick={toggler}
+                    onClick={(e) => toggler(e, 'edit')}
                 >Edit</Badge>
             )}
 

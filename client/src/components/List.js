@@ -79,7 +79,7 @@ export const List = (props) => {
             <ItemFormModule
                 listId={props.listId}
                 actionName="add"
-                onClick={setAction}
+                onClickFunc={setAction}
             />
         </>
     )

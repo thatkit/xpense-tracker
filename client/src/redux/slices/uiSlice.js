@@ -6,7 +6,7 @@ export const uiSlice = createSlice({
         listsDropdownIsOpen: false,
         newListFormModuleIsOpen: false,
         newItemFormModuleIsOpen: false,
-        currentItem: { _id: '', prevId: '', action: '' }
+        currentItem: { _id: '', prevId: ''/*obsolete*/, action: ''/*obsolete*/ }
     },
     reducers: {
         // reducers for isOpen reactstrap props

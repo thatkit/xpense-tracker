@@ -30,34 +30,30 @@ export const fetchList = createAsyncThunk(
 // @ POST       api/items
 export const sendItem = createAsyncThunk(
     'list/sendItem',
-    async ({
-        listId,
-        name,
-        desc,
-        sum,
-        jwtToken = getCookies('jwt_token')
-    }, thunkAPI) => {
-        let response = await fetch('/api/items', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': jwtToken
-            },
-            body: JSON.stringify({
-                listId,
-                name,
-                desc,
-                sum
-            })
-        });
+    async (listId, { getState }) => {
+        // itemInputs
+        const itemInputs = getState().currentItem.inputData;
+        // let response = await fetch('/api/items', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'x-auth-token': getCookies('jwt_token')
+        //     },
+        //     body: JSON.stringify({
+        //         listId,
+        //         name,
+        //         desc,
+        //         sum
+        //     })
+        // });
 
-        if (response.status !== 200) {
-            response = await response.json(); 
-            throw new Error(response.message)
-        }
+        // if (response.status !== 200) {
+        //     response = await response.json(); 
+        //     throw new Error(response.message)
+        // }
         
-        response = await response.json();
-        return response;      
+        // response = await response.json();
+        // return response;      
     }
 );
 
@@ -164,10 +160,7 @@ export const currentListSlice = createSlice({
     },
     reducers: {
         // @ reducer    setActionName
-        setActionName({ itemActions }, { payload }) {
-            console.log(payload)
-            itemActions.actionName = payload;
-        }
+        setActionName({ itemActions }, { payload }) { itemActions.actionName = payload }
     },
     extraReducers: (builder) => {
         // @ reducer    fetchList

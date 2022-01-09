@@ -24,14 +24,8 @@ export const ItemFormModule = (props) => {
     // Send (add) a new item
     const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
     const addOrEditItem = () => {
-        console.log(props)
-        // // if ADD
-        // props.actionName === 'add' && dispatch(sendItem({
-        //     listId: props.listId,
-        //     name: itemNameInput,
-        //     desc: itemDescInput,
-        //     sum: itemSumInput
-        // }));
+        // if ADD
+        props.actionName === 'add' && dispatch(sendItem(props.listId));
         // // if EDIT
         // props.actionName === 'edit' && console.log(currentItemId)
         // // props.actionName === 'edit' && dispatch(updateItem({
@@ -46,7 +40,7 @@ export const ItemFormModule = (props) => {
         // setItemDescInput('');
         // setItemSumInput(0);
     }
-
+//props.actionaName to useSelector
     return (
         <>
             {/* if ADD */}

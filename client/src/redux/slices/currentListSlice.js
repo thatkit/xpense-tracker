@@ -33,27 +33,28 @@ export const sendItem = createAsyncThunk(
     async (listId, { getState }) => {
         // itemInputs
         const itemInputs = getState().currentItem.inputData;
-        // let response = await fetch('/api/items', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'x-auth-token': getCookies('jwt_token')
-        //     },
-        //     body: JSON.stringify({
-        //         listId,
-        //         name,
-        //         desc,
-        //         sum
-        //     })
-        // });
 
-        // if (response.status !== 200) {
-        //     response = await response.json(); 
-        //     throw new Error(response.message)
-        // }
+        let response = await fetch('/api/items', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({
+                listId,
+                name: itemInputs.name,
+                desc: itemInputs.desc,
+                sum: itemInputs.sum
+            })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
         
-        // response = await response.json();
-        // return response;      
+        response = await response.json();
+        return response;      
     }
 );
 

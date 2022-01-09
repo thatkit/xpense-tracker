@@ -10,28 +10,31 @@ import {
 
 export const ItemForm = (props) => {
     // Inner state for inputs
-    const [itemNameInput, setItemNameInput] = useState('');
-    const [itemDescInput, setItemDescInput] = useState('');
-    const [itemSumInput, setItemSumInput] = useState(0);
-
     const [itemInput, setItemInput] = useState({
         name: '',
         desc: '',
         sum: 0
     });
     
+    // onChange event handlers
+    const setName = ({ target }) => setItemInput({
+        ...itemInput,
+        name: target.value
+    });
+    const setDesc = ({ target }) => setItemInput({
+        ...itemInput,
+        desc: target.value
+    });
+    const setSum = ({ target }) => setItemInput({
+        ...itemInput,
+        sum: target.value
+    })
+
     // Sending inner state to the Redux store
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     dispatch(typeItem({ inputType: 'name', inputValue: itemNameInput }));
-    // }, [dispatch, itemNameInput]);
-    // useEffect(() => {
-    //     dispatch(typeItem({ inputType: 'desc', inputValue: itemDescInput }));
-    // }, [dispatch, itemDescInput]);
-    // useEffect(() => {
-    //     dispatch(typeItem({ inputType: 'sum', inputValue: itemSumInput }));
-    // }, [dispatch, itemSumInput]);
+    useEffect(() => {
+        dispatch(typeItem(itemInput));
+    }, [dispatch, itemInput]);
 
     return (
         <Form inline>
@@ -41,7 +44,7 @@ export const ItemForm = (props) => {
                     name='name'
                     placeholder='Name'
                     required
-                    onChange={({ target }) => dispatch(typeItem({ inputType: 'name', inputValue: target.value }))}
+                    onChange={setName}
                 />
                 <Label for="name">Name</Label>
             </FormGroup>
@@ -50,7 +53,7 @@ export const ItemForm = (props) => {
                     id='desc'
                     name='desc'
                     placeholder='Description'
-                    onChange={({ target }) => dispatch(typeItem({ inputType: 'desc', inputValue: target.value }))}
+                    onChange={setDesc}
                 />
                 <Label for="desc">Description</Label>
             </FormGroup>
@@ -60,7 +63,7 @@ export const ItemForm = (props) => {
                     name='sum'
                     placeholder='Sum'
                     required
-                    onChange={({ target }) => dispatch(typeItem({ inputType: 'sum', inputValue: target.value }))}
+                    onChange={setSum}
                 />
                 <Label for="sum">Sum</Label>
             </FormGroup>

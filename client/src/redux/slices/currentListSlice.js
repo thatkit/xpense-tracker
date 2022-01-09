@@ -30,24 +30,21 @@ export const fetchList = createAsyncThunk(
 // @ POST       api/items
 export const sendItem = createAsyncThunk(
     'list/sendItem',
-    async ({
-        listId,
-        name,
-        desc,
-        sum,
-        jwtToken = getCookies('jwt_token')
-    }, thunkAPI) => {
+    async (listId, { getState }) => {
+        // itemInputs
+        const itemInputs = getState().currentItem.inputData;
+
         let response = await fetch('/api/items', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-auth-token': jwtToken
+                'x-auth-token': getCookies('jwt_token')
             },
             body: JSON.stringify({
                 listId,
-                name,
-                desc,
-                sum
+                name: itemInputs.name,
+                desc: itemInputs.desc,
+                sum: itemInputs.sum
             })
         });
 
@@ -140,6 +137,7 @@ export const currentListSlice = createSlice({
         listFetchingErrMes: null,
         // item actions for 'POST', 'PUT' and 'DELETE' requests 
         itemActions: {
+            actionName: '',
             // POST
             // PUT
             edit: {
@@ -161,7 +159,10 @@ export const currentListSlice = createSlice({
         itemRemovingErr: false,
         itemRemovingErrMes: null
     },
-    reducers: {},
+    reducers: {
+        // @ reducer    setActionName
+        setActionName({ itemActions }, { payload }) { itemActions.actionName = payload }
+    },
     extraReducers: (builder) => {
         // @ reducer    fetchList
         builder.addCase(fetchList.fulfilled, (state, { payload }) => {
@@ -266,4 +267,5 @@ export const currentListSlice = createSlice({
     }
 });
 
+export const { setActionName } = currentListSlice.actions;
 export default currentListSlice.reducer;

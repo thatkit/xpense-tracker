@@ -9,18 +9,7 @@ export const currentItemSlice = createSlice({
     },
     reducers: {
         // reducer for typing input values and saving to the store
-        // typeItem({ inputData }, { payload }) {
-        //     return { ...inputData, [payload.inputType]: payload.value };
-        // }
-        typeItem(state, { payload }) {
-            return {
-                ...state,
-                inputData: {
-                    ...this.inputData,
-                    [payload.inputType]: payload.inputValue
-                }
-            };
-        }
+        typeItem(state, { payload }) { state.inputData = payload }
     }
 });
 

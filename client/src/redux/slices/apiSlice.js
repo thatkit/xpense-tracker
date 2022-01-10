@@ -1,0 +1,242 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getCookies } from '../../helpers/cookies';
+
+// ACTIONS
+
+// @ action     loginUser
+// @ desc       Login user to receive JWT
+// @ POST       api/users/login
+export const loginUser = createAsyncThunk(
+    'users/loginUser',
+    async ({ email, password }, thunkAPI) => {
+        let response = await fetch('/api/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();   
+        return response;      
+    }
+);
+
+// @ action     fetchUser
+// @ desc       Fetch user with JWT
+// @ GET        api/users/login
+export const fetchUser = createAsyncThunk(
+    'users/fetchUser',
+    async (arg, thunkAPI) => {
+        let response = await fetch('/api/users/login', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// SLICE
+
+export const apiSlice = createSlice({
+    name: 'api',
+    initialState: {
+        // @    to /api/users
+        users: {
+            // POST
+            login: {
+                isLoggedIn: false,
+                loggingIn: false,
+                error: { isError: false, mes: '' }
+            },
+            // POST
+            register: {
+                isRegistered: false,
+                registering: false,
+                error: { isError: false, mes: '' }
+            },
+            // GET
+            fetchUser: {
+                isFetched: false,
+                fetching: false,
+                error: { isError: false, mes: '' }
+            },
+            // User data container
+            data: { id: '', name: '', email: '', lists: [] }
+        },
+        // @    to /api/lists
+        lists: {
+            // GET all
+            fetchAllLists: {
+                isFetched: false,
+                fetching: false,
+                error: { isError: false, mes: '' }
+            },
+            // GET by id
+            fetchCurrentList: {
+                isFetched: false,
+                fetching: false,
+                error: { isError: false, mes: '' }
+            },
+            // POST
+            addList: {
+                isAdded: false,
+                adding: false,
+                error: { isError: false, mes: '' }
+            },
+            // DELETE
+            deleteList: {
+                isDeleted: false,
+                deleting: false,
+                error: { isError: false, mes: '' },
+            },
+            // All lists data container
+            allLists: [],
+            // Current list data container
+            currentList: { id: '', name: '', totalBudget: 0 } 
+        },
+        // @    to /api/items
+        items: {
+            // POST
+            addItem: {
+                isAdded: false,
+                adding: false,
+                error: { isError: false, mes: '' }
+            },
+            // PUT
+            updateItem: {
+                isUpdated: false,
+                updating: false,
+                error: { isError: false, mes: '' }
+            },
+            // DELETE
+            deleteItem: {
+                isDeleted: false,
+                deleting: false,
+                error: { isError: false, mes: '' },
+            },
+            // Item data container
+            data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+        }
+    },
+    reducers: {
+
+    },
+    extraReducers: (builder) => {
+        // @    /api/users reducers
+        //      loginA
+        builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+            document.cookie = `jwt_token=${payload.token}`;
+            return {
+                ...state,
+                users: {
+                    ...state.users,
+                    login: {
+                        isLoggedIn: true,
+                        loggingIn: false,
+                        error: { isError: false, mes: '' }
+                    },
+                    data: {
+                        id: payload.user._id,
+                        name: payload.user.name,
+                        email: payload.user.email,
+                        lists: payload.user.lists
+                    }
+                }
+            }
+        });
+        builder.addCase(loginUser.pending, (state) => ({
+            ...state,
+            users: {
+                ...state.users,
+                login: {
+                    isLoggedIn: false,
+                    loggingIn: true,
+                    error: { isError: false, mes: '' }
+                },
+                data: { id: '', name: '', email: '', lists: [] }
+            }
+        }));
+        builder.addCase(loginUser.rejected, (state, { error }) => ({
+            ...state,
+            users: {
+                ...state.users,
+                login: {
+                    isLoggedIn: false,
+                    loggingIn: false,
+                    error: { isError: true, mes: error.message }
+                },
+                data: { id: '', name: '', email: '', lists: [] }
+            }
+        }));
+        //      register
+
+        //      fetchUser
+        builder.addCase(fetchUser.fulfilled, (state, { payload }) => ({
+            ...state,
+            users: {
+                ...state.users,
+                login: {
+                    isLoggedIn: true,
+                    loggingIn: false,
+                    error: { isError: false, mes: '' }
+                },
+                fetchUser: {
+                    isFetched: true,
+                    fetching: false,
+                    error: { isError: false, mes: '' }
+                },
+                data: {
+                    id: payload._id,
+                    name: payload.name,
+                    email: payload.email,
+                    lists: payload.lists
+                }
+            }
+        }));
+        builder.addCase(fetchUser.pending, (state) => ({
+            ...state,
+            users: {
+                ...state.users,
+                fetchUser: {
+                    isFetched: false,
+                    fetching: true,
+                    error: { isError: false, mes: '' }
+                },
+                data: { id: '', name: '', email: '', lists: [] }
+            }
+        }));
+        builder.addCase(fetchUser.rejected, (state, { error }) => ({
+            ...state,
+            users: {
+                ...state.users,
+                fetchUser: {
+                    isFetched: false,
+                    fetching: false,
+                    error: { isError: true, mes: error.message }
+                },
+                data: { id: '', name: '', email: '', lists: [] }
+            }
+        }));
+
+        // @    /api/lists reducers
+        
+        // @    /api/items reducers
+
+    }
+});
+
+export default apiSlice.reducer;

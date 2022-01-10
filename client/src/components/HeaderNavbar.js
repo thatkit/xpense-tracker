@@ -7,28 +7,26 @@ import { NavIfLogged } from './NavIfLogged';
 import { NavIfNOTLogged } from './NavIfNOTLogged';
 
 export const HeaderNavbar = () => {
-    const isLoginned = useSelector(({ currentUser }) => currentUser.isLoginned);
+    const isLoggedIn = useSelector(({ api }) => api.users.login.isLoggedIn);
 
     return (
-        <div>
-            <Navbar
-                color="dark"
-                dark
-                expand="xs"
-            >
-                <Nav navbar style={{
-                    width: '100vw',
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
+        <Navbar
+            color="dark"
+            dark
+            expand="xs"
+        >
+            <Nav navbar style={{
+                width: '100vw',
+                display: 'flex',
+                justifyContent: 'space-between'
+            }}>
 
-                {
-                    isLoginned
-                    ? <NavIfLogged />
-                    : <NavIfNOTLogged />
-                }
-                </Nav>
-            </Navbar>
-        </div>
+            {
+                isLoggedIn
+                ? <NavIfLogged />
+                : <NavIfNOTLogged />
+            }
+            </Nav>
+        </Navbar>
     )
 }

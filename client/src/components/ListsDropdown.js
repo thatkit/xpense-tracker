@@ -15,11 +15,11 @@ export const ListsDropdown = () => {
     const dispatch = useDispatch();
 
     // Collapse toggle behaviour
-    const isOpen = useSelector(state => state.ui.listsDropdownIsOpen);
+    const isOpen = useSelector(({ ui }) => ui.listsDropdownIsOpen);
     const toggler = () => dispatch(toggleListsDropdown());
 
     // Lists
-    const lists = useSelector(({ currentUser }) => currentUser.userData.lists);
+    const lists = useSelector(({ api }) => api.users.data.lists);
 
     // Autoupdate when first loggin in
     useEffect(() => {

@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 // Redux imports
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../redux/slices/currentUserSlice';
+import { loginUser } from '../../redux/slices/apiSlice';
 
 export const Login = () => {
     const [email, setEmail] = useState('');

@@ -129,7 +129,7 @@ export const currentListSlice = createSlice({
             _id: '',
             name: '',
             totalBudget: 0,
-            totalCosts: 0,
+            totalCosts: 0, //# do I really need it?
             items: []
         },
         listFetching: false,

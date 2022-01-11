@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchList } from '../../redux/slices/currentListSlice';
+import { fetchCurrentList } from '../../redux/slices/apiSlice';
 import {
     Row,
     Col
@@ -17,11 +17,11 @@ export const ListBoard = () => {
     const isNewItemAdded = useSelector(({ currentList }) => currentList.itemSent);
     const isItemRemoved = useSelector(({ currentList }) => currentList.itemRemoved);
     useEffect(() => {
-        dispatch(fetchList({ listId: data.listId }));
+        dispatch(fetchCurrentList({ listId: data.listId }));
     }, [dispatch, data, isNewItemAdded, isItemRemoved]);
 
     // Current list data
-    const list = useSelector(({ currentList }) => currentList.listData);
+    const list = useSelector(({ api }) => api.lists.currentList);
   
     return (
         <>

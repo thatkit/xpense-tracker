@@ -74,6 +74,30 @@ export const fetchAllLists = createAsyncThunk(
     }
 );
 
+// @ action     fetchCurrentList
+// @ desc       Fetch user's list with JWT
+// @ GET        api/lists
+export const fetchCurrentList = createAsyncThunk(
+    'api/lists/fetchCurrentList',
+    async ({ listId }, thunkAPI) => {
+        let response = await fetch(`/api/lists/${listId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 // SLICE
 
 export const apiSlice = createSlice({
@@ -131,7 +155,7 @@ export const apiSlice = createSlice({
             // All lists data container
             allLists: [],
             // Current list data container
-            currentList: { id: '', name: '', totalBudget: 0 } 
+            currentList: { id: '', name: '', totalBudget: 0, items: []} 
         },
         // @    to /api/items
         items: {
@@ -295,7 +319,49 @@ export const apiSlice = createSlice({
                 allLists: []
             }
         }));
-        
+        //      /fetchCurrentList
+        builder.addCase(fetchCurrentList.fulfilled, (state, { payload }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: true,
+                    fetching: false,
+                    error: { isError: false, mes: '' }
+                },
+                currentList: {
+                    id: payload._id,
+                    name: payload.name,
+                    totalBudget: payload.totalBudget,
+                    items: payload.items
+                } 
+            }
+        }));
+        builder.addCase(fetchCurrentList.pending, (state) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: false,
+                    fetching: true,
+                    error: { isError: false, mes: '' }
+                },
+                currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+        builder.addCase(fetchCurrentList.rejected, (state, { error }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: false,
+                    fetching: false,
+                    error: { isError: true, mes: error.message }
+                },
+                currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+
         // @    /api/items reducers
 
     }

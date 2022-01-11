@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleListsDropdown } from '../redux/slices/uiSlice';
-import { fetchLists } from '../redux/slices/currentUserSlice';
+import { fetchAllLists } from '../redux/slices/apiSlice';
 import { NewListFormModule } from './NewListFormModule';
 import {
     Dropdown,
@@ -19,11 +19,11 @@ export const ListsDropdown = () => {
     const toggler = () => dispatch(toggleListsDropdown());
 
     // Lists
-    const lists = useSelector(({ api }) => api.users.data.lists);
+    const lists = useSelector(({ api }) => api.lists.allLists);
 
     // Autoupdate when first loggin in
     useEffect(() => {
-        dispatch(fetchLists());
+        dispatch(fetchAllLists());
     }, []);
 
     return (

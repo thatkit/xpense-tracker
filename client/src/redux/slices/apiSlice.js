@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookies } from '../../helpers/cookies';
 
-// ACTIONS
+// ACTIONS for users
 
 // @ action     loginUser
 // @ desc       Login user to receive JWT
 // @ POST       api/users/login
 export const loginUser = createAsyncThunk(
-    'users/loginUser',
+    'api/users/loginUser',
     async ({ email, password }, thunkAPI) => {
         let response = await fetch('/api/users/login', {
             method: 'POST',
@@ -29,10 +29,35 @@ export const loginUser = createAsyncThunk(
 // @ desc       Fetch user with JWT
 // @ GET        api/users/login
 export const fetchUser = createAsyncThunk(
-    'users/fetchUser',
+    'api/users/fetchUser',
     async (arg, thunkAPI) => {
         let response = await fetch('/api/users/login', {
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// ACTIONS for lists
+
+// @ action     fetchAllLists
+// @ desc       Fetch user's lists with JWT
+// @ GET        api/lists
+export const fetchAllLists = createAsyncThunk(
+    'api/lists/fetchAllLists',
+    async ( arg, thunkAPI) => {
+        let response = await fetch('/api/lists', {
             headers: {
                 'Content-Type': 'application/json',
                 'x-auth-token': getCookies('jwt_token')
@@ -137,7 +162,7 @@ export const apiSlice = createSlice({
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
-        //      loginA
+        //      /login
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
             document.cookie = `jwt_token=${payload.token}`;
             return {
@@ -182,9 +207,9 @@ export const apiSlice = createSlice({
                 data: { id: '', name: '', email: '', lists: [] }
             }
         }));
-        //      register
+        //      /register
 
-        //      fetchUser
+        //      /fetchUser
         builder.addCase(fetchUser.fulfilled, (state, { payload }) => ({
             ...state,
             users: {
@@ -233,6 +258,43 @@ export const apiSlice = createSlice({
         }));
 
         // @    /api/lists reducers
+        //      /fetchAllLists
+        builder.addCase(fetchAllLists.fulfilled, (state, { payload }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: true,
+                    fetching: false,
+                    error: { isError: false, mes: '' }
+                },
+                allLists: payload
+            }
+        }));
+        builder.addCase(fetchAllLists.pending, (state) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: false,
+                    fetching: true,
+                    error: { isError: false, mes: '' }
+                },
+                allLists: []
+            }
+        }));
+        builder.addCase(fetchAllLists.rejected, (state, { error }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: false,
+                    fetching: false,
+                    error: { isError: true, mes: error.message }
+                },
+                allLists: []
+            }
+        }));
         
         // @    /api/items reducers
 

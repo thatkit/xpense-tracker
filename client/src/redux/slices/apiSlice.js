@@ -98,6 +98,41 @@ export const fetchCurrentList = createAsyncThunk(
     }
 );
 
+// ACTIONS for items
+
+// @ action     addItem
+// @ desc       Add new item to user's current list with JWT
+// @ POST       api/items
+export const addItem = createAsyncThunk(
+    'api/items/addItem',
+    async (listId, { getState }) => {
+        // itemInputs
+        const itemInputs = getState().api.items.data;
+
+        let response = await fetch('/api/items', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({
+                listId,
+                name: itemInputs.name,
+                desc: itemInputs.desc,
+                sum: itemInputs.sum
+            })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 // SLICE
 
 export const apiSlice = createSlice({
@@ -363,6 +398,43 @@ export const apiSlice = createSlice({
         }));
 
         // @    /api/items reducers
+        //      /addItem
+        builder.addCase(addItem.fulfilled, (state, { payload }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: true,
+                    adding: false,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
+        builder.addCase(addItem.pending, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: false,
+                    adding: true,
+                    error: { isError: false, mes: '' }
+                },
+                // currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+        builder.addCase(addItem.rejected, (state, { error }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: false,
+                    adding: false,
+                    error: { isError: true, mes: error.message }
+                },
+                // currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
 
     }
 });

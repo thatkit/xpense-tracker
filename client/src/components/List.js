@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem } from '../redux/slices/apiSlice';
-import { removeCurrentItem, setItemAction } from '../redux/slices/uiSlice';
 import { selectItem } from '../redux/slices/apiSlice';
 import {
     ListGroup,
@@ -11,7 +10,8 @@ import {
     Col,
     Badge
 } from 'reactstrap';
-import { ItemFormModule } from './ItemFormModule';
+import { EditItemFormModule } from './EditItemFormModule';
+import { AddItemFormModule } from './AddItemFormModule';
 
 export const List = (props) => {
     const dispatch = useDispatch();
@@ -19,8 +19,7 @@ export const List = (props) => {
     // Bottom 'Edit' and 'Remove' menu
     const currentItemId = useSelector(({ api }) => api.items.data.itemId);
     const openMenu = (e, id) => dispatch(selectItem(id));
-    const closeMenu = () => dispatch(removeCurrentItem());
-    const setAction = () => dispatch(setItemAction());
+    const closeMenu = () => { /*removeCurItem*/ };
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
@@ -49,10 +48,9 @@ export const List = (props) => {
                         </Row>
                         {item._id === currentItemId && (
                             <Row>
-                                <Col><ItemFormModule 
-                                    listId={props.listId}
-                                    actionName="edit"
-                                /></Col>
+                                <Col>
+                                    <EditItemFormModule />
+                                </Col>
                                 <Col><Badge
                                     color="danger"
                                     onClick={remove}
@@ -62,11 +60,7 @@ export const List = (props) => {
                     </ListGroupItem>
                 );
             })}</ListGroup>
-            <ItemFormModule
-                listId={props.listId}
-                actionName="add"
-                onClickFunc={setAction}
-            />
+            <AddItemFormModule />
         </>
     )
 }

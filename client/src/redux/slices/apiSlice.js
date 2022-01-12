@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookies } from '../../helpers/cookies';
 
-// ACTIONS
+// ACTIONS for users
 
 // @ action     loginUser
 // @ desc       Login user to receive JWT
 // @ POST       api/users/login
 export const loginUser = createAsyncThunk(
-    'users/loginUser',
+    'api/users/loginUser',
     async ({ email, password }, thunkAPI) => {
         let response = await fetch('/api/users/login', {
             method: 'POST',
@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
 // @ desc       Fetch user with JWT
 // @ GET        api/users/login
 export const fetchUser = createAsyncThunk(
-    'users/fetchUser',
+    'api/users/fetchUser',
     async (arg, thunkAPI) => {
         let response = await fetch('/api/users/login', {
             method: 'GET',
@@ -37,6 +37,120 @@ export const fetchUser = createAsyncThunk(
                 'Content-Type': 'application/json',
                 'x-auth-token': getCookies('jwt_token')
             }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// ACTIONS for lists
+
+// @ action     fetchAllLists
+// @ desc       Fetch user's lists with JWT
+// @ GET        api/lists
+export const fetchAllLists = createAsyncThunk(
+    'api/lists/fetchAllLists',
+    async ( arg, thunkAPI) => {
+        let response = await fetch('/api/lists', {
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// @ action     fetchCurrentList
+// @ desc       Fetch user's list with JWT
+// @ GET        api/lists
+export const fetchCurrentList = createAsyncThunk(
+    'api/lists/fetchCurrentList',
+    async ({ listId }, thunkAPI) => {
+        let response = await fetch(`/api/lists/${listId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// ACTIONS for items
+
+// @ action     addItem
+// @ desc       Add new item to user's current list with JWT
+// @ POST       api/items
+export const addItem = createAsyncThunk(
+    'api/items/addItem',
+    async (arg, { getState }) => {
+        // retrieving state
+        const itemInputs = getState().api.items.data;
+        const listId = getState().api.lists.currentList.id;
+
+        let response = await fetch('/api/items', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({
+                listId: listId,
+                name: itemInputs.name,
+                desc: itemInputs.desc,
+                sum: itemInputs.sum
+            })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
+// @ action     removeItem
+// @ desc       Remove an item from user's current list with JWT
+// @ DELETE     api/items/:itemId
+export const removeItem = createAsyncThunk(
+    'api/lists/removeItem',
+    async (arg, { getState }) => {
+        // retrieving states
+        const listId = getState().lists.currentList.id;
+        const itemId = getState().items.data.itemId;
+
+        let response = await fetch(`/api/items/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({ listId })
         });
 
         if (response.status !== 200) {
@@ -106,7 +220,7 @@ export const apiSlice = createSlice({
             // All lists data container
             allLists: [],
             // Current list data container
-            currentList: { id: '', name: '', totalBudget: 0 } 
+            currentList: { id: '', name: '', totalBudget: 0, items: []} 
         },
         // @    to /api/items
         items: {
@@ -123,9 +237,9 @@ export const apiSlice = createSlice({
                 error: { isError: false, mes: '' }
             },
             // DELETE
-            deleteItem: {
-                isDeleted: false,
-                deleting: false,
+            removeItem: {
+                isRemoved: false,
+                removing: false,
                 error: { isError: false, mes: '' },
             },
             // Item data container
@@ -133,11 +247,26 @@ export const apiSlice = createSlice({
         }
     },
     reducers: {
-
+        // @       /api/items/typeItem
+        typeItem(state, { payload }) {
+            return {
+                ...state,
+                items: {
+                    ...state.items,
+                    data: {
+                        listId: '',
+                        itemId: '',
+                        name: payload.name,
+                        desc: payload.desc,
+                        sum: payload.sum
+                    }
+                }
+            }
+        }
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
-        //      loginA
+        //      /login
         builder.addCase(loginUser.fulfilled, (state, { payload }) => {
             document.cookie = `jwt_token=${payload.token}`;
             return {
@@ -182,9 +311,9 @@ export const apiSlice = createSlice({
                 data: { id: '', name: '', email: '', lists: [] }
             }
         }));
-        //      register
+        //      /register
 
-        //      fetchUser
+        //      /fetchUser
         builder.addCase(fetchUser.fulfilled, (state, { payload }) => ({
             ...state,
             users: {
@@ -233,10 +362,164 @@ export const apiSlice = createSlice({
         }));
 
         // @    /api/lists reducers
-        
-        // @    /api/items reducers
+        //      /fetchAllLists
+        builder.addCase(fetchAllLists.fulfilled, (state, { payload }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: true,
+                    fetching: false,
+                    error: { isError: false, mes: '' }
+                },
+                allLists: payload
+            }
+        }));
+        builder.addCase(fetchAllLists.pending, (state) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: false,
+                    fetching: true,
+                    error: { isError: false, mes: '' }
+                },
+                allLists: []
+            }
+        }));
+        builder.addCase(fetchAllLists.rejected, (state, { error }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchAllLists: {
+                    isFetched: false,
+                    fetching: false,
+                    error: { isError: true, mes: error.message }
+                },
+                allLists: []
+            }
+        }));
+        //      /fetchCurrentList
+        builder.addCase(fetchCurrentList.fulfilled, (state, { payload }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: true,
+                    fetching: false,
+                    error: { isError: false, mes: '' }
+                },
+                currentList: {
+                    id: payload._id,
+                    name: payload.name,
+                    totalBudget: payload.totalBudget,
+                    items: payload.items
+                } 
+            }
+        }));
+        builder.addCase(fetchCurrentList.pending, (state) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: false,
+                    fetching: true,
+                    error: { isError: false, mes: '' }
+                },
+                currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+        builder.addCase(fetchCurrentList.rejected, (state, { error }) => ({
+            ...state,
+            lists: {
+                ...state.lists,
+                fetchCurrentList: {
+                    isFetched: false,
+                    fetching: false,
+                    error: { isError: true, mes: error.message }
+                },
+                currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
 
+        // @    /api/items reducers
+        //      /addItem
+        builder.addCase(addItem.fulfilled, (state, { payload }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: true,
+                    adding: false,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
+        builder.addCase(addItem.pending, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: false,
+                    adding: true,
+                    error: { isError: false, mes: '' }
+                },
+                // currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+        builder.addCase(addItem.rejected, (state, { error }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                addItem: {
+                    isAdded: false,
+                    adding: false,
+                    error: { isError: true, mes: error.message }
+                },
+                // currentList: { id: '', name: '', totalBudget: 0, items: []} 
+            }
+        }));
+
+        //      /removeItem
+        builder.addCase(removeItem.fulfilled, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: true,
+                    removing: false,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
+        builder.addCase(removeItem.pending, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: false,
+                    removing: true,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            } 
+        }));
+        builder.addCase(removeItem.rejected, (state, { error }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: false,
+                    removing: false,
+                    error: { isError: true, mes: error.message }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
     }
 });
 
+export const { typeItem } = apiSlice.actions;
 export default apiSlice.reducer;

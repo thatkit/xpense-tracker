@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { typeItem } from '../redux/slices/currentItemSlice';
+import { typeItem } from '../redux/slices/apiSlice';
 import {
     Form,
     FormGroup,

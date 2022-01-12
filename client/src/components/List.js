@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem } from '../redux/slices/currentListSlice';
+import { removeItem } from '../redux/slices/apiSlice';
 import { setCurrentItem, removeCurrentItem, setItemAction } from '../redux/slices/uiSlice';
 import {
     ListGroup,

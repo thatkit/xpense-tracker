@@ -134,6 +134,35 @@ export const addItem = createAsyncThunk(
     }
 );
 
+// @ action     removeItem
+// @ desc       Remove an item from user's current list with JWT
+// @ DELETE     api/items/:itemId
+export const removeItem = createAsyncThunk(
+    'api/lists/removeItem',
+    async (arg, { getState }) => {
+        // retrieving states
+        const listId = getState().lists.currentList.id;
+        const itemId = getState().items.data.itemId;
+
+        let response = await fetch(`/api/items/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({ listId })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);
+
 // SLICE
 
 export const apiSlice = createSlice({
@@ -208,9 +237,9 @@ export const apiSlice = createSlice({
                 error: { isError: false, mes: '' }
             },
             // DELETE
-            deleteItem: {
-                isDeleted: false,
-                deleting: false,
+            removeItem: {
+                isRemoved: false,
+                removing: false,
                 error: { isError: false, mes: '' },
             },
             // Item data container
@@ -452,6 +481,43 @@ export const apiSlice = createSlice({
             }
         }));
 
+        //      /removeItem
+        builder.addCase(removeItem.fulfilled, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: true,
+                    removing: false,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
+        builder.addCase(removeItem.pending, (state) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: false,
+                    removing: true,
+                    error: { isError: false, mes: '' }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            } 
+        }));
+        builder.addCase(removeItem.rejected, (state, { error }) => ({
+            ...state,
+            items: {
+                ...state.items,
+                removeItem: {
+                    isRemoved: false,
+                    removing: false,
+                    error: { isError: true, mes: error.message }
+                },
+                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            }
+        }));
     }
 });
 

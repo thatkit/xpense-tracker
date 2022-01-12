@@ -1,39 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookies } from '../../helpers/cookies';
 
-// @ action     sendItem
-// @ desc       Add new item to user's current list with JWT
-// @ POST       api/items
-export const sendItem = createAsyncThunk(
-    'list/sendItem',
-    async (listId, { getState }) => {
-        // itemInputs
-        const itemInputs = getState().currentItem.inputData;
-
-        let response = await fetch('/api/items', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': getCookies('jwt_token')
-            },
-            body: JSON.stringify({
-                listId,
-                name: itemInputs.name,
-                desc: itemInputs.desc,
-                sum: itemInputs.sum
-            })
-        });
-
-        if (response.status !== 200) {
-            response = await response.json(); 
-            throw new Error(response.message)
-        }
-        
-        response = await response.json();
-        return response;      
-    }
-);
-
 // @ action     updateItem
 // @ desc       Update current item to user's current list with JWT
 // @ PUT        api/items
@@ -140,30 +107,6 @@ export const currentListSlice = createSlice({
         setActionName({ itemActions }, { payload }) { itemActions.actionName = payload }
     },
     extraReducers: (builder) => {
-        // @ reducer    addItem
-        builder.addCase(sendItem.fulfilled, (state, { payload }) => {
-            return {
-                ...state,
-                itemSent: true,
-                itemSending: false,
-                itemSendingErr: false,
-                itemSendingErrMes: null
-            }
-        });
-        builder.addCase(sendItem.pending, (state) => ({
-            ...state,
-            itemSent: false,
-            itemSending: true,
-            itemSendingErr: false,
-            itemSendingErrMes: null
-        }));
-        builder.addCase(sendItem.rejected, (state, { error }) => ({
-            ...state,
-            itemSent: false,
-            itemSending: false,
-            itemSendingErr: true,
-            itemSendingErrMes: error.message
-        }));
         // @ reducer    addItem
         builder.addCase(updateItem.fulfilled, ({ itemActions }, { payload }) => {
             return {

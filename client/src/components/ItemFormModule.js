@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { sendItem, updateItem, setActionName } from '../redux/slices/currentListSlice';
+import { updateItem, setActionName } from '../redux/slices/currentListSlice';
+import { addItem } from '../redux/slices/apiSlice';
 import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
@@ -25,7 +26,7 @@ export const ItemFormModule = (props) => {
     const currentItemId = useSelector(({ ui }) => ui.currentItem._id);
     const addOrEditItem = () => {
         // if ADD
-        props.actionName === 'add' && dispatch(sendItem(props.listId));
+        props.actionName === 'add' && dispatch(addItem());
         // // if EDIT
         // props.actionName === 'edit' && console.log(currentItemId)
         // // props.actionName === 'edit' && dispatch(updateItem({

@@ -105,9 +105,10 @@ export const fetchCurrentList = createAsyncThunk(
 // @ POST       api/items
 export const addItem = createAsyncThunk(
     'api/items/addItem',
-    async (listId, { getState }) => {
-        // itemInputs
+    async (arg, { getState }) => {
+        // retrieving state
         const itemInputs = getState().api.items.data;
+        const listId = getState().api.lists.currentList.id;
 
         let response = await fetch('/api/items', {
             method: 'POST',
@@ -116,7 +117,7 @@ export const addItem = createAsyncThunk(
                 'x-auth-token': getCookies('jwt_token')
             },
             body: JSON.stringify({
-                listId,
+                listId: listId,
                 name: itemInputs.name,
                 desc: itemInputs.desc,
                 sum: itemInputs.sum
@@ -217,7 +218,22 @@ export const apiSlice = createSlice({
         }
     },
     reducers: {
-
+        // @       /api/items/typeItem
+        typeItem(state, { payload }) {
+            return {
+                ...state,
+                items: {
+                    ...state.items,
+                    data: {
+                        listId: '',
+                        itemId: '',
+                        name: payload.name,
+                        desc: payload.desc,
+                        sum: payload.sum
+                    }
+                }
+            }
+        }
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
@@ -439,4 +455,5 @@ export const apiSlice = createSlice({
     }
 });
 
+export const { typeItem } = apiSlice.actions;
 export default apiSlice.reducer;

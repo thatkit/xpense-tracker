@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem } from '../redux/slices/apiSlice';
-import { selectItem } from '../redux/slices/apiSlice';
+import { removeItem, selectItem, unselectItem } from '../redux/slices/apiSlice';
 import {
     ListGroup,
     ListGroupItem,
@@ -19,7 +18,7 @@ export const List = (props) => {
     // Bottom 'Edit' and 'Remove' menu
     const currentItemId = useSelector(({ api }) => api.items.data.itemId);
     const openMenu = (e, id) => dispatch(selectItem(id));
-    const closeMenu = () => { /*removeCurItem*/ };
+    const closeMenu = (e, id) => dispatch(unselectItem(id));
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
@@ -34,7 +33,7 @@ export const List = (props) => {
                         action
                         tag="button"
                         onMouseEnter={(e, id) => openMenu(e, item._id)}
-                        onMouseLeave={closeMenu}
+                        onMouseLeave={(e, id) => closeMenu(e, item._id)}
                     >
                         <Row>
                             <Col>

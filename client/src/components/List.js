@@ -16,7 +16,8 @@ export const List = (props) => {
     const dispatch = useDispatch();
     
     // Bottom 'Edit' and 'Remove' menu
-    const currentItemId = useSelector(({ api }) => api.items.data.itemId);
+    const curItemId = useSelector(({ api }) => api.items.data.itemId);
+    const prevItemId = useSelector(({ api }) => api.items.prevItemId);
     const openMenu = (e, id) => dispatch(selectItem(id));
     const closeMenu = (e, id) => dispatch(unselectItem(id));
 
@@ -45,7 +46,7 @@ export const List = (props) => {
                                 <ListGroupItemText>{item.date}</ListGroupItemText>                      
                             </Col>
                         </Row>
-                        {item._id === currentItemId && (
+                        {item._id === curItemId && (
                             <Row>
                                 <Col>
                                     <EditItemFormModule />

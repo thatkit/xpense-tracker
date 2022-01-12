@@ -6,6 +6,7 @@ export const uiSlice = createSlice({
         listsDropdownIsOpen: false,
         newListFormModuleIsOpen: false,
         newItemFormModuleIsOpen: false,
+        editItemFormModuleIsOpen: false,
         items: { prevItemId: '' }
     },
     reducers: {
@@ -13,12 +14,14 @@ export const uiSlice = createSlice({
         toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
         toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
         toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
+        toggleEditItemFormModule(state) { state.editItemFormModuleIsOpen = !state.editItemFormModuleIsOpen },
     }
 });
 
 export const {
     toggleListsDropdown,
     toggleNewListFormModule,
-    toggleNewItemFormModule
+    toggleNewItemFormModule,
+    toggleEditItemFormModule
 } = uiSlice.actions;
 export default uiSlice.reducer;

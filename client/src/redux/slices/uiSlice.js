@@ -6,32 +6,27 @@ export const uiSlice = createSlice({
         listsDropdownIsOpen: false,
         newListFormModuleIsOpen: false,
         newItemFormModuleIsOpen: false,
-        currentItem: { _id: '', prevId: ''/*obsolete*/, action: ''/*obsolete*/ }
+        items: { prevItemId: '' }
     },
     reducers: {
-        // reducers for isOpen reactstrap props
+        // @        reducers for isOpen reactstrap props
         toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
         toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
         toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
-        // reducers for toggling an item's 'edit' and 'remove' menu
-        setCurrentItem({ currentItem }, { payload }) { currentItem._id = payload },
-        removeCurrentItem({ currentItem }) {
-            currentItem.prevId = currentItem._id;
-            currentItem._id = ''
-        },
-        // reducer for ItemFormModule properties
-        setItemAction({ currentItem }, { payload }) {
-            currentItem.action = 'payload';
-        }
+        // @        /api/items/selectItem
+        // !!! in order to actually use EDIT menu
+        // we need to store prev item id
+        // for further reference
+        // pseudocode:
+        // when (hover) selectItem(curId)
+        // when (mouseLeave) setPrevId(curId becomes prevId)
+        // prevId is referenced when edit
     }
 });
 
 export const {
     toggleListsDropdown,
     toggleNewListFormModule,
-    toggleNewItemFormModule,
-    setCurrentItem,
-    removeCurrentItem,
-    setItemAction
+    toggleNewItemFormModule
 } = uiSlice.actions;
 export default uiSlice.reducer;

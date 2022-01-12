@@ -141,8 +141,8 @@ export const removeItem = createAsyncThunk(
     'api/lists/removeItem',
     async (arg, { getState }) => {
         // retrieving states
-        const listId = getState().lists.currentList.id;
-        const itemId = getState().items.data.itemId;
+        const listId = getState().api.lists.currentList.id;
+        const itemId = getState().api.items.data.itemId;
 
         let response = await fetch(`/api/items/${itemId}`, {
             method: 'DELETE',
@@ -262,7 +262,20 @@ export const apiSlice = createSlice({
                     }
                 }
             }
-        }
+        },
+        // @        /api/items/selectItem
+        selectItem(state, { payload }) {
+            return {
+                ...state,
+                items: {
+                    ...state.items,
+                    data: {
+                        ...state.items.data,
+                        itemId: payload
+                    }
+                }
+            }
+        },
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
@@ -490,8 +503,7 @@ export const apiSlice = createSlice({
                     isRemoved: true,
                     removing: false,
                     error: { isError: false, mes: '' }
-                },
-                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+                }
             }
         }));
         builder.addCase(removeItem.pending, (state) => ({
@@ -502,8 +514,7 @@ export const apiSlice = createSlice({
                     isRemoved: false,
                     removing: true,
                     error: { isError: false, mes: '' }
-                },
-                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+                }
             } 
         }));
         builder.addCase(removeItem.rejected, (state, { error }) => ({
@@ -514,12 +525,11 @@ export const apiSlice = createSlice({
                     isRemoved: false,
                     removing: false,
                     error: { isError: true, mes: error.message }
-                },
-                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+                }
             }
         }));
     }
 });
 
-export const { typeItem } = apiSlice.actions;
+export const { typeItem, selectItem } = apiSlice.actions;
 export default apiSlice.reducer;

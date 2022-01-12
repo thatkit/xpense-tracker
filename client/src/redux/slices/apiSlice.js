@@ -243,10 +243,13 @@ export const apiSlice = createSlice({
                 error: { isError: false, mes: '' },
             },
             // Item data container
-            data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+            data: { listId: '', itemId: '', name: '', desc: '', sum: 0 },
+            // Previously selected item id
+            prevItemId: ''
         }
     },
     reducers: {
+        // These 3 are sort of UI reducers but since they use item data I put them in state.api.items
         // @       /api/items/typeItem
         typeItem(state, { payload }) {
             return {
@@ -276,6 +279,17 @@ export const apiSlice = createSlice({
                 }
             }
         },
+        // @        /api/items/unselectItem
+        unselectItem(state, { payload }) {
+            return {
+                ...state,
+                items: {
+                    ...state.items,
+                    prevItemId: payload
+                }
+            }
+        },
+        // NEED TO ADD subscribe(listener) to store
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
@@ -531,5 +545,9 @@ export const apiSlice = createSlice({
     }
 });
 
-export const { typeItem, selectItem } = apiSlice.actions;
+export const {
+    typeItem,
+    selectItem,
+    unselectItem
+} = apiSlice.actions;
 export default apiSlice.reducer;

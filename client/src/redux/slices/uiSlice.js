@@ -6,6 +6,7 @@ export const uiSlice = createSlice({
         listsDropdownIsOpen: false,
         newListFormModuleIsOpen: false,
         newItemFormModuleIsOpen: false,
+        editItemFormModuleIsOpen: false,
         items: { prevItemId: '' }
     },
     reducers: {
@@ -13,20 +14,14 @@ export const uiSlice = createSlice({
         toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
         toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
         toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
-        // @        /api/items/selectItem
-        // !!! in order to actually use EDIT menu
-        // we need to store prev item id
-        // for further reference
-        // pseudocode:
-        // when (hover) selectItem(curId)
-        // when (mouseLeave) setPrevId(curId becomes prevId)
-        // prevId is referenced when edit
+        toggleEditItemFormModule(state) { state.editItemFormModuleIsOpen = !state.editItemFormModuleIsOpen },
     }
 });
 
 export const {
     toggleListsDropdown,
     toggleNewListFormModule,
-    toggleNewItemFormModule
+    toggleNewItemFormModule,
+    toggleEditItemFormModule
 } = uiSlice.actions;
 export default uiSlice.reducer;

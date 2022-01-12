@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { updateItem } from '../redux/slices/currentListSlice';
-import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
+import { toggleEditItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -15,13 +15,12 @@ export const EditItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
+    const isOpen = useSelector(state => state.ui.editItemFormModuleIsOpen);
     const toggler = () => {
-        dispatch(toggleNewItemFormModule());
+        dispatch(toggleEditItemFormModule());
     }
     
     // Edit (update) an item
-    const currentItemId = useSelector(({ api }) => api.items.data.id);
     const editItem = () => {
         dispatch(updateItem());
         toggler();

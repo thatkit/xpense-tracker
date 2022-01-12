@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem } from '../redux/slices/apiSlice';
-import { setCurrentItem, removeCurrentItem, setItemAction } from '../redux/slices/uiSlice';
+import { removeCurrentItem, setItemAction } from '../redux/slices/uiSlice';
+import { selectItem } from '../redux/slices/apiSlice';
 import {
     ListGroup,
     ListGroupItem,
@@ -16,8 +17,8 @@ export const List = (props) => {
     const dispatch = useDispatch();
     
     // Bottom 'Edit' and 'Remove' menu
-    const currentItem = useSelector(({ ui }) => ui.currentItem);
-    const openMenu = (e, id) => dispatch(setCurrentItem(id));
+    const currentItemId = useSelector(({ api }) => api.items.data.itemId);
+    const openMenu = (e, id) => dispatch(selectItem(id));
     const closeMenu = () => dispatch(removeCurrentItem());
     const setAction = () => dispatch(setItemAction());
 
@@ -46,8 +47,7 @@ export const List = (props) => {
                                 <ListGroupItemText>{item.date}</ListGroupItemText>                      
                             </Col>
                         </Row>
-                        {currentItem._id
-                            ? item._id === currentItem._id && (
+                        {item._id === currentItemId && (
                             <Row>
                                 <Col><ItemFormModule 
                                     listId={props.listId}
@@ -58,21 +58,7 @@ export const List = (props) => {
                                     onClick={remove}
                                 >Remove</Badge></Col>
                             </Row>
-                            )
-                            : item._id === currentItem.prevId && (
-                            <Row>
-                                <Col><ItemFormModule 
-                                    listId={props.listId}
-                                    actionName="edit"
-                                    onClick={setAction}
-                                /></Col>
-                                <Col><Badge
-                                    color="danger"
-                                    onClick={remove}
-                                >Remove</Badge></Col>
-                            </Row>
-                            )
-                        }
+                        )}
                     </ListGroupItem>
                 );
             })}</ListGroup>

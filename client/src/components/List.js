@@ -17,16 +17,15 @@ export const List = (props) => {
     
     // Bottom 'Edit' and 'Remove' menu
     const curItemId = useSelector(({ api }) => api.items.data.itemId);
-    const prevItemId = useSelector(({ api }) => api.items.prevItemId);
     const openMenu = (e, id) => dispatch(selectItem(id));
-    const closeMenu = (e, id) => dispatch(unselectItem(id));
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
 
     return (
         <>
-            <ListGroup>{props.items.map(item => {
+            <ListGroup onMouseLeave={() => dispatch(unselectItem())}
+            >{props.items.map(item => {
                 return (
                     <ListGroupItem 
                         key={item._id}
@@ -34,7 +33,6 @@ export const List = (props) => {
                         action
                         tag="button"
                         onMouseEnter={(e, id) => openMenu(e, item._id)}
-                        onMouseLeave={(e, id) => closeMenu(e, item._id)}
                     >
                         <Row>
                             <Col>

@@ -14,8 +14,8 @@ export const ListBoard = () => {
     const data = useParams();
 
     // Autoupdates when an item is edited or removed
-    const isNewItemAdded = useSelector(({ currentList }) => currentList.itemSent);
-    const isItemRemoved = useSelector(({ currentList }) => currentList.itemRemoved);
+    const isNewItemAdded = useSelector(({ api }) => api.items.addItem.isAdded);
+    const isItemRemoved = useSelector(({ api }) => api.items.removeItem.isRemoved);
     useEffect(() => {
         dispatch(fetchCurrentList({ listId: data.listId }));
     }, [dispatch, data, isNewItemAdded, isItemRemoved]);

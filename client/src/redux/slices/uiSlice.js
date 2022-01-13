@@ -6,15 +6,19 @@ export const uiSlice = createSlice({
         listsDropdownIsOpen: false,
         newListFormModuleIsOpen: false,
         newItemFormModuleIsOpen: false,
-        editItemFormModuleIsOpen: false,
-        items: { prevItemId: '' }
+        editItemFormModuleIsOpen: false
     },
     reducers: {
         // @        reducers for isOpen reactstrap props
         toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
         toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
         toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
-        toggleEditItemFormModule(state) { state.editItemFormModuleIsOpen = !state.editItemFormModuleIsOpen },
+        toggleEditItemFormModule(state) {
+            return {
+                ...state,
+                editItemFormModuleIsOpen: !state.editItemFormModuleIsOpen
+            }
+        },
     }
 });
 

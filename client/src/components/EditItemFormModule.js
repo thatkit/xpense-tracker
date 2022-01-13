@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updateItem } from '../redux/slices/currentListSlice';
+import { updateItem } from '../redux/slices/apiSlice';
 import { toggleEditItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,
@@ -42,7 +42,7 @@ export const EditItemFormModule = (props) => {
                 <ModalBody><ItemForm /></ModalBody>
                 <ModalFooter>
                     <Button
-                        color="success"
+                        color="warning"
                         onClick={editItem}
                     >Edit</Button>
                     {' '}

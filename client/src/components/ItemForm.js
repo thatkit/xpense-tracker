@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { typeItem } from '../redux/slices/apiSlice';
 import {
@@ -9,32 +8,11 @@ import {
 } from 'reactstrap';
 
 export const ItemForm = (props) => {
-    // Inner state for inputs
-    const [itemInput, setItemInput] = useState({
-        name: '',
-        desc: '',
-        sum: 0
-    });
-    
-    // onChange event handlers
-    const setName = ({ target }) => setItemInput({
-        ...itemInput,
-        name: target.value
-    });
-    const setDesc = ({ target }) => setItemInput({
-        ...itemInput,
-        desc: target.value
-    });
-    const setSum = ({ target }) => setItemInput({
-        ...itemInput,
-        sum: target.value
-    })
-
-    // Sending inner state to the Redux store
+    // Sending inputs to the Redux store
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(typeItem(itemInput));
-    }, [dispatch, itemInput]);
+    const handleOnChange = ({ target }, key) => {
+        dispatch(typeItem({ [key]: target.value }));
+    }
 
     return (
         <Form inline>
@@ -44,7 +22,7 @@ export const ItemForm = (props) => {
                     name='name'
                     placeholder='Name'
                     required
-                    onChange={setName}
+                    onChange={({ target }, key) => handleOnChange({ target }, 'name')}
                 />
                 <Label for="name">Name</Label>
             </FormGroup>
@@ -53,7 +31,7 @@ export const ItemForm = (props) => {
                     id='desc'
                     name='desc'
                     placeholder='Description'
-                    onChange={setDesc}
+                    onChange={({ target }, key) => handleOnChange({ target }, 'desc')}
                 />
                 <Label for="desc">Description</Label>
             </FormGroup>
@@ -63,7 +41,7 @@ export const ItemForm = (props) => {
                     name='sum'
                     placeholder='Sum'
                     required
-                    onChange={setSum}
+                    onChange={({ target }, key) => handleOnChange({ target }, 'sum')}
                 />
                 <Label for="sum">Sum</Label>
             </FormGroup>

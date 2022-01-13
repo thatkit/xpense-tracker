@@ -14,7 +14,12 @@ export const uiSlice = createSlice({
         toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
         toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
         toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
-        toggleEditItemFormModule(state) { state.editItemFormModuleIsOpen = !state.editItemFormModuleIsOpen },
+        toggleEditItemFormModule(state) {
+            return {
+                ...state,
+                editItemFormModuleIsOpen: !state.editItemFormModuleIsOpen
+            }
+        },
     }
 });
 

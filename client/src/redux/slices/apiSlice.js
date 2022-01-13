@@ -243,9 +243,7 @@ export const apiSlice = createSlice({
                 error: { isError: false, mes: '' },
             },
             // Item data container
-            data: { listId: '', itemId: '', name: '', desc: '', sum: 0 },
-            // Previously selected item id
-            prevItemId: ''
+            data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
         }
     },
     reducers: {
@@ -257,11 +255,8 @@ export const apiSlice = createSlice({
                 items: {
                     ...state.items,
                     data: {
-                        listId: '',
-                        itemId: '',
-                        name: payload.name,
-                        desc: payload.desc,
-                        sum: payload.sum
+                        ...state.items.data,
+                        [Object.keys(payload)[0]]: Object.values(payload)[0]
                     }
                 }
             }
@@ -285,7 +280,10 @@ export const apiSlice = createSlice({
                 ...state,
                 items: {
                     ...state.items,
-                    prevItemId: payload
+                    data: {
+                        ...state.items.data,
+                        itemId: ''
+                    }
                 }
             }
         },

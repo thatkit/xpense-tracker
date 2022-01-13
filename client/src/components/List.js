@@ -24,8 +24,9 @@ export const List = (props) => {
 
     return (
         <>
-            <ListGroup onMouseLeave={() => dispatch(unselectItem())}
-            >{props.items.map(item => {
+            {/* <ListGroup onMouseLeave={() => dispatch(unselectItem())}> # unselectItem() ui doesn't work properly*/}
+            <ListGroup>
+            {props.items.map(item => {
                 return (
                     <ListGroupItem 
                         key={item._id}

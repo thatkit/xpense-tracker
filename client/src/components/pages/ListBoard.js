@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentList } from '../../redux/slices/apiSlice';
-import {
-    Row,
-    Col
-} from 'reactstrap';
+import { fetchCurrentList } from '../../redux/actions/api/lists';
+import { Row, Col } from 'reactstrap';
 import { List } from '../List';
 import { Overview } from '../Overview';
 

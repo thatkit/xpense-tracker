@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updateItem } from '../redux/slices/apiSlice';
+import { updateItem } from '../redux/actions/api/items';
 import { toggleEditItemFormModule } from '../redux/slices/uiSlice';
 import {
     Modal,

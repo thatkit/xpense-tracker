@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem, selectItem, unselectItem } from '../redux/slices/apiSlice';
+import { removeItem } from '../redux/actions/api/items';
+import { selectItem, unselectItem } from '../redux/slices/apiSlice';
 import {
     ListGroup,
     ListGroupItem,

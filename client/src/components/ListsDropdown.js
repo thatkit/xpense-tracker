@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleListsDropdown } from '../redux/slices/uiSlice';
-import { fetchAllLists } from '../redux/slices/apiSlice';
+import { fetchAllLists } from '../redux/actions/api/lists';
 import { NewListFormModule } from './NewListFormModule';
 import {
     Dropdown,

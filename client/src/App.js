@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchUser } from './redux/slices/apiSlice';
+import { fetchUser } from './redux/actions/api/users';
 import { getCookies } from './helpers/cookies';
 import { HeaderNavbar } from './components/HeaderNavbar'
 import { MainView } from './components/MainView'

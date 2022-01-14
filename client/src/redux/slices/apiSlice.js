@@ -594,7 +594,6 @@ export const apiSlice = createSlice({
                     updating: true,
                     error: { isError: false, mes: '' }
                 },
-                data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
             }
         }));
         builder.addCase(updateItem.rejected, (state, { error }) => ({

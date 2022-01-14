@@ -38,6 +38,7 @@ router.post('/', auth, (req, res) => {
 // @description     Update an item
 // @access          Private
 router.put('/', auth, (req, res) => {
+    console.log(req.body)
     Item
         .findByIdAndUpdate(req.body.itemId, {
             name: req.body.name,

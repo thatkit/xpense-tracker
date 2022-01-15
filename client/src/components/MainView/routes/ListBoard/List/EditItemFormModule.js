@@ -1,49 +1,50 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from '../redux/actions/api/items';
-import { toggleNewItemFormModule } from '../redux/slices/uiSlice';
+import { updateItem } from '../../../../../redux/actions/api/items';
+import { toggleEditItemFormModule } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Button
+    Button,
+    Badge
 } from 'reactstrap';
-import { ItemForm } from './ItemForm';
+import { ItemForm } from '../../../../utility/ItemForm';
 
-export const AddItemFormModule = (props) => {
+export const EditItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
+    const isOpen = useSelector(state => state.ui.editItemFormModuleIsOpen);
     const toggler = () => {
-        dispatch(toggleNewItemFormModule());
+        dispatch(toggleEditItemFormModule());
     }
-
-    // Send (add) a new item
-    const addNewItem = () => {
-        dispatch(addItem());
+    
+    // Edit (update) an item
+    const editItem = () => {
+        dispatch(updateItem());
         toggler();
     }
 
     return (
         <>
-            <Button
-                color="success"
+            <Badge
+                color="warning"
                 onClick={toggler}
-            >Add new item</Button>
+            >Edit</Badge>
 
             <Modal
                 centered
                 isOpen={isOpen}
                 toggle={toggler}
             >
-                <ModalHeader>Add new item</ModalHeader>
+                <ModalHeader>Edit item</ModalHeader>
                 <ModalBody><ItemForm /></ModalBody>
                 <ModalFooter>
                     <Button
-                        color="success"
-                        onClick={addNewItem}
-                    >Add</Button>
+                        color="warning"
+                        onClick={editItem}
+                    >Edit</Button>
                     {' '}
                     <Button onClick={toggler}>
                         Cancel

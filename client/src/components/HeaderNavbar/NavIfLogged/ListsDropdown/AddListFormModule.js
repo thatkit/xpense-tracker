@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleListsDropdown, toggleNewListFormModule } from '../redux/slices/uiSlice';
+import { toggleListsDropdown, toggleNewListFormModule } from '../../../../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -13,7 +13,7 @@ import {
     Label
 } from 'reactstrap';
 
-export const NewListFormModule = (props) => {
+export const AddListFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Inner state for inputs

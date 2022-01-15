@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { typeItem } from '../redux/slices/apiSlice';
+import { typeItem } from '../../redux/slices/apiSlice';
 import {
     Form,
     FormGroup,

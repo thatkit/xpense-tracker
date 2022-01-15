@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentList } from '../../redux/actions/api/lists';
+import { fetchCurrentList } from '../../../../redux/actions/api/lists';
 import { Row, Col } from 'reactstrap';
-import { List } from '../List';
-import { Overview } from '../Overview';
+import { List } from './List/List';
+import { Overview } from './Overview';
 
 export const ListBoard = () => {
     const dispatch = useDispatch();

@@ -129,7 +129,7 @@ export const apiSlice = createSlice({
             }
         },
         // @        /api/items/unselectItem
-        unselectItem(state, { payload }) {
+        unselectItem(state) {
             return {
                 ...state,
                 items: {

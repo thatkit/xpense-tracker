@@ -1,6 +1,5 @@
 // React imports
-// import { curryGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     Container,
@@ -10,39 +9,35 @@ import {
     Label,
     Button
 } from 'reactstrap';
+import schema from '../../../helpers/passwordValidation';
 // Redux imports
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // import { fetchUserByCredentials } from '../../redux/slices/loginSlice';
 // import { addNewUserCredentials } from '../../redux/slices/loginSlice';
 
 export const Register = () => {
-    const [name, setName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [repPassword, setRepPassword] = useState(null);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repPassword, setRepPassword] = useState('');
 
-    const register = () => console.log('register'); // REDUX dispatch action
-    
-    // const user = useSelector(state => state.user);
-    // useEffect(() => {
-    //     dispatch(fetchUserByCredentials({ email, password }));
-    // }, [email, password]);
-
-    // const dispatch = useDispatch();
-
-    // // Login logic
-    // const login = () => {
-    //     user.isRegisteredUser 
-    //         ? console.log('Login successfull')
-    //         : console.log('Login failed: the user doesn\'t exist');
-    // }
-
-    // // Register logic
-    // const register = () => {
-    //     !user.isRegisteredUser 
-    //         ? console.log('Signed up')
-    //         : console.log('Couldn\'t sign up: the user already exists');
-    // }
+    const dispatch = useDispatch();
+    const register = () => {
+        // 1. check if name, email and password is not nullish
+        if (!password) {
+            console.log('no password');
+            return;
+        }
+        // 2. check if passwords match
+        if (password !== repPassword) {
+            console.log('ERROR: passwords do not match!');
+            return;
+        }
+        // 3. validate password
+        schema.validate(password)
+            ? console.log('registering user...')
+            : console.log('password is invalid');
+    }
     
     return (
         <Container style={{margin: '5rem auto'}}>

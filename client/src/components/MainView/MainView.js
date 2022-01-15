@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { ListBoard } from './pages/ListBoard';
+import { Login } from './routes/Login';
+import { Register } from './routes/Register';
+import { ListBoard } from './routes/ListBoard/ListBoard';
 
 export const MainView = (props) => {
   return (

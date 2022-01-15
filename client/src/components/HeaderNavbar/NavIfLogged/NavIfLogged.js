@@ -3,7 +3,7 @@ import {
     NavItem,
     Button
 } from 'reactstrap';
-import { ListsDropdown } from './ListsDropdown'
+import { ListsDropdown } from './ListsDropdown/ListsDropdown'
 
 export const NavIfLogged = () => {
     const user = useSelector(({ api }) => api.users.data);

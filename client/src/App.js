@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchUser } from './redux/slices/apiSlice';
+import { fetchUser } from './redux/actions/api/users';
 import { getCookies } from './helpers/cookies';
-import { HeaderNavbar } from './components/HeaderNavbar'
-import { MainView } from './components/MainView'
+import { HeaderNavbar } from './components/HeaderNavbar/HeaderNavbar'
+import { MainView } from './components/MainView/MainView'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {

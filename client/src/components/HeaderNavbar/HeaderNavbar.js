@@ -3,7 +3,7 @@ import {
     Navbar,
     Nav
 } from 'reactstrap';
-import { NavIfLogged } from './NavIfLogged';
+import { NavIfLogged } from './NavIfLogged/NavIfLogged';
 import { NavIfNOTLogged } from './NavIfNOTLogged';
 
 export const HeaderNavbar = () => {

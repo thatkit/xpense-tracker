@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleListsDropdown } from '../redux/slices/uiSlice';
-import { fetchAllLists } from '../redux/slices/apiSlice';
-import { NewListFormModule } from './NewListFormModule';
+import { toggleListsDropdown } from '../../../../redux/slices/uiSlice';
+import { fetchAllLists } from '../../../../redux/actions/api/lists';
+import { AddListFormModule } from './AddListFormModule';
 import {
     Dropdown,
     DropdownToggle,
@@ -46,7 +46,7 @@ export const ListsDropdown = () => {
                         </DropdownItem>
                     )
                 })}
-                <NewListFormModule />
+                <AddListFormModule />
             </DropdownMenu>
         </Dropdown>
     )

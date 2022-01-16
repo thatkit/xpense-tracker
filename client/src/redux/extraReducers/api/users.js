@@ -13,7 +13,7 @@ export const loginUserFulfilled = (state, { payload }) => {
                 loggingIn: false,
                 error: { isError: false, mes: '' }
             },
-            data: {
+            currentUser: {
                 id: payload.user._id,
                 name: payload.user.name,
                 email: payload.user.email,
@@ -32,7 +32,7 @@ export const loginUserPending = (state) => ({
             loggingIn: true,
             error: { isError: false, mes: '' }
         },
-        data: { id: '', name: '', email: '', lists: [] }
+        currentUser: { id: '', name: '', email: '', lists: [] }
     }
 })
 
@@ -45,7 +45,7 @@ export const loginUserRejected = (state, { error }) => ({
             loggingIn: false,
             error: { isError: true, mes: error.message }
         },
-        data: { id: '', name: '', email: '', lists: [] }
+        currentUser: { id: '', name: '', email: '', lists: [] }
     }
 })
 
@@ -67,7 +67,7 @@ export const fetchUserFulfilled = (state, { payload }) => ({
             fetching: false,
             error: { isError: false, mes: '' }
         },
-        data: {
+        currentUser: {
             id: payload._id,
             name: payload.name,
             email: payload.email,
@@ -85,7 +85,7 @@ export const fetchUserPending = (state) => ({
             fetching: true,
             error: { isError: false, mes: '' }
         },
-        data: { id: '', name: '', email: '', lists: [] }
+        currentUser: { id: '', name: '', email: '', lists: [] }
     }
 })
 
@@ -98,6 +98,6 @@ export const fetchUserRejected = (state, { error }) => ({
             fetching: false,
             error: { isError: true, mes: error.message }
         },
-        data: { id: '', name: '', email: '', lists: [] }
+        currentUser: { id: '', name: '', email: '', lists: [] }
     }
 })

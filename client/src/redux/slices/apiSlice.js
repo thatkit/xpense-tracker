@@ -42,8 +42,10 @@ export const apiSlice = createSlice({
                 fetching: false,
                 error: { isError: false, mes: '' }
             },
-            // User data container
-            data: { id: '', name: '', email: '', lists: [] }
+            // Current user data container
+            currentUser: { id: '', name: '', email: '', lists: [] },
+            // New user data container
+            newUser: { name: '', email: '', password: '', repPassword: '' }
         },
         // @    to /api/lists
         lists: {
@@ -101,6 +103,19 @@ export const apiSlice = createSlice({
         }
     },
     reducers: {
+        // for storing new user data
+        typeUser(state, { payload }) {
+            return {
+                ...state,
+                users: {
+                    ...state.users,
+                    newUser: {
+                        ...state.users.newUser,
+                        [Object.keys(payload)[0]]: Object.values(payload)[0]
+                    }
+                }
+            }
+        },
         // These 3 are sort of UI reducers but since they use item data I put them in state.api.items
         // @       /api/items/typeItem
         typeItem(state, { payload }) {
@@ -140,7 +155,7 @@ export const apiSlice = createSlice({
                     }
                 }
             }
-        },
+        }
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
@@ -184,6 +199,7 @@ export const apiSlice = createSlice({
 });
 
 export const {
+    typeUser,
     typeItem,
     selectItem,
     unselectItem

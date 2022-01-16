@@ -6,7 +6,7 @@ import {
 import { ListsDropdown } from './ListsDropdown/ListsDropdown'
 
 export const NavIfLogged = () => {
-    const user = useSelector(({ api }) => api.users.data);
+    const user = useSelector(({ api }) => api.users.currentUser);
     
     return (
         <>

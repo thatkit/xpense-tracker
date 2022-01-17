@@ -5,11 +5,11 @@ import {
     FormGroup,
     Input,
     Label,
+    FormFeedback,
     Button
 } from 'reactstrap';
-import schema from '../../../helpers/passwordValidation';
 // Redux imports
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { typeUser } from '../../../redux/slices/apiSlice';
 import {
     validateUserName,
@@ -33,6 +33,12 @@ export const Register = () => {
             validateUserRepPassword
         ].forEach(act => dispatch(act()));
     }
+
+    // selectors
+    const nameValidation = useSelector(({ validation }) => validation.register.name.error);
+    const emailValidation = useSelector(({ validation }) => validation.register.email.error);
+    const passwordValidation = useSelector(({ validation }) => validation.register.password.error);
+    const repPasswordValidation = useSelector(({ validation }) => validation.register.repPassword.error);
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -44,8 +50,10 @@ export const Register = () => {
                         placeholder="Name"
                         type="name"
                         onChange={({ target }, key) => handleOnChange({ target }, 'name')}
+                        invalid={nameValidation.isError}
                     />
                     <Label for="inputName">Name</Label>
+                    <FormFeedback>{nameValidation.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -54,8 +62,10 @@ export const Register = () => {
                         placeholder="Email"
                         type="email"
                         onChange={({ target }, key) => handleOnChange({ target }, 'email')}
+                        invalid={emailValidation.isError}
                     />
                     <Label for="inputEmail">Email</Label>
+                    <FormFeedback>{emailValidation.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <FormGroup floating>
@@ -65,8 +75,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'password')}
+                        invalid={passwordValidation.isError}
                     />
                     <Label for="inputPassword">Password</Label>
+                    <FormFeedback>{passwordValidation.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -75,8 +87,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'repPassword')}
+                        invalid={repPasswordValidation.isError}
                     />
                     <Label for="repeatPassword">Repeat password</Label>
+                    <FormFeedback>{repPasswordValidation.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <div style={{

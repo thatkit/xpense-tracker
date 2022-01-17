@@ -20,31 +20,18 @@ import {
 
 export const Register = () => {
     const dispatch = useDispatch();
-    // const register = () => {
-    //     // 1. check if name, email and password is not nullish
-    //     if (!password) {
-    //         console.log('no password');
-    //         return;
-    //     }
-    //     // 2. check if passwords match
-    //     if (password !== repPassword) {
-    //         console.log('ERROR: passwords do not match!');
-    //         return;
-    //     }
-    //     // 3. validate password
-    //     schema.validate(password)
-    //         ? console.log('registering user...')
-    //         : console.log('password is invalid');
-    // }
+
     const handleOnChange = ({ target }, key) => {
         dispatch(typeUser({ [key]: target.value }));
     }
 
     const test = () => {
-        dispatch(validateUserName());
-        dispatch(validateUserEmail());
-        dispatch(validateUserPassword());
-        dispatch(validateUserRepPassword());
+        [
+            validateUserName,
+            validateUserEmail,
+            validateUserPassword,
+            validateUserRepPassword
+        ].forEach(act => dispatch(act()));
     }
     
     return (

@@ -49,3 +49,25 @@ export const validateUserEmailRejected = (state, { error }) => ({
 });
 
 // @ validate password
+
+export const validateUserPasswordFulfilled = (state, { payload }) => ({
+    ...state,
+    register: {
+        ...state.register,
+        password: {
+            isValid: true,
+            error: { isError: false, mes: '' }
+        }
+    }
+});
+
+export const validateUserPasswordRejected = (state, { error }) => ({
+    ...state,
+    register: {
+        ...state.register,
+        password: {
+            isValid: false,
+            error: { isError: true, mes: error.message }
+        }
+    }
+});

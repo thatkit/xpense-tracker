@@ -13,7 +13,8 @@ import { useDispatch } from 'react-redux';
 import { typeUser } from '../../../redux/slices/apiSlice';
 import {
     validateUserName,
-    validateUserEmail
+    validateUserEmail,
+    validateUserPassword
 } from '../../../redux/actions/validation/user';
 
 export const Register = () => {
@@ -41,6 +42,7 @@ export const Register = () => {
     const test = () => {
         dispatch(validateUserName());
         dispatch(validateUserEmail());
+        dispatch(validateUserPassword());
     }
     
     return (

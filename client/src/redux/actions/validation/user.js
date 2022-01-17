@@ -29,3 +29,20 @@ export const validateUserEmail = createAsyncThunk(
 );
 
 // @ action     validateUserPassword
+
+export const validateUserPassword = createAsyncThunk(
+    'validation/user/password',
+    (arg, { getState }) => {
+        let userPassword = getState().api.users.newUser.password;  
+        
+        if (!userPassword) throw new Error('Please, fill in your password');
+        if (!validator.isStrongPassword(userPassword, {
+            minLowercase: 0,
+            minUppercase: 0,
+            minNumbers: 0,
+            minSymbols: 0
+        })) throw new Error('The password should contain at least 8 characters');
+
+        return true;      
+    }
+);

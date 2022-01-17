@@ -29,3 +29,35 @@ export const validateUserEmail = createAsyncThunk(
 );
 
 // @ action     validateUserPassword
+
+export const validateUserPassword = createAsyncThunk(
+    'validation/user/password',
+    (arg, { getState }) => {
+        let userPassword = getState().api.users.newUser.password;  
+        
+        if (!userPassword) throw new Error('Please, fill in your password');
+        if (!validator.isStrongPassword(userPassword, {
+            minLowercase: 0,
+            minUppercase: 0,
+            minNumbers: 0,
+            minSymbols: 0
+        })) throw new Error('The password should contain at least 8 characters');
+
+        return true;      
+    }
+);
+
+// @ action     validateUserRepPassword
+
+export const validateUserRepPassword = createAsyncThunk(
+    'validation/user/repPassword',
+    (arg, { getState }) => {
+        let userPassword = getState().api.users.newUser.password;  
+        let userRepPassword = getState().api.users.newUser.repPassword;  
+        
+        if (!userRepPassword) throw new Error('Please, repeat your password');
+        if (userPassword !== userRepPassword) throw new Error('The passwords do not match');
+
+        return true;      
+    }
+);

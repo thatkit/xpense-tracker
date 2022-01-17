@@ -46,3 +46,18 @@ export const validateUserPassword = createAsyncThunk(
         return true;      
     }
 );
+
+// @ action     validateUserRepPassword
+
+export const validateUserRepPassword = createAsyncThunk(
+    'validation/user/repPassword',
+    (arg, { getState }) => {
+        let userPassword = getState().api.users.newUser.password;  
+        let userRepPassword = getState().api.users.newUser.repPassword;  
+        
+        if (!userRepPassword) throw new Error('Please, repeat your password');
+        if (userPassword !== userRepPassword) throw new Error('The passwords do not match');
+
+        return true;      
+    }
+);

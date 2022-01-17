@@ -2,7 +2,7 @@
 
 // @ validate name
 
-export const validateUserNameFulfilled = (state, { payload }) => ({
+export const validateUserNameFulfilled = (state) => ({
     ...state,
     register: {
         ...state.register,
@@ -26,7 +26,7 @@ export const validateUserNameRejected = (state, { error }) => ({
 
 // @ validate email
 
-export const validateUserEmailFulfilled = (state, { payload }) => ({
+export const validateUserEmailFulfilled = (state) => ({
     ...state,
     register: {
         ...state.register,
@@ -50,7 +50,7 @@ export const validateUserEmailRejected = (state, { error }) => ({
 
 // @ validate password
 
-export const validateUserPasswordFulfilled = (state, { payload }) => ({
+export const validateUserPasswordFulfilled = (state) => ({
     ...state,
     register: {
         ...state.register,
@@ -67,6 +67,30 @@ export const validateUserPasswordRejected = (state, { error }) => ({
         ...state.register,
         password: {
             isValid: false,
+            error: { isError: true, mes: error.message }
+        }
+    }
+});
+
+// @ validate repPassword
+
+export const validateUserRepPasswordFulfilled = (state) => ({
+    ...state,
+    register: {
+        ...state.register,
+        repPassword: {
+            isValid: true,
+            error: { isError: false, mes: '' }
+        }
+    }
+});
+
+export const validateUserRepPasswordRejected = (state, { error }) => ({
+    ...state,
+    register: {
+        ...state.register,
+        repPassword: {
+            isMatched: false,
             error: { isError: true, mes: error.message }
         }
     }

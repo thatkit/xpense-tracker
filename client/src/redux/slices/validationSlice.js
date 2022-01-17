@@ -3,13 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
     validateUserName,
     validateUserEmail,
-    validateUserPassword
+    validateUserPassword,
+    validateUserRepPassword
 } from '../actions/validation/user';
 // EXTRA REDUCERS
 import {
     validateUserNameFulfilled, validateUserNameRejected,
     validateUserEmailFulfilled, validateUserEmailRejected,
-    validateUserPasswordFulfilled, validateUserPasswordRejected
+    validateUserPasswordFulfilled, validateUserPasswordRejected,
+    validateUserRepPasswordFulfilled, validateUserRepPasswordRejected
 } from '../extraReducers/validation/user'
 
 export const validationSlice = createSlice({
@@ -28,7 +30,10 @@ export const validationSlice = createSlice({
                 isValid: false,
                 error: { isError: false, mes: ''}
             },
-            repPassword: { isMatched: false }
+            repPassword: {
+                isMatched: false,
+                error: { isError: false, mes: ''}
+            }
         }
     },
     reducers: {},
@@ -43,6 +48,9 @@ export const validationSlice = createSlice({
         // @ user/password
         builder.addCase(validateUserPassword.fulfilled, validateUserPasswordFulfilled);
         builder.addCase(validateUserPassword.rejected, validateUserPasswordRejected);
+        // @ user/repPassword
+        builder.addCase(validateUserRepPassword.fulfilled, validateUserRepPasswordFulfilled);
+        builder.addCase(validateUserRepPassword.rejected, validateUserRepPasswordRejected);
     }
 });
 

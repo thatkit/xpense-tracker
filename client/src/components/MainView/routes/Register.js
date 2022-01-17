@@ -14,7 +14,8 @@ import { typeUser } from '../../../redux/slices/apiSlice';
 import {
     validateUserName,
     validateUserEmail,
-    validateUserPassword
+    validateUserPassword,
+    validateUserRepPassword
 } from '../../../redux/actions/validation/user';
 
 export const Register = () => {
@@ -43,6 +44,7 @@ export const Register = () => {
         dispatch(validateUserName());
         dispatch(validateUserEmail());
         dispatch(validateUserPassword());
+        dispatch(validateUserRepPassword());
     }
     
     return (

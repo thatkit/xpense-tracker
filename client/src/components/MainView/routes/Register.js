@@ -25,7 +25,8 @@ export const Register = () => {
         dispatch(typeUser({ [key]: target.value }));
     }
 
-    const test = () => {
+    // validate
+    const validate = () => {
         [
             validateUserName,
             validateUserEmail,
@@ -53,7 +54,7 @@ export const Register = () => {
                         invalid={nameValidation.isError}
                     />
                     <Label for="inputName">Name</Label>
-                    <FormFeedback>{nameValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{nameValidation.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -65,7 +66,7 @@ export const Register = () => {
                         invalid={emailValidation.isError}
                     />
                     <Label for="inputEmail">Email</Label>
-                    <FormFeedback>{emailValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{emailValidation.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <FormGroup floating>
@@ -78,7 +79,7 @@ export const Register = () => {
                         invalid={passwordValidation.isError}
                     />
                     <Label for="inputPassword">Password</Label>
-                    <FormFeedback>{passwordValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{passwordValidation.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -90,7 +91,7 @@ export const Register = () => {
                         invalid={repPasswordValidation.isError}
                     />
                     <Label for="repeatPassword">Repeat password</Label>
-                    <FormFeedback>{repPasswordValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{repPasswordValidation.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <div style={{
@@ -100,7 +101,7 @@ export const Register = () => {
                 }}>
                     <Button 
                         style={{width: '6rem'}}
-                        onClick={test}
+                        onClick={validate}
                     >Register</Button>
                     <Link
                         to="../login"

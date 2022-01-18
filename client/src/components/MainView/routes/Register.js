@@ -11,6 +11,7 @@ import {
 // Redux imports
 import { useDispatch, useSelector } from 'react-redux';
 import { typeUser } from '../../../redux/slices/apiSlice';
+import { registerUser } from '../../../redux/actions/api/users';
 import {
     validateUserName,
     validateUserEmail,
@@ -25,14 +26,24 @@ export const Register = () => {
         dispatch(typeUser({ [key]: target.value }));
     }
 
-    // validate
-    const validate = () => {
+    // validate and (if ok) register
+    const validateAndRegister = () => {
+        // validate
         [
             validateUserName,
             validateUserEmail,
             validateUserPassword,
             validateUserRepPassword
         ].forEach(act => dispatch(act()));
+        // register
+        if ([
+            nameValidation,
+            emailValidation,
+            passwordValidation,
+            repPasswordValidation
+        ].every(selector => selector.isError === false)) {
+            dispatch(registerUser());
+        }
     }
 
     // selectors
@@ -101,7 +112,7 @@ export const Register = () => {
                 }}>
                     <Button 
                         style={{width: '6rem'}}
-                        onClick={validate}
+                        onClick={validateAndRegister}
                     >Register</Button>
                     <Link
                         to="../login"

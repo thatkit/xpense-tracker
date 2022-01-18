@@ -31,9 +31,9 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
     'api/users/registerUser',
     async (arg, { getState }) => {
-        const [name, email, password] = getState.api.users.newUser;
+        const { name, email, password } = getState().api.users.newUser;
 
-        let response = await fetch('/api/users/login', {
+        let response = await fetch('/api/users/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })

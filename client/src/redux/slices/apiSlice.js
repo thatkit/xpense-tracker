@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 // ACTIONS
-import { loginUser, fetchUser } from "../actions/api/users"; // for users
+import { loginUser, registerUser, fetchUser } from "../actions/api/users"; // for users
 import { fetchAllLists, fetchCurrentList } from "../actions/api/lists"; // for lists
 import { addItem, removeItem, updateItem } from "../actions/api/items"; // for items
 // EXTRA REDUCERS
 import {
     loginUserFulfilled, loginUserPending, loginUserRejected,
+    registerUserFulfilled, registerUserPending, registerUserRejected,
     fetchUserFulfilled, fetchUserPending, fetchUserRejected
 } from "../extraReducers/api/users"; // for users
 import {
@@ -164,7 +165,9 @@ export const apiSlice = createSlice({
         builder.addCase(loginUser.pending, loginUserPending);
         builder.addCase(loginUser.rejected, loginUserRejected);
         //      /register
-
+        builder.addCase(registerUser.fulfilled, registerUserFulfilled);
+        builder.addCase(registerUser.pending, registerUserPending);
+        builder.addCase(registerUser.rejected, registerUserRejected);
         //      /fetchUser
         builder.addCase(fetchUser.fulfilled, fetchUserFulfilled);
         builder.addCase(fetchUser.pending, fetchUserPending);

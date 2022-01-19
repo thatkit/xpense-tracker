@@ -11,7 +11,7 @@ const catchCallback = require('../../helpers/errorHandling');
 // @access          Public
 router.post('/register', (req, res) => {
     const { name, email, password } = req.body;
-    console.log(name, email, password)
+
     if (!name || !email || !password) {
         return res
             .status(400)

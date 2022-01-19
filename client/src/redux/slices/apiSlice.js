@@ -80,18 +80,7 @@ export const apiSlice = createSlice({
             }
         },
         logout(state) {
-            return initialState; // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
-            // OBJECTIFY
+            return initialState;
         }
     },
     extraReducers: (builder) => {

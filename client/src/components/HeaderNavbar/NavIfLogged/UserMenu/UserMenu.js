@@ -8,7 +8,7 @@ export const UserMenu = () => {
     const user = useSelector(({ api }) => api.users.currentUser);
     
     return (
-        <Button onClick={() => dispatch()}>
+        <Button onClick={() => dispatch(logout())}>
             {user.name || 'User name'}
         </Button>
     )

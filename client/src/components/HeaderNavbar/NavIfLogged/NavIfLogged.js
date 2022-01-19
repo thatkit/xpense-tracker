@@ -1,22 +1,15 @@
-import { useSelector } from 'react-redux';
-import {
-    NavItem,
-    Button
-} from 'reactstrap';
-import { ListsDropdown } from './ListsDropdown/ListsDropdown'
+import { NavItem } from 'reactstrap';
+import { ListsDropdown } from './ListsDropdown/ListsDropdown';
+import { UserMenu } from './UserMenu/UserMenu';
 
 export const NavIfLogged = () => {
-    const user = useSelector(({ api }) => api.users.currentUser);
-    
     return (
         <>
             <NavItem>
                 <ListsDropdown />
             </NavItem>
             <NavItem>
-                <Button>
-                    {user.name || 'User name'}
-                </Button>
+                <UserMenu />
             </NavItem>
         </>
     )

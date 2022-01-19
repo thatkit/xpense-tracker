@@ -52,6 +52,7 @@ export const loginUserRejected = (state, { error }) => ({
 // @ register
 
 export const registerUserFulfilled = (state, { payload }) => {
+    document.cookie = `jwt_token=${payload.token}`;
     return {
         ...state,
         users: {

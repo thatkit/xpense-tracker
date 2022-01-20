@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { typeList } from '../../../../redux/slices/apiSlice';
+import { addList } from '../../../../redux/actions/api/lists';
 import { toggleListsDropdown, toggleNewListFormModule } from '../../../../redux/slices/uiSlice';
 import {
     Modal,
@@ -14,11 +15,11 @@ import {
 } from 'reactstrap';
 
 export const AddListFormModule = (props) => {
+    // Sending inputs to the Redux store
     const dispatch = useDispatch();
-
-    // Inner state for inputs
-    const [listNameInput, setListNameInput] = useState('');
-    const [listBudgetInput, setListBudgetInput] = useState(0);
+    const handleOnChange = ({ target }, key) => {
+        dispatch(typeList({ [key]: target.value }));
+    }
 
     // Toggle behaviour
     const isOpen = useSelector(state => state.ui.newListFormModuleIsOpen);
@@ -27,12 +28,10 @@ export const AddListFormModule = (props) => {
         dispatch(toggleNewListFormModule());
     }
 
-    // Mimic send POST request
-    const post = () => {
-        console.table(listNameInput, listBudgetInput);
-        // removing values from inputs
-        setListNameInput('');
-        setListBudgetInput(0);
+    // Send (add) a new list
+    const addNewList = () => {
+        dispatch(addList());
+        toggler();
     }
 
     return (
@@ -56,7 +55,7 @@ export const AddListFormModule = (props) => {
                                 name='listName'
                                 placeholder='List name'
                                 required
-                                onChange={({ target }) => setListNameInput(target.value)}
+                                onChange={({ target }, key) => handleOnChange({ target }, 'name')}
                             />
                             <Label for="listName">List name</Label>
                         </FormGroup>
@@ -66,7 +65,7 @@ export const AddListFormModule = (props) => {
                                 name='budget'
                                 placeholder='List budget'
                                 required
-                                onChange={({ target }) => setListBudgetInput(target.value)}
+                                onChange={({ target }, key) => handleOnChange({ target }, 'totalBudget')}
                             />
                             <Label for="budget">List budget</Label>
                         </FormGroup>
@@ -75,7 +74,7 @@ export const AddListFormModule = (props) => {
                 <ModalFooter>
                     <Button
                         color="success"
-                        onClick={post}
+                        onClick={addNewList}
                     >Add</Button>
                     {' '}
                     <Button onClick={toggler}>

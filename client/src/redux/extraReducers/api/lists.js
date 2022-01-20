@@ -86,3 +86,80 @@ export const fetchCurrentListRejected = (state, { error }) => ({
         currentList: { id: '', name: '', totalBudget: 0, items: []} 
     }
 })
+
+// @ addList
+
+export const addListFulfilled = (state, { payload }) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        addList: {
+            isAdded: true,
+            adding: false,
+            error: { isError: false, mes: '' }
+        },
+        newList: { name: '', totalBudget: 0 }
+    }
+})
+
+export const addListPending = (state) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        addList: {
+            isAdded: false,
+            adding: true,
+            error: { isError: false, mes: '' }
+        }
+    }
+})
+
+export const addListRejected = (state, { error }) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        addList: {
+            isAdded: false,
+            adding: false,
+            error: { isError: true, mes: error.message }
+        }
+    }
+})
+
+// @ removeList
+
+export const removeListFulfilled = (state) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: true,
+            removing: false,
+            error: { isError: false, mes: '' }
+        }
+    }
+})
+
+export const removeListPending = (state) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: false,
+            removing: true,
+            error: { isError: false, mes: '' }
+        }
+    } 
+})
+
+export const removeListRejected = (state, { error }) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: false,
+            removing: false,
+            error: { isError: true, mes: error.message }
+        }
+    }
+})

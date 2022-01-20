@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ListSchema = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     name: {
         type: String,
         required: true,

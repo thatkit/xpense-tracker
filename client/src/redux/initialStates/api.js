@@ -53,7 +53,9 @@ export const initialState = {
         // All lists data container
         allLists: [],
         // Current list data container
-        currentList: { id: '', name: '', totalBudget: 0, items: []} 
+        currentList: { id: '', name: '', totalBudget: 0, items: []},
+        // New list data container
+        newList: { name: '', totalBudget: 0 }
     },
     // @    to /api/items
     items: {

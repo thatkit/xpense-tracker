@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { initialState } from '../initialStates/api';
 // ACTIONS
 import { loginUser, registerUser, fetchUser } from "../actions/api/users"; // for users
-import { fetchAllLists, fetchCurrentList } from "../actions/api/lists"; // for lists
+import { fetchAllLists, fetchCurrentList, addList } from "../actions/api/lists"; // for lists
 import { addItem, removeItem, updateItem } from "../actions/api/items"; // for items
 // EXTRA REDUCERS
 import {
@@ -13,7 +13,8 @@ import {
 } from "../extraReducers/api/users"; // for users
 import {
     fetchAllListsFulfilled, fetchAllListsPending, fetchAllListsRejected,
-    fetchCurrentListFulfilled, fetchCurrentListPending, fetchCurrentListRejected
+    fetchCurrentListFulfilled, fetchCurrentListPending, fetchCurrentListRejected,
+    addListFulfilled, addListPending, addListRejected,
 } from "../extraReducers/api/lists"; // for lists
 import {
     addItemFulfilled, addItemPending, addItemRejected,
@@ -34,6 +35,23 @@ export const apiSlice = createSlice({
                     ...state.users,
                     newUser: {
                         ...state.users.newUser,
+                        [Object.keys(payload)[0]]: Object.values(payload)[0]
+                    }
+                }
+            }
+        },
+        // for resetting (logging out) initialState
+        logout() {
+            return initialState;
+        },
+        // for typing new list
+        typeList(state, { payload }) {
+            return {
+                ...state,
+                lists: {
+                    ...state.lists,
+                    newList: {
+                        ...state.lists.newList,
                         [Object.keys(payload)[0]]: Object.values(payload)[0]
                     }
                 }
@@ -79,9 +97,6 @@ export const apiSlice = createSlice({
                 }
             }
         },
-        logout(state) {
-            return initialState;
-        }
     },
     extraReducers: (builder) => {
         // @    /api/users reducers
@@ -107,6 +122,10 @@ export const apiSlice = createSlice({
         builder.addCase(fetchCurrentList.fulfilled, fetchCurrentListFulfilled);
         builder.addCase(fetchCurrentList.pending, fetchCurrentListPending);
         builder.addCase(fetchCurrentList.rejected, fetchCurrentListRejected);
+        //      /addList
+        builder.addCase(addList.fulfilled, addListFulfilled);
+        builder.addCase(addList.pending, addListPending);
+        builder.addCase(addList.rejected, addListRejected);
 
         // @    /api/items reducers
         //      /addItem
@@ -128,6 +147,7 @@ export const apiSlice = createSlice({
 
 export const {
     typeUser,
+    typeList,
     typeItem,
     selectItem,
     unselectItem,

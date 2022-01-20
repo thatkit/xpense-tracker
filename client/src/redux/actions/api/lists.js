@@ -49,3 +49,34 @@ export const fetchCurrentList = createAsyncThunk(
         return response;      
     }
 );
+
+// @ action     addList
+// @ desc       Add new user's list with JWT
+// @ POST       api/lists
+export const addList = createAsyncThunk(
+    'api/lists/addList',
+    async (arg, { getState }) => {
+        // retrieving newList props from store
+        const { name, totalBudget } = getState().api.lists.newList;
+
+        let response = await fetch('/api/lists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            },
+            body: JSON.stringify({
+                name,
+                totalBudget
+            })
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);

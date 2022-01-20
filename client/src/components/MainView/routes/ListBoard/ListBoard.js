@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCurrentList } from '../../../../redux/actions/api/lists';
-import { Row, Col } from 'reactstrap';
+import { fetchCurrentList, removeList } from '../../../../redux/actions/api/lists';
+import { Row, Col, Button } from 'reactstrap';
 import { List } from './List/List';
 import { Overview } from './Overview';
 
@@ -19,6 +19,9 @@ export const ListBoard = () => {
 
     // Current list data
     const list = useSelector(({ api }) => api.lists.currentList);
+
+    // Remove list
+    const removeAList = () =>  dispatch(removeList());
   
     return (
         <>
@@ -36,6 +39,10 @@ export const ListBoard = () => {
                         totalCosts={list.totalCosts}
                         remainder={list.remainder}
                     />
+                    <Button
+                        color="danger"
+                        onClick={removeAList}
+                    >Delete list</Button>
                 </Col>
             </Row>
         </>

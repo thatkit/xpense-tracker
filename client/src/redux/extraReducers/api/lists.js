@@ -125,3 +125,41 @@ export const addListRejected = (state, { error }) => ({
         }
     }
 })
+
+// @ removeList
+
+export const removeListFulfilled = (state) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: true,
+            removing: false,
+            error: { isError: false, mes: '' }
+        }
+    }
+})
+
+export const removeListPending = (state) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: false,
+            removing: true,
+            error: { isError: false, mes: '' }
+        }
+    } 
+})
+
+export const removeListRejected = (state, { error }) => ({
+    ...state,
+    lists: {
+        ...state.lists,
+        removeList: {
+            isRemoved: false,
+            removing: false,
+            error: { isError: true, mes: error.message }
+        }
+    }
+})

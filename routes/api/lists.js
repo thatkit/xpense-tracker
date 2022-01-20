@@ -59,6 +59,7 @@ router.post('/', auth, (req, res) => {
 // @description     Delete a list
 // @access          Private
 router.delete('/:listId', auth, (req, res) => {
+    console.log('deleting...');
     // Removing the list from List model
     List
         .findById(req.params.listId)

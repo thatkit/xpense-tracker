@@ -80,3 +80,30 @@ export const addList = createAsyncThunk(
         return response;      
     }
 );
+
+// @ action     removeList
+// @ desc       Remove an item from user's current list with JWT
+// @ DELETE     api/lists/:listId
+export const removeList = createAsyncThunk(
+    'api/lists/removeList',
+    async (arg, { getState }) => {
+        // retrieving states
+        const listId = getState().api.lists.currentList.id;
+
+        let response = await fetch(`/api/lists/${listId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': getCookies('jwt_token')
+            }
+        });
+
+        if (response.status !== 200) {
+            response = await response.json(); 
+            throw new Error(response.message)
+        }
+        
+        response = await response.json();
+        return response;      
+    }
+);

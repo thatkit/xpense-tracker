@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { initialState } from '../initialStates/api';
 // ACTIONS
 import { loginUser, registerUser, fetchUser } from "../actions/api/users"; // for users
-import { fetchAllLists, fetchCurrentList, addList } from "../actions/api/lists"; // for lists
+import { fetchAllLists, fetchCurrentList, addList, removeList } from "../actions/api/lists"; // for lists
 import { addItem, removeItem, updateItem } from "../actions/api/items"; // for items
 // EXTRA REDUCERS
 import {
@@ -15,6 +15,7 @@ import {
     fetchAllListsFulfilled, fetchAllListsPending, fetchAllListsRejected,
     fetchCurrentListFulfilled, fetchCurrentListPending, fetchCurrentListRejected,
     addListFulfilled, addListPending, addListRejected,
+    removeListFulfilled, removeListPending, removeListRejected
 } from "../extraReducers/api/lists"; // for lists
 import {
     addItemFulfilled, addItemPending, addItemRejected,
@@ -126,6 +127,10 @@ export const apiSlice = createSlice({
         builder.addCase(addList.fulfilled, addListFulfilled);
         builder.addCase(addList.pending, addListPending);
         builder.addCase(addList.rejected, addListRejected);
+        //      /removeList
+        builder.addCase(removeList.fulfilled, removeListFulfilled);
+        builder.addCase(removeList.pending, removeListPending);
+        builder.addCase(removeList.rejected, removeListRejected);
 
         // @    /api/items reducers
         //      /addItem

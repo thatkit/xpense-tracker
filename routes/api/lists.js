@@ -11,7 +11,7 @@ const catchCallback = require('../../helpers/errorHandling');
 // @access          Private
 router.get('/', auth, (req, res) => {
     List
-        .find()
+        .find({ userId: req.user.id })
         .then(lists => res.json(lists))
         .catch(catchCallback);
 });
@@ -26,7 +26,6 @@ router.get('/:listId', auth, (req, res) => {
         .then(list => res.json(list))
         .catch(catchCallback);
 });
-
 
 // @route           POST api/lists
 // @description     Create a list
@@ -76,14 +75,14 @@ router.delete('/:listId', auth, (req, res) => {
         .catch(catchCallback);
 });
 
-// @route           GET api/lists
-// @description     GET all lists
-// @access          ADMIN
-router.get('/all', (req, res) => {
-    List
-        .find()
-        .then(lists => res.json(lists))
-        .catch(catchCallback);
-});
+// // @route           GET api/lists
+// // @description     GET all lists
+// // @access          ADMIN
+// router.get('/all/all', (req, res) => {
+//     List
+//         .find()
+//         .then(lists => res.json(lists))
+//         .catch(catchCallback);
+// });
 
 module.exports = router;

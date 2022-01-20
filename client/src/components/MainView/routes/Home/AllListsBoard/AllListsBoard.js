@@ -1,19 +1,49 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'reactstrap';
-// import { AllListsBoard } from ;
+import { useSelector } from 'react-redux';
+import {
+    CardGroup,
+    Card,
+    CardTitle,
+    CardBody,
+    CardSubtitle
+} from 'reactstrap';
 
 export const AllListsBoard = () => {
-    // const dispatch = useDispatch(); # is really needed here?
-  
     const allLists = useSelector(({ api }) => api.users.currentUser.lists);
 
     return (
-        <>
+        <CardGroup>
             {allLists.map(list => {
                 return (
-                    <li>hi</li>
+                    <Card
+                        color="light"
+                    >
+                        <CardBody>
+                            <CardTitle tag="h5">
+                                {list.name}
+                            </CardTitle>
+                            <CardSubtitle
+                                className="mb-2 text-muted"
+                                tag="h6"
+                            >
+                                {list.totalBudget}
+                            </CardSubtitle>
+                            <CardSubtitle
+                                className="mb-2 text-muted"
+                                tag="h6"
+                            >
+                                {list.totalCosts}
+                            </CardSubtitle>
+                            <CardSubtitle
+                                className="mb-2 text-muted"
+                                tag="h6"
+                            >
+                                {list.remainder}
+                            </CardSubtitle>
+                            {/* # progress bar */}
+                        </CardBody>
+                    </Card>
                 )
             })}
-        </>
+        </CardGroup>
     )
 }

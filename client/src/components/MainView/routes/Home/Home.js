@@ -1,21 +1,18 @@
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
+import { AllListsBoard } from './AllListsBoard/AllListsBoard';
 
 export const Home = () => {
-    const dispatch = useDispatch();
-    const data = useParams();
+    // const dispatch = useDispatch(); # is really needed here?
   
+    const user = useSelector(({ api }) => api.users.currentUser);
+
     return (
         <>
-            <Row>
-                <Col xs="12" sm="8">
-                    {/* Welcome {user} */}
-                </Col>
-                <Col xs="12" sm="4">
-                    {/* AllListsBoard */}
-                </Col>
-            </Row>
+            <Container>
+                <h1 className="display-1">Welcome {user.name}</h1>
+                <AllListsBoard />
+            </Container>
         </>
     )
 }

@@ -37,6 +37,7 @@ router.post('/', auth, (req, res) => {
     // Saving the list in List model
     const newList = new List({
         _id: listId,
+        userId: req.user.id,
         name: req.body.name,
         totalBudget: req.body.totalBudget,
     });

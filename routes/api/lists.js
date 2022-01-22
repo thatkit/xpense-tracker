@@ -77,14 +77,14 @@ router.delete('/:listId', auth, (req, res) => {
         .catch(catchCallback);
 });
 
-// // @route           GET api/lists
-// // @description     GET all lists
-// // @access          ADMIN
-// router.get('/all/all', (req, res) => {
-//     List
-//         .find()
-//         .then(lists => res.json(lists))
-//         .catch(catchCallback);
-// });
+// @route           GET api/lists
+// @description     GET all lists
+// @access          ADMIN
+router.get('/all/all', (req, res) => {
+    List
+        .find()
+        .then(lists => res.json(lists))
+        .catch(catchCallback);
+});
 
 module.exports = router;

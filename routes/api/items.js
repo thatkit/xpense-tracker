@@ -23,20 +23,23 @@ router.post('/', auth, (req, res, next) => {
         desc: req.body.desc,
         sum: req.body.sum    
     });
+
     newItem
         .save()
-        .then(item => res.json(item))
-        .catch(catchCallback);
+        .then(item => {
+            res.json(item);
 
-    // Saving the item ID in List model
-    List
-        .findOneAndUpdate(
-            { listId: req.body.listId },
-            { $push: { items: itemId } }
-        )
-        .catch(catchCallback);
+            // Saving the item ID in List model
+            List
+                .findOneAndUpdate(
+                    { listId: req.body.listId },
+                    { $push: { items: itemId } }
+                )
+                .then(list => null);
 
-    next();
+            next();
+        })
+        .catch(catchCallback);
 });
 
 // @route           PUT api/items

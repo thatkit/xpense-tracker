@@ -75,33 +75,32 @@ router.put('/', auth, (req, res, next) => {
 // @description     Delete an item
 // @access          Private
 router.delete('/:itemId', auth, (req, res, next) => {
-    // passing negative sumChange to req
-    req.sumChange = Item.findById(req.params.itemId).sum;
-    
     // Removing the item from Item model
     Item
-        .findById(req.params.itemId)
-        .then(item => item
-            .remove()
-            .then(() => res.json({ id: req.params.itemId })))
-        .catch(catchCallback);
+        .findByIdAndRemove(req.params.itemId)
+        .then(item => {
+            // passing negative sumChange to req
+            req.sumChange = -item.sum;
 
-    // Removing the item ID from List model
-    List
-        .findOneAndUpdate(
-            { listId: req.body.listId },
-            { $pull: { items: req.params.itemId } }
-        )
-        .catch(catchCallback);
+            res.json({ id: req.params.itemId });
 
-    next();
+            // Removing the item ID from List model
+            List
+                .findOneAndUpdate(
+                    { listId: req.body.listId },
+                    { $pull: { items: req.params.itemId } }
+                );
+
+            next();
+        })
+        .catch(catchCallback);
 });
 
 // @route           ALL api/items
 // @description     Aggregation of List's totalCosts and remainder
 // @access          ADMIN
-router.all('/', auth, (req, res) => {
-    console.log(req.sumChange);
+router.all('*', auth, (req, res) => {
+    console.log(`sum change: ${req.sumChange}`);
 });
 
 // @route           GET api/items

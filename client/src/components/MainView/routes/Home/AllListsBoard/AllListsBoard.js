@@ -1,4 +1,4 @@
-// react router Link instead of reactstrap Button
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
     CardGroup,
@@ -15,9 +15,8 @@ export const AllListsBoard = () => {
         <CardGroup>
             {allLists.map(list => {
                 return (
-                    <Card
-                        color="light"
-                    >
+                    <Card color="light" key={list._id}>
+                    <Link to={`../${list._id}`} style={{textDecoration: 'none'}}>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {list.name}
@@ -42,6 +41,7 @@ export const AllListsBoard = () => {
                             </CardSubtitle>
                             {/* # progress bar */}
                         </CardBody>
+                    </Link>
                     </Card>
                 )
             })}

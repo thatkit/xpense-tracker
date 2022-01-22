@@ -9,7 +9,10 @@ const catchCallback = require('../../helpers/errorHandling');
 // @route           POST api/items
 // @description     Create an item
 // @access          Private
-router.post('/', auth, (req, res) => {
+router.post('/', auth, (req, res, next) => {
+    // passing positive sumChange to req
+    req.sumChange = req.body.sum;
+
     // Creating ID for the item
     const itemId = new mongoose.Types.ObjectId();
 
@@ -32,27 +35,46 @@ router.post('/', auth, (req, res) => {
             { $push: { items: itemId } }
         )
         .catch(catchCallback);
+
+    next();
 });
 
 // @route           PUT api/items
 // @description     Update an item
 // @access          Private
-router.put('/', auth, (req, res) => {
-    console.log(req.body)
+router.put('/', auth, (req, res, next) => {
+    // data container for substracting prev value and adding new one, if there's any
+    let sumChange = 0;
+
     Item
-        .findByIdAndUpdate(req.body.itemId, {
-            name: req.body.name,
-            desc: req.body.desc,
-            sum: req.body.sum
-        }, { returnDocument: 'after' })
-        .then(item => res.json(item))
-        .catch(catchCallback);
+        .findById(req.body.itemId)
+        .then(item => {
+            // first, we substract prev sum value from sumChange
+            sumChange -= item.sum;
+            
+            // then, we update the item with new values
+            Item
+                .findByIdAndUpdate(item._id, {
+                    name: req.body.name,
+                    desc: req.body.desc,
+                    sum: req.body.sum
+                }, { returnDocument: 'after' })
+                .then(newItem => res.json(newItem));
+            
+            // passing positive or negative sumChange to req
+            req.sumChange = sumChange + req.body.sum;
+
+            next();
+    }).catch(catchCallback);  
 });
 
 // @route           DELETE api/items/:itemId
 // @description     Delete an item
 // @access          Private
-router.delete('/:itemId', auth, (req, res) => {
+router.delete('/:itemId', auth, (req, res, next) => {
+    // passing negative sumChange to req
+    req.sumChange = Item.findById(req.params.itemId).sum;
+    
     // Removing the item from Item model
     Item
         .findById(req.params.itemId)
@@ -68,6 +90,15 @@ router.delete('/:itemId', auth, (req, res) => {
             { $pull: { items: req.params.itemId } }
         )
         .catch(catchCallback);
+
+    next();
+});
+
+// @route           ALL api/items
+// @description     Aggregation of List's totalCosts and remainder
+// @access          ADMIN
+router.all('/', auth, (req, res) => {
+    console.log(req.sumChange);
 });
 
 // @route           GET api/items

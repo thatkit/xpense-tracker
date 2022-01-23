@@ -19,12 +19,13 @@ export const ListsDropdown = () => {
     const toggler = () => dispatch(toggleListsDropdown());
 
     // Lists
+    const newList = useSelector(({ api }) => api.lists.newList);
     const lists = useSelector(({ api }) => api.lists.allLists);
 
     // Autoupdate when first loggin in
     useEffect(() => {
         dispatch(fetchAllLists());
-    }, []);
+    }, [newList]);
 
     return (
         <Dropdown isOpen={isOpen} toggle={toggler}>

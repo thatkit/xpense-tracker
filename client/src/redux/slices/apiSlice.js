@@ -43,6 +43,7 @@ export const apiSlice = createSlice({
         },
         // for resetting (logging out) initialState
         logout() {
+            document.cookie = 'jwt_token=';
             return initialState;
         },
         // for typing new list

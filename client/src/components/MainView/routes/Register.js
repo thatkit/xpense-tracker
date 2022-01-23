@@ -23,11 +23,8 @@ export const Register = () => {
     const dispatch = useDispatch();
 
     const handleOnChange = ({ target }, key) => {
+        // type user to store
         dispatch(typeUser({ [key]: target.value }));
-    }
-
-    // validate and (if ok) register
-    const validateAndRegister = () => {
         // validate
         [
             validateUserName,
@@ -35,22 +32,25 @@ export const Register = () => {
             validateUserPassword,
             validateUserRepPassword
         ].forEach(act => dispatch(act()));
-        // register
+    }
+
+    // if validate ok, register
+    const register = () => {
         if ([
             nameValidation,
             emailValidation,
             passwordValidation,
             repPasswordValidation
-        ].every(selector => selector.isError === false)) {
+        ].every(({ isValid }) => isValid === true)) {
             dispatch(registerUser());
         }
     }
 
     // selectors
-    const nameValidation = useSelector(({ validation }) => validation.register.name.error);
-    const emailValidation = useSelector(({ validation }) => validation.register.email.error);
-    const passwordValidation = useSelector(({ validation }) => validation.register.password.error);
-    const repPasswordValidation = useSelector(({ validation }) => validation.register.repPassword.error);
+    const nameValidation = useSelector(({ validation }) => validation.register.name);
+    const emailValidation = useSelector(({ validation }) => validation.register.email);
+    const passwordValidation = useSelector(({ validation }) => validation.register.password);
+    const repPasswordValidation = useSelector(({ validation }) => validation.register.repPassword);
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -62,10 +62,10 @@ export const Register = () => {
                         placeholder="Name"
                         type="name"
                         onChange={({ target }, key) => handleOnChange({ target }, 'name')}
-                        invalid={nameValidation.isError}
+                        invalid={nameValidation.error.isError}
                     />
                     <Label for="inputName">Name</Label>
-                    <FormFeedback tooltip>{nameValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{nameValidation.error.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -74,10 +74,10 @@ export const Register = () => {
                         placeholder="Email"
                         type="email"
                         onChange={({ target }, key) => handleOnChange({ target }, 'email')}
-                        invalid={emailValidation.isError}
+                        invalid={emailValidation.error.isError}
                     />
                     <Label for="inputEmail">Email</Label>
-                    <FormFeedback tooltip>{emailValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{emailValidation.error.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <FormGroup floating>
@@ -87,10 +87,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'password')}
-                        invalid={passwordValidation.isError}
+                        invalid={passwordValidation.error.isError}
                     />
                     <Label for="inputPassword">Password</Label>
-                    <FormFeedback tooltip>{passwordValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{passwordValidation.error.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -99,10 +99,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'repPassword')}
-                        invalid={repPasswordValidation.isError}
+                        invalid={repPasswordValidation.error.isError}
                     />
                     <Label for="repeatPassword">Repeat password</Label>
-                    <FormFeedback tooltip>{repPasswordValidation.mes}</FormFeedback>
+                    <FormFeedback tooltip>{repPasswordValidation.error.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <div style={{
@@ -112,7 +112,7 @@ export const Register = () => {
                 }}>
                     <Button 
                         style={{width: '6rem'}}
-                        onClick={validateAndRegister}
+                        onClick={register}
                     >Register</Button>
                     <Link
                         to="../login"

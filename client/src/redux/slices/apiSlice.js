@@ -43,6 +43,7 @@ export const apiSlice = createSlice({
         },
         // for resetting (logging out) initialState
         logout() {
+            document.cookie = 'jwt_token=';
             return initialState;
         },
         // for typing new list
@@ -80,7 +81,10 @@ export const apiSlice = createSlice({
                     ...state.items,
                     data: {
                         ...state.items.data,
-                        itemId: payload
+                        itemId: payload._id,
+                        name: payload.name,
+                        desc: payload.desc,
+                        sum: payload.sum
                     }
                 }
             }
@@ -92,8 +96,10 @@ export const apiSlice = createSlice({
                 items: {
                     ...state.items,
                     data: {
-                        ...state.items.data,
-                        itemId: ''
+                        itemId: '',
+                        name: '',
+                        desc: '',
+                        sum: ''
                     }
                 }
             }

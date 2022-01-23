@@ -53,7 +53,7 @@ export const initialState = {
         // All lists data container
         allLists: [],
         // Current list data container
-        currentList: { id: '', name: '', totalBudget: 0, items: []},
+        currentList: { id: '', name: '', totalBudget: 0, totalCosts: 0, remainder: 0, items: [] },
         // New list data container
         newList: { name: '', totalBudget: 0 }
     },
@@ -78,6 +78,6 @@ export const initialState = {
             error: { isError: false, mes: '' },
         },
         // Item data container
-        data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+        data: { itemId: '', name: '', desc: '', sum: 0 }
     }
 }

@@ -1,0 +1,1 @@
+export const calcProgress = (total, completed) => completed / total * 100;

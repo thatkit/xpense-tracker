@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../../../redux/actions/api/items';
+import { unselectItem } from '../../../../../redux/slices/apiSlice';
 import { toggleNewItemFormModule } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
@@ -16,12 +17,14 @@ export const AddItemFormModule = (props) => {
     // Toggle behaviour
     const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
     const toggler = () => {
+        dispatch(unselectItem());
         dispatch(toggleNewItemFormModule());
     }
 
     // Send (add) a new item
     const addNewItem = () => {
         dispatch(addItem());
+        dispatch(unselectItem());
         toggler();
     }
 

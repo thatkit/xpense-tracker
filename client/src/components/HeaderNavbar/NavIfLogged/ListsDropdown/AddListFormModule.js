@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { typeList } from '../../../../redux/slices/apiSlice';
-import { addList } from '../../../../redux/actions/api/lists';
+import { addList, fetchAllLists } from '../../../../redux/actions/api/lists';
 import { toggleListsDropdown, toggleNewListFormModule } from '../../../../redux/slices/uiSlice';
 import {
     Modal,
@@ -31,6 +31,7 @@ export const AddListFormModule = (props) => {
     // Send (add) a new list
     const addNewList = () => {
         dispatch(addList());
+        dispatch(fetchAllLists());
         toggler();
     }
 

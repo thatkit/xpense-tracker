@@ -14,7 +14,7 @@ import { fetchAllLists } from '../../../../../redux/actions/api/lists';
 
 export const AllListsBoard = () => {
     const dispatch = useDispatch();
-    
+
     // Lists
     const newList = useSelector(({ api }) => api.lists.newList);
     const lists = useSelector(({ api }) => api.lists.allLists);
@@ -22,7 +22,7 @@ export const AllListsBoard = () => {
     // Autoupdate when first loggin in
     useEffect(() => {
         dispatch(fetchAllLists());
-    }, [newList]);
+    }, [dispatch, newList]);
     
     return (
         <CardGroup>

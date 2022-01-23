@@ -25,7 +25,7 @@ export const ListsDropdown = () => {
     // Autoupdate when first loggin in
     useEffect(() => {
         dispatch(fetchAllLists());
-    }, [newList]);
+    }, [dispatch, newList]);
 
     return (
         <Dropdown isOpen={isOpen} toggle={toggler}>

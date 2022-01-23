@@ -17,6 +17,8 @@ mongoose
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/lists', require('./routes/api/lists'));
 app.use('/api/items', require('./routes/api/items'));
+// Terminate All Routes
+app.use('/api/terminate', require('./routes/api/terminate'));
 
 // Serve static assets in PRODUCTION
 if (process.env.NODE_ENV === 'production') {

@@ -44,15 +44,17 @@ router.post('/', auth, (req, res) => {
     });
     newList
         .save()
-        .then(list => res.json(list))
-        .catch(catchCallback);
-
-    // Saving the list ID in User model
-    User
-        .findOneAndUpdate(
-            { userId: req.body.userId },
-            { $push: { lists: listId } }
-        )
+        .then(list => {
+            // Saving the list ID in User model
+            User
+                .findOneAndUpdate(
+                    { userId: req.body.userId },
+                    { $push: { lists: listId } }
+                )
+                .then(() => {
+                    res.json(list);
+                });
+        })
         .catch(catchCallback);
 });
 

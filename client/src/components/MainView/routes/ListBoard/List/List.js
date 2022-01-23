@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem } from '../../../../../redux/actions/api/items';
-import { selectItem, unselectItem } from '../../../../../redux/slices/apiSlice';
+import { selectItem } from '../../../../../redux/slices/apiSlice';
 import {
     ListGroup,
     ListGroupItem,
@@ -15,17 +15,21 @@ import { AddItemFormModule } from './AddItemFormModule';
 
 export const List = (props) => {
     const dispatch = useDispatch();
+
+    // this is needed in order to escape selectItem() action from dispatching when actually editing
+    const isFormOpen = useSelector(({ ui }) => ui.editItemFormModuleIsOpen);;
     
     // Bottom 'Edit' and 'Remove' menu
     const curItemId = useSelector(({ api }) => api.items.data.itemId);
-    const openMenu = (e, itemObj) => dispatch(selectItem(itemObj));
+    const openMenu = (e, itemObj) => {
+        !isFormOpen && dispatch(selectItem(itemObj));
+    };
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
 
     return (
         <>
-            {/* <ListGroup onMouseLeave={() => dispatch(unselectItem())}> # unselectItem() ui doesn't work properly*/}
             <ListGroup>
             {props.items.map(item => {
                 return (

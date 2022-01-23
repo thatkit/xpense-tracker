@@ -5,8 +5,10 @@ import {
     Card,
     CardTitle,
     CardBody,
-    CardSubtitle
+    CardSubtitle,
+    Progress
 } from 'reactstrap';
+import { calcProgress } from '../../../../../helpers/progressBar';
 
 export const AllListsBoard = () => {
     const allLists = useSelector(({ api }) => api.users.currentUser.lists);
@@ -39,7 +41,11 @@ export const AllListsBoard = () => {
                             >
                                 {list.remainder}
                             </CardSubtitle>
-                            {/* # progress bar */}
+                            <Progress
+                                value={calcProgress(100, 75)}
+                                color={75 <= 80 ? 'success' : 'warning'}
+                                animated
+                            ></Progress>
                         </CardBody>
                     </Link>
                     </Card>

@@ -95,8 +95,10 @@ export const apiSlice = createSlice({
                 items: {
                     ...state.items,
                     data: {
-                        ...state.items.data,
-                        itemId: ''
+                        itemId: '',
+                        name: '',
+                        desc: '',
+                        sum: ''
                     }
                 }
             }

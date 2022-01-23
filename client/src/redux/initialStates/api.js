@@ -78,6 +78,6 @@ export const initialState = {
             error: { isError: false, mes: '' },
         },
         // Item data container
-        data: { listId: '', itemId: '', name: '', desc: '', sum: 0 }
+        data: { itemId: '', name: '', desc: '', sum: 0 }
     }
 }

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { updateItem } from '../../../../../redux/actions/api/items';
+import { unselectItem } from '../../../../../redux/slices/apiSlice';
 import { toggleEditItemFormModule } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
@@ -23,6 +24,7 @@ export const EditItemFormModule = (props) => {
     // Edit (update) an item
     const editItem = () => {
         dispatch(updateItem());
+        dispatch(unselectItem());
         toggler();
     }
 

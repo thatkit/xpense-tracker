@@ -35,8 +35,6 @@ router.post('/', auth, (req, res, next) => {
             List
                 .findByIdAndUpdate(listId, { $push: {items: itemId} })
                 .then(list => {
-                    console.log(`List: `);
-                    console.log(list);
                     res.json(item)
                     next();
                 });
@@ -85,15 +83,13 @@ router.delete('/:itemId', auth, (req, res, next) => {
             // passing negative sumChange to req
             req.sumChange = -item.sum;
 
-            res.json({ id: req.params.itemId });
-
             // Removing the item ID from List model
-            List.findOneAndUpdate(
-                { listId: req.body.listId },
-                { $pull: { items: req.params.itemId } }
-            );
-
-            next();
+            List
+                .findByIdAndUpdate(req.body.listId, { $pull: {items: req.params.itemId} })
+                .then(list => {
+                    res.json({ id: req.params.itemId })
+                    next();
+                });
         })
         .catch(catchCallback);
 });

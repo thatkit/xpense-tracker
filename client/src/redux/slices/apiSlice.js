@@ -80,7 +80,10 @@ export const apiSlice = createSlice({
                     ...state.items,
                     data: {
                         ...state.items.data,
-                        itemId: payload
+                        itemId: payload._id,
+                        name: payload.name,
+                        desc: payload.desc,
+                        sum: payload.sum
                     }
                 }
             }

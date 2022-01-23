@@ -18,7 +18,7 @@ export const List = (props) => {
     
     // Bottom 'Edit' and 'Remove' menu
     const curItemId = useSelector(({ api }) => api.items.data.itemId);
-    const openMenu = (e, id) => dispatch(selectItem(id));
+    const openMenu = (e, itemObj) => dispatch(selectItem(itemObj));
 
     // 'Remove' button
     const remove = () => dispatch(removeItem());
@@ -34,7 +34,12 @@ export const List = (props) => {
                         id={item._id}
                         action
                         tag="button"
-                        onMouseEnter={(e, id) => openMenu(e, item._id)}
+                        onMouseEnter={(e, itemObj) => openMenu(e, {
+                            _id: item._id,
+                            name: item.name,
+                            desc: item.desc,
+                            sum: item.sum
+                        })}
                     >
                         <Row>
                             <Col>

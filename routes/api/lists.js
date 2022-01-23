@@ -40,6 +40,7 @@ router.post('/', auth, (req, res) => {
         userId: req.user.id,
         name: req.body.name,
         totalBudget: req.body.totalBudget,
+        remainder: req.body.totalBudget,
     });
     newList
         .save()

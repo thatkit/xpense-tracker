@@ -56,6 +56,8 @@ export const fetchCurrentListFulfilled = (state, { payload }) => ({
             id: payload._id,
             name: payload.name,
             totalBudget: payload.totalBudget,
+            totalCosts: payload.totalCosts,
+            remainder: payload.remainder,
             items: payload.items
         } 
     }

@@ -25,8 +25,7 @@ const ListSchema = new Schema({
         default: 0
     },
     remainder: {
-        type: Number,
-        default: 0
+        type: Number
     }
 });
 

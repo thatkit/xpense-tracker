@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { typeItem } from '../../redux/slices/apiSlice';
 import {
     Form,
@@ -14,10 +14,14 @@ export const ItemForm = (props) => {
         dispatch(typeItem({ [key]: target.value }));
     }
 
+    // retrieving item data props for editting
+    const { name, desc, sum } = useSelector(({ api }) => api.items.data);
+
     return (
         <Form inline>
             <FormGroup floating>
-                <Input 
+                <Input
+                    value={name}
                     id='name'
                     name='name'
                     placeholder='Name'
@@ -27,7 +31,8 @@ export const ItemForm = (props) => {
                 <Label for="name">Name</Label>
             </FormGroup>
             <FormGroup floating>
-                <Input 
+                <Input
+                    value={desc}
                     id='desc'
                     name='desc'
                     placeholder='Description'
@@ -36,7 +41,8 @@ export const ItemForm = (props) => {
                 <Label for="desc">Description</Label>
             </FormGroup>
             <FormGroup floating>
-                <Input 
+                <Input
+                    value={sum ? sum : ''}
                     id='sum'
                     name='sum'
                     placeholder='Sum'

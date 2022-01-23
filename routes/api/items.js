@@ -10,8 +10,11 @@ const catchCallback = require('../../helpers/errorHandling');
 // @description     Create an item
 // @access          Private
 router.post('/', auth, (req, res, next) => {
+    // request body
+    const { listId, name, desc, sum } = req.body;
+
     // passing positive sumChange to req
-    req.sumChange = req.body.sum;
+    req.sumChange = sum;
 
     // Creating ID for the item
     const itemId = new mongoose.Types.ObjectId();
@@ -19,25 +22,25 @@ router.post('/', auth, (req, res, next) => {
     // Saving the item in Item model
     const newItem = new Item({
         _id: itemId,
-        name: req.body.name,
-        desc: req.body.desc,
-        sum: req.body.sum    
+        name,
+        desc,
+        sum  
     });
 
     newItem
         .save()
         .then(item => {
-            res.json(item);
 
             // Saving the item ID in List model
             List
-                .findOneAndUpdate(
-                    { listId: req.body.listId },
-                    { $push: { items: itemId } }
-                )
-                .then(list => null);
+                .findByIdAndUpdate(listId, { $push: {items: itemId} })
+                .then(list => {
+                    console.log(`List: `);
+                    console.log(list);
+                    res.json(item)
+                    next();
+                });
 
-            next();
         })
         .catch(catchCallback);
 });
@@ -85,23 +88,14 @@ router.delete('/:itemId', auth, (req, res, next) => {
             res.json({ id: req.params.itemId });
 
             // Removing the item ID from List model
-            List
-                .findOneAndUpdate(
-                    { listId: req.body.listId },
-                    { $pull: { items: req.params.itemId } }
-                );
+            List.findOneAndUpdate(
+                { listId: req.body.listId },
+                { $pull: { items: req.params.itemId } }
+            );
 
             next();
         })
         .catch(catchCallback);
-});
-
-// @route           ALL api/items
-// @description     Aggregation of List's totalCosts and remainder
-// @access          ADMIN
-router.all('*', auth, (req, res) => {
-    if (!req.sumChange) return;
-    console.log(`sum change: ${req.sumChange}`);
 });
 
 // @route           GET api/items
@@ -111,7 +105,17 @@ router.get('/all', (req, res) => {
     Item
         .find()
         .sort({ date: 1 })
-        .then(items => res.json(items))
+        .then(items => res.json(items));
+});
+
+// @route           ALL api/items
+// @description     Aggregation of List's totalCosts and remainder
+// @access          Private
+router.all('*', auth, (req, res) => {
+    if (!req.sumChange) return;
+
+    console.log(req.body);
+    console.log(`sum change: ${req.sumChange}`);
 });
 
 module.exports = router;

@@ -22,6 +22,7 @@ router.post('/', auth, (req, res, next) => {
     // Saving the item in Item model
     const newItem = new Item({
         _id: itemId,
+        listId,
         name,
         desc,
         sum  

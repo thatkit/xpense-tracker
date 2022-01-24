@@ -55,7 +55,7 @@ export const registerUser = createAsyncThunk(
 export const fetchUser = createAsyncThunk(
     'api/users/fetchUser',
     async (arg, thunkAPI) => {
-        let response = await fetch('/api/users/login', {
+        let response = await fetch('/api/users/fetch', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

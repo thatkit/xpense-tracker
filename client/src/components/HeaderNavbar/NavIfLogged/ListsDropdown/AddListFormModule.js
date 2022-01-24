@@ -31,7 +31,6 @@ export const AddListFormModule = (props) => {
     // Send (add) a new list
     const addNewList = () => {
         dispatch(addList());
-        dispatch(fetchAllLists());
         toggler();
     }
 

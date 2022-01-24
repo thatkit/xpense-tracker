@@ -101,10 +101,10 @@ router.post('/login', (req, res) => {
         .catch(err => console.log(err));
 });
 
-// @route           GET api/users/login
+// @route           GET api/users/fetch
 // @description     GET user data
 // @access          Private
-router.get('/login', auth, (req, res) => {
+router.get('/fetch', auth, (req, res) => {
     User
         .findById(req.user.id)
         .select('-password')

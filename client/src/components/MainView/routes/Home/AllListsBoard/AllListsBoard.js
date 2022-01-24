@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
     CardGroup,
     Card,
@@ -9,13 +10,23 @@ import {
     Progress
 } from 'reactstrap';
 import { calcProgress } from '../../../../../helpers/progressBar';
+import { fetchAllLists } from '../../../../../redux/actions/api/lists';
 
 export const AllListsBoard = () => {
-    const allLists = useSelector(({ api }) => api.users.currentUser.lists);
+    const dispatch = useDispatch();
 
+    // Lists
+    const newList = useSelector(({ api }) => api.lists.newList);
+    const lists = useSelector(({ api }) => api.lists.allLists);
+
+    // Autoupdate when first loggin in
+    useEffect(() => {
+        dispatch(fetchAllLists());
+    }, [dispatch, newList]);
+    
     return (
         <CardGroup>
-            {allLists.map(list => {
+            {lists.map(list => {
                 return (
                     <Card color="light" key={list._id}>
                     <Link to={`../${list._id}`} style={{textDecoration: 'none'}}>

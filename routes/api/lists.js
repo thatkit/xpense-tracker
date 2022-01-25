@@ -31,6 +31,12 @@ router.get('/:listId', auth, (req, res) => {
 // @description     Create a list
 // @access          Private
 router.post('/', auth, (req, res) => {
+    const { name, totalBudget } = req.body;
+    // simple req.body validation
+    if (!name || !totalBudget) {
+        return res.status(400).json({ message: 'Please, fill out name and total budget' });
+    }
+
     // Creating ID for the list
     const listId = new mongoose.Types.ObjectId();
     
@@ -38,9 +44,9 @@ router.post('/', auth, (req, res) => {
     const newList = new List({
         _id: listId,
         userId: req.user.id,
-        name: req.body.name,
-        totalBudget: req.body.totalBudget,
-        remainder: req.body.totalBudget,
+        name,
+        totalBudget,
+        remainder: totalBudget,
     });
     newList
         .save()

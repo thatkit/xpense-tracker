@@ -62,7 +62,6 @@ router.post('/', auth, (req, res) => {
 // @description     Delete a list
 // @access          Private
 router.delete('/:listId', auth, (req, res) => {
-    console.log('deleting...');
     // Removing the list from List model
     List
         .findById(req.params.listId)
@@ -72,7 +71,7 @@ router.delete('/:listId', auth, (req, res) => {
         .catch(catchCallback);
 
     // Removing the list ID from User model
-    List
+    User
         .findOneAndUpdate(
             { userId: req.body.userId },
             { $pull: { lists: req.params.listId } }

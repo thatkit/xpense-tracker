@@ -48,7 +48,7 @@ router.post('/', auth, (req, res) => {
             // Saving the list ID in User model
             User
                 .findOneAndUpdate(
-                    { userId: req.body.userId },
+                    { userId: req.user.id },
                     { $push: { lists: listId } }
                 )
                 .then(() => {

@@ -31,6 +31,12 @@ router.get('/:listId', auth, (req, res) => {
 // @description     Create a list
 // @access          Private
 router.post('/', auth, (req, res) => {
+    const { name, totalBudget } = req.body;
+    // simple req.body validation
+    if (!name || !totalBudget) {
+        return res.status(400).json({ message: 'Please, fill out name and total budget' });
+    }
+
     // Creating ID for the list
     const listId = new mongoose.Types.ObjectId();
     
@@ -38,9 +44,9 @@ router.post('/', auth, (req, res) => {
     const newList = new List({
         _id: listId,
         userId: req.user.id,
-        name: req.body.name,
-        totalBudget: req.body.totalBudget,
-        remainder: req.body.totalBudget,
+        name,
+        totalBudget,
+        remainder: totalBudget,
     });
     newList
         .save()
@@ -48,7 +54,7 @@ router.post('/', auth, (req, res) => {
             // Saving the list ID in User model
             User
                 .findOneAndUpdate(
-                    { userId: req.body.userId },
+                    { userId: req.user.id },
                     { $push: { lists: listId } }
                 )
                 .then(() => {
@@ -62,7 +68,6 @@ router.post('/', auth, (req, res) => {
 // @description     Delete a list
 // @access          Private
 router.delete('/:listId', auth, (req, res) => {
-    console.log('deleting...');
     // Removing the list from List model
     List
         .findById(req.params.listId)
@@ -72,7 +77,7 @@ router.delete('/:listId', auth, (req, res) => {
         .catch(catchCallback);
 
     // Removing the list ID from User model
-    List
+    User
         .findOneAndUpdate(
             { userId: req.body.userId },
             { $pull: { lists: req.params.listId } }

@@ -20,10 +20,20 @@ router.get('/', auth, (req, res) => {
 // @description     GET a list
 // @access          Private
 router.get('/:listId', auth, (req, res) => {
+    mongoose.Types.ObjectId(req.body.listId)
+        .then(() => console.log('ok'))
+        .catch(err => console.log(err.message));
+
     List
         .findById(req.params.listId)
         .populate('items')
-        .then(list => res.json(list))
+        .then(list => {
+            !list
+                // if the listId is incorrect
+                ? res.status(400).json({ message: 'Invalid listId' })
+                // if the listId is correct
+                : res.status(200).json(list)
+        })
         .catch(catchCallback);
 });
 

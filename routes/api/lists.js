@@ -20,10 +20,7 @@ router.get('/', auth, (req, res) => {
 // @description     GET a list
 // @access          Private
 router.get('/:listId', auth, (req, res) => {
-    mongoose.Types.ObjectId(req.body.listId)
-        .then(() => console.log('ok'))
-        .catch(err => console.log(err.message));
-
+    // # no validation against incorrect listId type
     List
         .findById(req.params.listId)
         .populate('items')
@@ -78,19 +75,23 @@ router.post('/', auth, (req, res) => {
 // @description     Delete a list
 // @access          Private
 router.delete('/:listId', auth, (req, res) => {
+    const listId = req.params.listId;
+    // # need simple validation against empty listId
+    // # might be DELETE to '/' request
+
     // Removing the list from List model
     List
-        .findById(req.params.listId)
-        .then(list => list
-            .remove()
-            .then(() => res.json({ id: req.params.listId })))
+        .findById(listId)
+        .then(list => !list
+            ? res.status(400).json({ message: 'Invalid listId' })
+            : list.remove().then(() => res.status(200).json({ id: listId })))
         .catch(catchCallback);
 
     // Removing the list ID from User model
     User
         .findOneAndUpdate(
-            { userId: req.body.userId },
-            { $pull: { lists: req.params.listId } }
+            { userId: req.user.id },
+            { $pull: { lists: listId } }
         )
         .catch(catchCallback);
 });

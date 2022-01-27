@@ -104,6 +104,6 @@ export const removeList = createAsyncThunk(
         }
         
         response = await response.json();
-        return response;      
+        return response;
     }
 );

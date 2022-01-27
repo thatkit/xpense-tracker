@@ -13,6 +13,11 @@ router.post('/', auth, (req, res, next) => {
     // request body
     const { listId, name, desc, sum } = req.body;
 
+    // simple validation
+    if (!listId || !name || !desc || !sum) {
+        return res.status(400).json({ message: 'Request must include listId, name, desc, sum' });
+    }
+
     // passing positive sumChange to req
     req.sumChange = sum;
 
@@ -35,7 +40,7 @@ router.post('/', auth, (req, res, next) => {
             // Saving the item ID in List model
             List
                 .findByIdAndUpdate(listId, { $push: {items: itemId} })
-                .then(list => {
+                .then(() => {
                     res.json(item)
                     next();
                 });
@@ -48,26 +53,33 @@ router.post('/', auth, (req, res, next) => {
 // @description     Update an item
 // @access          Private
 router.put('/', auth, (req, res, next) => {
+    // request body
+    const { itemId, name, desc, sum } = req.body;
+    // # no validation against incorrect listId type
+
+    // validating req.body.itemId
+    if (!itemId) return res.status(400).json({ message: 'There is no itemId' });
+
     // data container for substracting prev value and adding new one, if there's any
     req.sumChange = 0;
 
     Item
-        .findById(req.body.itemId)
+        .findById(itemId)
         .then(item => {
             // first, we substract prev sum value from sumChange
-            req.sumChange -= item.sum;
+            req.sumChange -= sum;
 
             // then, we update the item with new values
             Item
                 .findByIdAndUpdate(item._id, {
-                    name: req.body.name,
-                    desc: req.body.desc,
-                    sum: req.body.sum
+                    name,
+                    desc,
+                    sum
                 }, { returnDocument: 'after' })
-                .then(newItem => res.json(newItem));
+                .then(updatedItem => res.status(200).json(updatedItem));
             
             // passing positive or negative sumChange to req
-            req.sumChange += req.body.sum;
+            req.sumChange += sum;
 
             next();
     }).catch(catchCallback);  

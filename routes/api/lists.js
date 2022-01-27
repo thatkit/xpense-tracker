@@ -65,7 +65,7 @@ router.post('/', auth, (req, res) => {
                     { $push: { lists: listId } }
                 )
                 .then(() => {
-                    res.json(list);
+                    res.status(200).json(list);
                 });
         })
         .catch(catchCallback);

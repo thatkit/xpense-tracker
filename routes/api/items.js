@@ -41,7 +41,7 @@ router.post('/', auth, (req, res, next) => {
             List
                 .findByIdAndUpdate(listId, { $push: {items: itemId} })
                 .then(() => {
-                    res.status(200).json(item)
+                    res.status(200).json(item);
                     next();
                 });
 
@@ -54,34 +54,34 @@ router.post('/', auth, (req, res, next) => {
 // @access          Private
 router.put('/', auth, (req, res, next) => {
     // request body
-    const { itemId, name, desc, sum } = req.body;
+    const { itemId, newName, newDesc, newSum } = req.body;
     // # no validation against incorrect listId type
 
     // validating req.body.itemId
     if (!itemId) return res.status(400).json({ message: 'There is no itemId' });
 
-    // data container for substracting prev value and adding new one, if there's any
-    req.sumChange = 0;
-
     Item
         .findById(itemId)
         .then(item => {
             // first, we substract prev sum value from sumChange
-            req.sumChange -= sum;
+            req.sumChange = 0;
+            req.sumChange -= item.sum;
 
             // then, we update the item with new values
             Item
                 .findByIdAndUpdate(item._id, {
-                    name,
-                    desc,
-                    sum
+                    name: newName,
+                    desc: newDesc,
+                    sum: newSum
                 }, { returnDocument: 'after' })
-                .then(updatedItem => res.status(200).json(updatedItem));
-            
-            // passing positive or negative sumChange to req
-            req.sumChange += sum;
+                .then(updatedItem => {
+                    // finally, we add new sum value to sumChange
+                    req.sumChange = req.sumChange + updatedItem.sum;
 
-            next();
+                    res.status(200).json(updatedItem);
+                    next();
+                });
+            
     }).catch(catchCallback);  
 });
 
@@ -89,18 +89,22 @@ router.put('/', auth, (req, res, next) => {
 // @description     Delete an item
 // @access          Private
 router.delete('/:itemId', auth, (req, res, next) => {
+    const itemId = req.params.itemId;
+    const listId = req.body.listId;
+    
     // Removing the item from Item model
     Item
-        .findByIdAndRemove(req.params.itemId)
+        .findByIdAndRemove(itemId)
         .then(item => {
             // passing negative sumChange to req
-            req.sumChange = -item.sum;
+            req.sumChange = 0;
+            req.sumChange -= item.sum;
 
             // Removing the item ID from List model
             List
-                .findByIdAndUpdate(req.body.listId, { $pull: {items: req.params.itemId} })
-                .then(list => {
-                    res.json({ id: req.params.itemId })
+                .findByIdAndUpdate(listId, { $pull: {items: itemId} })
+                .then(() => {
+                    res.status(200).json({ id: itemId })
                     next();
                 });
         })

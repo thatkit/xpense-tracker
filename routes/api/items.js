@@ -41,7 +41,7 @@ router.post('/', auth, (req, res, next) => {
             List
                 .findByIdAndUpdate(listId, { $push: {items: itemId} })
                 .then(() => {
-                    res.json(item)
+                    res.status(200).json(item)
                     next();
                 });
 
@@ -116,6 +116,18 @@ router.get('/all', (req, res) => {
         .sort({ date: 1 })
         .then(items => res.json(items));
 });
+
+// @route           GET api/items
+// @description     GET the list's items
+// @access          ADMIN
+router.get('/', auth, (req, res) => {
+    const listId = req.body.listId;
+    Item
+        .find({ listId })
+        .then(items => res.status(200).json(items))
+        .catch(catchCallback);
+});
+
 
 // @route           ALL api/items
 // @description     Aggregation of List's totalCosts and remainder

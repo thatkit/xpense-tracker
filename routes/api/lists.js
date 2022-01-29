@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth');
 const router = express.Router();
 const User = require('../../models/User'); // User Model
 const List = require('../../models/List'); // List Model
+const Item = require('../../models/Item'); // Item Model
 const catchCallback = require('../../helpers/errorHandling');
 
 // @route           GET api/lists
@@ -61,7 +62,7 @@ router.post('/', auth, (req, res) => {
             // Saving the list ID in User model
             User
                 .findOneAndUpdate(
-                    { userId: req.user.id },
+                    { _id: req.user.id },
                     { $push: { lists: listId } }
                 )
                 .then(() => {
@@ -93,6 +94,11 @@ router.delete('/:listId', auth, (req, res) => {
             { userId: req.user.id },
             { $pull: { lists: listId } }
         )
+        .catch(catchCallback);
+
+    // Removing all related items from Item model
+    Item
+        .remove({ listId })
         .catch(catchCallback);
 });
 

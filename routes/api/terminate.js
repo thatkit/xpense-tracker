@@ -11,12 +11,15 @@ const catchCallback = require('../../helpers/errorHandling');
 router.delete('/', (req, res) => {
     [User, List, Item].forEach(Model => {
         Model
-            .find()
-            .then(docs => docs.forEach(doc => {
-                doc.remove().then(() => res.send('All data is terminated')).catch(catchCallback);
-            }))
+            .deleteMany({})
+            .then(() => {})
+            // .then(docs => docs.forEach(doc => {
+            //     doc.remove().then(() => res.send('All data is terminated')).catch(catchCallback);
+            // }))
             .catch(catchCallback);
     });
+
+    res.send('All data is terminated');
 });
 
 module.exports = router;

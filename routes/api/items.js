@@ -11,7 +11,8 @@ const catchCallback = require('../../helpers/errorHandling');
 // @access          Private
 router.post('/', auth, (req, res, next) => {
     // request body
-    const { listId, name, desc, sum } = req.body;
+    const { listId, name, desc } = req.body;
+    const sum = Number(req.body.sum);
 
     // simple validation
     if (!listId || !name || !desc || !sum) {

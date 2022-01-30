@@ -55,8 +55,10 @@ router.post('/', auth, (req, res, next) => {
 // @access          Private
 router.put('/', auth, (req, res, next) => {
     // request body
-    const { itemId, newName, newDesc, newSum } = req.body;
-    // # no validation against incorrect listId type
+    const itemId = req.body.itemId;
+    const newName = req.body.name;
+    const newDesc = req.body.desc;
+    const newSum = Number(req.body.sum);
 
     // validating req.body.itemId
     if (!itemId) return res.status(400).json({ message: 'There is no itemId' });

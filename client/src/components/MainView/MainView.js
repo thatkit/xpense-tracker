@@ -5,7 +5,8 @@ import { ListBoard } from './routes/ListBoard/ListBoard';
 import { Home } from './routes/Home/Home';
 import { RequireAuth } from './RequireAuth';
 
-export const MainView = (props) => {
+export const MainView = () => {
+  
   return (
     <Routes>
       {/* Public routes */}

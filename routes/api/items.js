@@ -77,6 +77,8 @@ router.put('/', auth, (req, res, next) => {
                 .then(updatedItem => {
                     // finally, we add new sum value to sumChange
                     req.sumChange = req.sumChange + updatedItem.sum;
+                    // adding listId to req for '*' aggregation request
+                    req.body.listId = updatedItem.listId.toString();
 
                     res.status(200).json(updatedItem);
                     next();
@@ -132,15 +134,23 @@ router.get('/', auth, (req, res) => {
         .catch(catchCallback);
 });
 
-
 // @route           ALL api/items
 // @description     Aggregation of List's totalCosts and remainder
 // @access          Private
 router.all('*', auth, (req, res) => {
     if (!req.sumChange) return;
 
-    console.log(req.body);
-    console.log(`sum change: ${req.sumChange}`);
+    List
+        .findById(req.body.listId)
+        .then(list => {
+            List.findByIdAndUpdate(req.body.listId, {
+                $set: {
+                    totalCosts: list.totalCosts + req.sumChange,
+                    remainder: list.remainder - req.sumChange,
+                }
+            }).then(() => {})
+        })
+        .catch(catchCallback);
 });
 
 module.exports = router;

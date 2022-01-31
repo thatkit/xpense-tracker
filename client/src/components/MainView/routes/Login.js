@@ -1,6 +1,7 @@
 // React imports
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../../AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Container,
     Form,
@@ -19,7 +20,11 @@ export const Login = () => {
 
     const dispatch = useDispatch();
     const login = () => dispatch(loginUser({ email, password }));
-  
+    
+    const navigate = useNavigate();
+    const isLoggedIn = useContext(AuthContext);
+    isLoggedIn && navigate('/home');
+
     return (
         <Container style={{margin: '5rem auto'}}>
             <Form inline>

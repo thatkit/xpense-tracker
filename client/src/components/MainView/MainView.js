@@ -6,7 +6,6 @@ import { Home } from './routes/Home/Home';
 import { RequireAuth } from './RequireAuth';
 
 export const MainView = () => {
-  
   return (
     <Routes>
       {/* Public routes */}
@@ -15,11 +14,19 @@ export const MainView = () => {
       {/* Private (protected) routes */}
       <Route 
         path="/home"
-        element={<RequireAuth><Home /></RequireAuth>}
+        element={
+          <RequireAuth>
+            <Home />
+          </RequireAuth>
+        }
       />
       <Route
         path="/:listId"
-        element={<RequireAuth><ListBoard /></RequireAuth>}
+        element={
+          <RequireAuth>
+            <ListBoard />
+          </RequireAuth>
+        }
       />
     </Routes>
   )

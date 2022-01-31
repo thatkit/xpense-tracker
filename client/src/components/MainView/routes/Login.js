@@ -1,6 +1,7 @@
 // React imports
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../../AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Container,
     Form,
@@ -10,9 +11,8 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../redux/actions/api/users';
-import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ export const Login = () => {
     const login = () => dispatch(loginUser({ email, password }));
     
     const navigate = useNavigate();
-    const isLoggedIn = useSelector(({ api }) => api.users.login.isLoggedIn);
+    const isLoggedIn = useContext(AuthContext);
     isLoggedIn && navigate('/home');
 
     return (

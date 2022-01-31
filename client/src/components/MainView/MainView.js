@@ -6,7 +6,6 @@ import { Home } from './routes/Home/Home';
 import { RequireAuth } from './RequireAuth';
 
 export const MainView = () => {
-  
   return (
     <Routes>
       {/* Public routes */}

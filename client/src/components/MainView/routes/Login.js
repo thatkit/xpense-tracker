@@ -10,8 +10,9 @@ import {
     Button
 } from 'reactstrap';
 // Redux imports
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { loginUser } from '../../../redux/actions/api/users';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -19,7 +20,11 @@ export const Login = () => {
 
     const dispatch = useDispatch();
     const login = () => dispatch(loginUser({ email, password }));
-  
+    
+    const navigate = useNavigate();
+    const isLoggedIn = useSelector(({ api }) => api.users.login.isLoggedIn);
+    isLoggedIn && navigate('/home');
+
     return (
         <Container style={{margin: '5rem auto'}}>
             <Form inline>

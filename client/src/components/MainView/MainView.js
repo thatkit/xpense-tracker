@@ -15,11 +15,19 @@ export const MainView = () => {
       {/* Private (protected) routes */}
       <Route 
         path="/home"
-        element={<RequireAuth><Home /></RequireAuth>}
+        element={
+          <RequireAuth>
+            <Home />
+          </RequireAuth>
+        }
       />
       <Route
         path="/:listId"
-        element={<RequireAuth><ListBoard /></RequireAuth>}
+        element={
+          <RequireAuth>
+            <ListBoard />
+          </RequireAuth>
+        }
       />
     </Routes>
   )

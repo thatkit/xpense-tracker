@@ -1,13 +1,8 @@
-import { Link } from 'react-router-dom';
-import {
-    Container,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    FormFeedback,
-    Button
-} from 'reactstrap';
+// React
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '../../../AuthProvider';
+// React Router
+import { Link, useNavigate } from 'react-router-dom';
 // Redux imports
 import { useDispatch, useSelector } from 'react-redux';
 import { typeUser } from '../../../redux/slices/apiSlice';
@@ -18,9 +13,26 @@ import {
     validateUserPassword,
     validateUserRepPassword
 } from '../../../redux/actions/validation/user';
+// Reactstrap
+import {
+    Container,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    FormFeedback,
+    Button
+} from 'reactstrap';
 
 export const Register = () => {
     const dispatch = useDispatch();
+
+    // Pushing to /home if logged in
+    const navigate = useNavigate();
+    const { isLoggedIn } = useContext(AuthContext);
+    useEffect(() => {
+        isLoggedIn && navigate('/home');
+    }, [dispatch, navigate, isLoggedIn]);
 
     const handleOnChange = ({ target }, key) => {
         // type user to store
@@ -37,20 +49,22 @@ export const Register = () => {
     // if validate ok, register
     const register = () => {
         if ([
-            nameValidation,
-            emailValidation,
-            passwordValidation,
-            repPasswordValidation
+            name,
+            email,
+            password,
+            repPassword
         ].every(({ isValid }) => isValid === true)) {
             dispatch(registerUser());
         }
     }
 
-    // selectors
-    const nameValidation = useSelector(({ validation }) => validation.register.name);
-    const emailValidation = useSelector(({ validation }) => validation.register.email);
-    const passwordValidation = useSelector(({ validation }) => validation.register.password);
-    const repPasswordValidation = useSelector(({ validation }) => validation.register.repPassword);
+    // selectors-validation
+    const {
+        name,
+        email,
+        password,
+        repPassword
+    } = useSelector(({ validation }) => validation.register);
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -62,10 +76,10 @@ export const Register = () => {
                         placeholder="Name"
                         type="name"
                         onChange={({ target }, key) => handleOnChange({ target }, 'name')}
-                        invalid={nameValidation.error.isError}
+                        invalid={name.error.isError}
                     />
                     <Label for="inputName">Name</Label>
-                    <FormFeedback tooltip>{nameValidation.error.mes}</FormFeedback>
+                    <FormFeedback tooltip>{name.error.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -74,10 +88,10 @@ export const Register = () => {
                         placeholder="Email"
                         type="email"
                         onChange={({ target }, key) => handleOnChange({ target }, 'email')}
-                        invalid={emailValidation.error.isError}
+                        invalid={email.error.isError}
                     />
                     <Label for="inputEmail">Email</Label>
-                    <FormFeedback tooltip>{emailValidation.error.mes}</FormFeedback>
+                    <FormFeedback tooltip>{email.error.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <FormGroup floating>
@@ -87,10 +101,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'password')}
-                        invalid={passwordValidation.error.isError}
+                        invalid={password.error.isError}
                     />
                     <Label for="inputPassword">Password</Label>
-                    <FormFeedback tooltip>{passwordValidation.error.mes}</FormFeedback>
+                    <FormFeedback tooltip>{password.error.mes}</FormFeedback>
                 </FormGroup>
                 <FormGroup floating>
                     <Input
@@ -99,10 +113,10 @@ export const Register = () => {
                         placeholder="Password"
                         type="password"
                         onChange={({ target }, key) => handleOnChange({ target }, 'repPassword')}
-                        invalid={repPasswordValidation.error.isError}
+                        invalid={repPassword.error.isError}
                     />
                     <Label for="repeatPassword">Repeat password</Label>
-                    <FormFeedback tooltip>{repPasswordValidation.error.mes}</FormFeedback>
+                    <FormFeedback tooltip>{repPassword.error.mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <div style={{

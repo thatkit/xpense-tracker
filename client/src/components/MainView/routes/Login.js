@@ -1,7 +1,12 @@
-// React imports
-import { useState, useContext } from 'react';
+// React
+import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../AuthProvider';
+// React Router
 import { Link, useNavigate } from 'react-router-dom';
+// Redux
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../redux/actions/api/users';
+// Reactstrap
 import {
     Container,
     Form,
@@ -10,9 +15,6 @@ import {
     Label,
     Button
 } from 'reactstrap';
-// Redux imports
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../../../redux/actions/api/users';
 
 export const Login = () => {
     const [email, setEmail] = useState('');
@@ -21,9 +23,13 @@ export const Login = () => {
     const dispatch = useDispatch();
     const login = () => dispatch(loginUser({ email, password }));
     
+    // Pushing to /home if logged in
     const navigate = useNavigate();
-    const isLoggedIn = useContext(AuthContext);
-    isLoggedIn && navigate('/home');
+    const { isLoggedIn } = useContext(AuthContext);
+    useEffect(() => {
+        console.log(isLoggedIn);
+        isLoggedIn && navigate('/home');
+    }, [dispatch, navigate, isLoggedIn]);
 
     return (
         <Container style={{margin: '5rem auto'}}>

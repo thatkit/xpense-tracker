@@ -1,5 +1,5 @@
 // React imports
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -21,9 +21,12 @@ export const Login = () => {
     const dispatch = useDispatch();
     const login = () => dispatch(loginUser({ email, password }));
     
+    // Pushing to /home if logged in
     const navigate = useNavigate();
     const isLoggedIn = useContext(AuthContext);
-    isLoggedIn && navigate('/home');
+    useEffect(() => {
+        isLoggedIn && navigate('/home');
+    }, []);
 
     return (
         <Container style={{margin: '5rem auto'}}>

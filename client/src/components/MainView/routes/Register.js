@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '../../../AuthProvider';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Container,
     Form,
@@ -21,6 +23,13 @@ import {
 
 export const Register = () => {
     const dispatch = useDispatch();
+
+    // Pushing to /home if logged in
+    const navigate = useNavigate();
+    const isLoggedIn = useContext(AuthContext);
+    useEffect(() => {
+        isLoggedIn && navigate('/home');
+    }, []);
 
     const handleOnChange = ({ target }, key) => {
         // type user to store

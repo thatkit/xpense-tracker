@@ -38,13 +38,12 @@ export const Register = () => {
     const handleOnChange = ({ target }, key) => {
         // type user to store
         dispatch(typeUser({ [key]: target.value }));
+
         // validate
-        [
-            validateUserName,
-            validateUserEmail,
-            validateUserPassword,
-            validateUserRepPassword
-        ].forEach(action => dispatch(action()));
+        key === 'name' && dispatch(validateUserName());
+        key === 'email' && dispatch(validateUserEmail());
+        key === 'password' && dispatch(validateUserPassword());
+        key === 'repPassword' && dispatch(validateUserRepPassword());
     }
 
     // selectors-validation

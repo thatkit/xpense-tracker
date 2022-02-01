@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     const { isLoggedIn } = useSelector(({ api }) => api.users.login);
     const { isFetched, error } = useSelector(({ api }) => api.users.fetchUser);
-    const hasJwtToken = Boolean(getCookies('jwt_token'));
+    const hasJwtToken = getCookies('jwt_token');
     
     useEffect(() => {
         dispatch(fetchUser());

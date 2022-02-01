@@ -1,9 +1,13 @@
-import { Container } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Container, Alert } from "reactstrap";
 
 export const NoMatch = () => {
     return (
         <Container>
-            The page is not found.
+            <Alert color="warning">
+                The requested page was not found. You can browse to&nbsp;
+                <Link to='home'>Home</Link>.
+            </Alert>            
         </Container>
     );
 };

@@ -30,7 +30,7 @@ export const MainView = () => {
         }
       />
       <Route
-        path="/:listId"
+        path="/lists/:listId"
         element={
           <RequireAuth>
             <ListBoard />
@@ -39,11 +39,7 @@ export const MainView = () => {
       />
       <Route
         path="*"
-        element={
-          <RequireAuth>
-            <NoMatch />
-          </RequireAuth>
-        }
+        element={<NoMatch />}
       />
     </Routes>
   )

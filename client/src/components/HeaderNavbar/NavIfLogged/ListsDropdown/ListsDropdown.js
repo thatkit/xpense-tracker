@@ -43,7 +43,7 @@ export const ListsDropdown = () => {
                 {lists.map(({ _id, name }) => {
                     return (
                         <DropdownItem key={_id}>
-                            <Link to={_id}>{name}</Link>
+                            <Link to={`lists/${_id}`}>{name}</Link>
                         </DropdownItem>
                     )
                 })}

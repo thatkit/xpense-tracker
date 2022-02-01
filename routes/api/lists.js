@@ -21,7 +21,11 @@ router.get('/', auth, (req, res) => {
 // @description     GET a list
 // @access          Private
 router.get('/:listId', auth, (req, res) => {
-    // # no validation against incorrect listId type
+    // validation against incorrect listId type
+    if (!mongoose.Types.ObjectId.isValid(req.params.listId)) {
+        return res.status(400).json({ message: 'Invalid listId' });
+    }
+
     List
         .findById(req.params.listId)
         .populate('items')

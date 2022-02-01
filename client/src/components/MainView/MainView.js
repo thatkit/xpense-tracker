@@ -3,6 +3,7 @@ import { Login } from './routes/Login';
 import { Register } from './routes/Register';
 import { ListBoard } from './routes/ListBoard/ListBoard';
 import { Home } from './routes/Home/Home';
+import { NoMatch } from './routes/NoMatch';
 import { RequireAuth } from './RequireAuth';
 
 export const MainView = () => {
@@ -11,7 +12,16 @@ export const MainView = () => {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="*" element={<NoMatch />} />
       {/* Private (protected) routes */}
+      <Route 
+        path="/"
+        element={
+          <RequireAuth>
+            <Home />
+          </RequireAuth>
+        }
+      />
       <Route 
         path="/home"
         element={
@@ -21,7 +31,7 @@ export const MainView = () => {
         }
       />
       <Route
-        path="/:listId"
+        path="/lists/:listId"
         element={
           <RequireAuth>
             <ListBoard />

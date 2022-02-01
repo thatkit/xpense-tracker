@@ -5,11 +5,11 @@ import { logout } from '../../../../redux/slices/apiSlice';
 export const UserMenu = () => {
     const dispatch = useDispatch();
 
-    const user = useSelector(({ api }) => api.users.currentUser);
+    const { currentUser } = useSelector(({ api }) => api.users);
     
     return (
         <Button onClick={() => dispatch(logout())}>
-            {user.name || 'User name'}
+            {currentUser.name || 'User name'}
         </Button>
     )
 }

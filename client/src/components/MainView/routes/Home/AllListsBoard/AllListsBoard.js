@@ -26,6 +26,7 @@ export const AllListsBoard = () => {
     return (
         <CardGroup>
             {allLists.map(list => {
+                
                 const totalSpent = calcProgress(list.totalBudget, list.totalCosts);
 
                 return (

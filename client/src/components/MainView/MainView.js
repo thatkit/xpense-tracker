@@ -12,6 +12,7 @@ export const MainView = () => {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="*" element={<NoMatch />} />
       {/* Private (protected) routes */}
       <Route 
         path="/"
@@ -36,10 +37,6 @@ export const MainView = () => {
             <ListBoard />
           </RequireAuth>
         }
-      />
-      <Route
-        path="*"
-        element={<NoMatch />}
       />
     </Routes>
   )

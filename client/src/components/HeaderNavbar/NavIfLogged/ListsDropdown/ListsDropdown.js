@@ -34,10 +34,7 @@ export const ListsDropdown = () => {
             </DropdownToggle>
             <DropdownMenu>
                 <DropdownItem>
-                    <Link to="login">Login</Link>
-                </DropdownItem>
-                <DropdownItem>
-                    <Link to="register">Register</Link>
+                    <Link to="home">Home</Link>
                 </DropdownItem>
                 <DropdownItem divider />
                 {lists.map(({ _id, name }) => {

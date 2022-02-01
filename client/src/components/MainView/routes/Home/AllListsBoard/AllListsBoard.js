@@ -16,8 +16,7 @@ export const AllListsBoard = () => {
     const dispatch = useDispatch();
 
     // Lists
-    const newList = useSelector(({ api }) => api.lists.newList);
-    const lists = useSelector(({ api }) => api.lists.allLists);
+    const { newList, allLists } = useSelector(({ api }) => api.lists);
 
     // Autoupdate when first loggin in
     useEffect(() => {
@@ -26,10 +25,10 @@ export const AllListsBoard = () => {
     
     return (
         <CardGroup>
-            {lists.map(list => {
+            {allLists.map(list => {
                 return (
                     <Card color="light" key={list._id}>
-                    <Link to={`../${list._id}`} style={{textDecoration: 'none'}}>
+                    <Link to={`../lists/${list._id}`} style={{textDecoration: 'none'}}>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {list.name}

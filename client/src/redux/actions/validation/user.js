@@ -5,11 +5,11 @@ import validator from 'validator';
 export const validateUserName = createAsyncThunk(
     'validation/user/name',
     (arg, { getState }) => {
-        let userName = getState().api.users.newUser.name;  
+        let { name } = getState().api.users.newUser;  
         
-        if (!userName) throw new Error('Please, fill in your name');
-        if (userName.length < 4) throw new Error('Your name must include 4 symbols at least');
-        if (!validator.isAlphanumeric(userName)) throw new Error('Please, use only letters or numbers');
+        if (!name) throw new Error('Please, fill in your name');
+        if (name.length < 4) throw new Error('Your name must include 4 symbols at least');
+        if (!validator.isAlphanumeric(name)) throw new Error('Please, use only letters or numbers');
 
         return true;      
     }
@@ -19,10 +19,10 @@ export const validateUserName = createAsyncThunk(
 export const validateUserEmail = createAsyncThunk(
     'validation/user/email',
     (arg, { getState }) => {
-        let userEmail = getState().api.users.newUser.email;  
+        let { email } = getState().api.users.newUser;  
         
-        if (!userEmail) throw new Error('Please, fill in your email address');
-        if (!validator.isEmail(userEmail)) throw new Error('The email address is invalid');
+        if (!email) throw new Error('Please, fill in your email address');
+        if (!validator.isEmail(email)) throw new Error('The email address is invalid');
 
         return true;      
     }
@@ -33,10 +33,10 @@ export const validateUserEmail = createAsyncThunk(
 export const validateUserPassword = createAsyncThunk(
     'validation/user/password',
     (arg, { getState }) => {
-        let userPassword = getState().api.users.newUser.password;  
+        let { password } = getState().api.users.newUser;  
         
-        if (!userPassword) throw new Error('Please, fill in your password');
-        if (!validator.isStrongPassword(userPassword, {
+        if (!password) throw new Error('Please, fill in your password');
+        if (!validator.isStrongPassword(password, {
             minLowercase: 0,
             minUppercase: 0,
             minNumbers: 0,
@@ -52,11 +52,10 @@ export const validateUserPassword = createAsyncThunk(
 export const validateUserRepPassword = createAsyncThunk(
     'validation/user/repPassword',
     (arg, { getState }) => {
-        let userPassword = getState().api.users.newUser.password;  
-        let userRepPassword = getState().api.users.newUser.repPassword;  
+        let { password, repPassword } = getState().api.users.newUser.password;  
         
-        if (!userRepPassword) throw new Error('Please, repeat your password');
-        if (userPassword !== userRepPassword) throw new Error('The passwords do not match');
+        if (!repPassword) throw new Error('Please, repeat your password');
+        if (password !== repPassword) throw new Error('The passwords do not match');
 
         return true;      
     }

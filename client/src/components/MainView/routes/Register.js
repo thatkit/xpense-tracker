@@ -34,6 +34,7 @@ export const Register = () => {
         isLoggedIn && navigate('/home');
     }, [dispatch, navigate, isLoggedIn]);
 
+    // on change handler
     const handleOnChange = ({ target }, key) => {
         // type user to store
         dispatch(typeUser({ [key]: target.value }));
@@ -43,8 +44,16 @@ export const Register = () => {
             validateUserEmail,
             validateUserPassword,
             validateUserRepPassword
-        ].forEach(act => dispatch(act()));
+        ].forEach(action => dispatch(action()));
     }
+
+    // selectors-validation
+    const {
+        name,
+        email,
+        password,
+        repPassword
+    } = useSelector(({ validation }) => validation.register);
 
     // if validate ok, register
     const register = () => {
@@ -57,14 +66,6 @@ export const Register = () => {
             dispatch(registerUser());
         }
     }
-
-    // selectors-validation
-    const {
-        name,
-        email,
-        password,
-        repPassword
-    } = useSelector(({ validation }) => validation.register);
     
     return (
         <Container style={{margin: '5rem auto'}}>

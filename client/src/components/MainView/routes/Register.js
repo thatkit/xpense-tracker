@@ -58,7 +58,7 @@ export const Register = () => {
         }
     }
 
-    // selectors
+    // selectors-validation
     const {
         name,
         email,

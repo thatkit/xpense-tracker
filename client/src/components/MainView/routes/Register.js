@@ -29,7 +29,7 @@ export const Register = () => {
     const isLoggedIn = useContext(AuthContext);
     useEffect(() => {
         isLoggedIn && navigate('/home');
-    }, []);
+    }, [dispatch, navigate, isLoggedIn]);
 
     const handleOnChange = ({ target }, key) => {
         // type user to store

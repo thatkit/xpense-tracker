@@ -1,4 +1,6 @@
 export const getCookies = key => {
+    if (!Boolean(document.cookie)) return 'empty'; // # idiotic way tbh
+
     return document
         .cookie
         .split('; ')

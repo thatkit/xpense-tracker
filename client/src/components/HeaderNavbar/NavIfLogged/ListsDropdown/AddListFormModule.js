@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { typeList } from '../../../../redux/slices/apiSlice';
-import { addList, fetchAllLists } from '../../../../redux/actions/api/lists';
+import { addList } from '../../../../redux/actions/api/lists';
 import { toggleListsDropdown, toggleNewListFormModule } from '../../../../redux/slices/uiSlice';
 import {
     Modal,

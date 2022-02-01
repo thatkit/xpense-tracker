@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const jwtToken = getCookies('jwt_token');
         jwtToken && dispatch(fetchUser());
-    }, []);
+    }, [dispatch]);
     
     const { isFetched, error } = useSelector(({ api }) => api.users.fetchUser);
 
@@ -19,5 +19,6 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={isFetched}>
             {(isFetched || error.isError) && children}
-        </AuthContext.Provider>);
+        </AuthContext.Provider>
+    );
 };

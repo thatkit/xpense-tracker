@@ -26,7 +26,7 @@ export const Login = () => {
     const isLoggedIn = useContext(AuthContext);
     useEffect(() => {
         isLoggedIn && navigate('/home');
-    }, []);
+    }, [dispatch, navigate, isLoggedIn]);
 
     return (
         <Container style={{margin: '5rem auto'}}>

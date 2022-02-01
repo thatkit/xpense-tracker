@@ -26,7 +26,7 @@ export const Register = () => {
 
     // Pushing to /home if logged in
     const navigate = useNavigate();
-    const isLoggedIn = useContext(AuthContext);
+    const { isLoggedIn } = useContext(AuthContext);
     useEffect(() => {
         isLoggedIn && navigate('/home');
     }, [dispatch, navigate, isLoggedIn]);

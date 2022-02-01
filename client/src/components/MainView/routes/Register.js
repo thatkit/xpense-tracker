@@ -1,5 +1,5 @@
 // React
-import { useEffect, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../AuthProvider';
 // React Router
 import { Link, useNavigate } from 'react-router-dom';
@@ -26,24 +26,36 @@ import {
 
 export const Register = () => {
     const dispatch = useDispatch();
+    
+    // Appearing and disappearing UI for repPassword
+    const [ display, setDisplay ] = useState('none');
 
+    // selectors-validation
+    const {
+        name,
+        email,
+        password,
+        repPassword
+    } = useSelector(({ validation }) => validation.register);
+    
     // Pushing to /home if logged in
     const navigate = useNavigate();
     const { isLoggedIn } = useContext(AuthContext);
     useEffect(() => {
         isLoggedIn && navigate('/home');
-    }, [dispatch, navigate, isLoggedIn]);
-
+        !password ? setDisplay('block') : setDisplay('none');
+    }, [dispatch, navigate, isLoggedIn, password]);
+    
+    // on change handler
     const handleOnChange = ({ target }, key) => {
         // type user to store
         dispatch(typeUser({ [key]: target.value }));
+
         // validate
-        [
-            validateUserName,
-            validateUserEmail,
-            validateUserPassword,
-            validateUserRepPassword
-        ].forEach(act => dispatch(act()));
+        key === 'name' && dispatch(validateUserName());
+        key === 'email' && dispatch(validateUserEmail());
+        key === 'password' && dispatch(validateUserPassword());
+        key === 'repPassword' && dispatch(validateUserRepPassword());
     }
 
     // if validate ok, register
@@ -57,14 +69,6 @@ export const Register = () => {
             dispatch(registerUser());
         }
     }
-
-    // selectors-validation
-    const {
-        name,
-        email,
-        password,
-        repPassword
-    } = useSelector(({ validation }) => validation.register);
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -106,7 +110,10 @@ export const Register = () => {
                     <Label for="inputPassword">Password</Label>
                     <FormFeedback tooltip>{password.error.mes}</FormFeedback>
                 </FormGroup>
-                <FormGroup floating>
+                <FormGroup floating
+                    // appear only when password is not empty
+                    style={{display: display}}
+                >
                     <Input
                         id="repeatPassword"
                         name="password"

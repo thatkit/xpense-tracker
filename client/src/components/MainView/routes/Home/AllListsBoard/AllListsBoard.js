@@ -16,8 +16,7 @@ export const AllListsBoard = () => {
     const dispatch = useDispatch();
 
     // Lists
-    const newList = useSelector(({ api }) => api.lists.newList);
-    const lists = useSelector(({ api }) => api.lists.allLists);
+    const { newList, allLists } = useSelector(({ api }) => api.lists);
 
     // Autoupdate when first loggin in
     useEffect(() => {
@@ -26,10 +25,13 @@ export const AllListsBoard = () => {
     
     return (
         <CardGroup>
-            {lists.map(list => {
+            {allLists.map(list => {
+                
+                const totalSpent = calcProgress(list.totalBudget, list.totalCosts);
+
                 return (
                     <Card color="light" key={list._id}>
-                    <Link to={`../${list._id}`} style={{textDecoration: 'none'}}>
+                    <Link to={`../lists/${list._id}`} style={{textDecoration: 'none'}}>
                         <CardBody>
                             <CardTitle tag="h5">
                                 {list.name}
@@ -53,8 +55,8 @@ export const AllListsBoard = () => {
                                 {list.remainder}
                             </CardSubtitle>
                             <Progress
-                                value={calcProgress(100, 75)}
-                                color={75 <= 80 ? 'success' : 'warning'}
+                                value={totalSpent}
+                                color={totalSpent <= 80 ? 'success' : 'warning'}
                                 animated
                             ></Progress>
                         </CardBody>

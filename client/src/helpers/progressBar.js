@@ -1,1 +1,1 @@
-export const calcProgress = (total, completed) => completed / total * 100;
+export const calcProgress = (totalBudget, totalCosts) => totalCosts / totalBudget * 100;

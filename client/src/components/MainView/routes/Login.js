@@ -27,7 +27,6 @@ export const Login = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useContext(AuthContext);
     useEffect(() => {
-        console.log(isLoggedIn);
         isLoggedIn && navigate('/home');
     }, [dispatch, navigate, isLoggedIn]);
 

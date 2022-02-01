@@ -26,6 +26,8 @@ export const AllListsBoard = () => {
     return (
         <CardGroup>
             {allLists.map(list => {
+                const totalSpent = calcProgress(list.totalBudget, list.totalCosts);
+
                 return (
                     <Card color="light" key={list._id}>
                     <Link to={`../lists/${list._id}`} style={{textDecoration: 'none'}}>
@@ -52,8 +54,8 @@ export const AllListsBoard = () => {
                                 {list.remainder}
                             </CardSubtitle>
                             <Progress
-                                value={calcProgress(100, 75)}
-                                color={75 <= 80 ? 'success' : 'warning'}
+                                value={totalSpent}
+                                color={totalSpent <= 80 ? 'success' : 'warning'}
                                 animated
                             ></Progress>
                         </CardBody>

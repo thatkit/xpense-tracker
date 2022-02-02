@@ -21,13 +21,14 @@ router.get('/', auth, (req, res) => {
 // @description     GET a list
 // @access          Private
 router.get('/:listId', auth, (req, res) => {
+    const listId = req.params.listId;
     // validation against incorrect listId type
-    if (!mongoose.Types.ObjectId.isValid(req.params.listId)) {
+    if (!mongoose.Types.ObjectId.isValid(listId)) {
         return res.status(400).json({ message: 'Invalid listId' });
     }
 
     List
-        .findById(req.params.listId)
+        .findById(listId)
         .populate('items')
         .then(list => {
             !list
@@ -81,15 +82,15 @@ router.post('/', auth, (req, res) => {
 // @access          Private
 router.delete('/:listId', auth, (req, res) => {
     const listId = req.params.listId;
-    // # need simple validation against empty listId
-    // # might be DELETE to '/' request
+    // validation against incorrect listId type
+    if (!mongoose.Types.ObjectId.isValid(listId)) {
+        return res.status(400).json({ message: 'Invalid listId' });
+    }
 
     // Removing the list from List model
     List
-        .findById(listId)
-        .then(list => !list
-            ? res.status(400).json({ message: 'Invalid listId' })
-            : list.remove().then(() => res.status(200).json({ id: listId })))
+        .findByIdAndDelete(listId)
+        .then(({ _id }) => res.status(200).json({ id: _id }))
         .catch(catchCallback);
 
     // Removing the list ID from User model
@@ -102,7 +103,11 @@ router.delete('/:listId', auth, (req, res) => {
 
     // Removing all related items from Item model
     Item
-        .remove({ listId })
+        .findOneAndDelete(({ listId: req.user.id }), (err, doc) => {
+            console.log('1', doc)
+            console.log('2', err)
+        })
+        .then(result => console.log(result))
         .catch(catchCallback);
 });
 

@@ -29,6 +29,7 @@ export const Register = () => {
     
     // Appearing and disappearing UI for repPassword
     const [ display, setDisplay ] = useState('none');
+    const passwordData = useSelector(({ api }) => api.users.newUser.password);
 
     // selectors-validation
     const {
@@ -37,14 +38,14 @@ export const Register = () => {
         password,
         repPassword
     } = useSelector(({ validation }) => validation.register);
-    
+
     // Pushing to /home if logged in
     const navigate = useNavigate();
     const { isLoggedIn } = useContext(AuthContext);
     useEffect(() => {
         isLoggedIn && navigate('/home');
-        !password ? setDisplay('block') : setDisplay('none');
-    }, [dispatch, navigate, isLoggedIn, password]);
+        passwordData ? setDisplay('block') : setDisplay('none'); // styling
+    }, [dispatch, navigate, isLoggedIn, passwordData]);
     
     // on change handler
     const handleOnChange = ({ target }, key) => {

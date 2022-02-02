@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config({ path: './config/.env' });
+const catchCallback = require('./helpers/errorHandling');
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json());
 mongoose
     .connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.fmalu.mongodb.net/xpense-tracker?retryWrites=true&w=majority`)
     .then(() => console.log('MongoDB connected'))
-    .catch(e => console.log(e));
+    .catch(catchCallback);
 
 // Use Routes
 app.use('/api/users', require('./routes/api/users'));

@@ -55,7 +55,7 @@ router.post('/register', (req, res) => {
                 });
             })
         })
-        .catch(err => console.log(err));
+        .catch(catchCallback);
 });
 
 // @route           POST api/users/login
@@ -98,7 +98,7 @@ router.post('/login', (req, res) => {
                 );
             })
         })
-        .catch(err => console.log(err));
+        .catch(catchCallback);
 });
 
 // @route           GET api/users/fetch
@@ -109,7 +109,8 @@ router.get('/fetch', auth, (req, res) => {
         .findById(req.user.id)
         .select('-password')
         .populate('lists')
-        .then(user => res.json(user));
+        .then(user => res.json(user))
+        .catch(catchCallback);
 });
 
 // @route           GET api/users

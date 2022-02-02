@@ -70,6 +70,9 @@ export const Register = () => {
             dispatch(registerUser());
         }
     }
+
+    // Validating through backend & DB
+    const { isError, mes } = useSelector(({ api }) => api.users.register.error);
     
     return (
         <Container style={{margin: '5rem auto'}}>
@@ -93,10 +96,10 @@ export const Register = () => {
                         placeholder="Email"
                         type="email"
                         onChange={({ target }, key) => handleOnChange({ target }, 'email')}
-                        invalid={email.error.isError}
+                        invalid={email.error.isError || isError}
                     />
                     <Label for="inputEmail">Email</Label>
-                    <FormFeedback tooltip>{email.error.mes}</FormFeedback>
+                    <FormFeedback tooltip>{email.error.mes || mes}</FormFeedback>
                 </FormGroup>
                 {' '}
                 <FormGroup floating>

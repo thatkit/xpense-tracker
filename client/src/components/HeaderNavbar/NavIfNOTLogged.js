@@ -12,7 +12,7 @@ export const NavIfNOTLogged = () => {
                 </NavLink>
             </NavItem>
             <NavItem>
-                <NavLink href="https://github.com/thatkit" target="_blank">
+                <NavLink href="https://github.com/thatkit/xpense-tracker" target="_blank">
                     Github
                 </NavLink>
             </NavItem>

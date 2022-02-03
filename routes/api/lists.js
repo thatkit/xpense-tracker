@@ -103,11 +103,8 @@ router.delete('/:listId', auth, (req, res) => {
 
     // Removing all related items from Item model
     Item
-        .findOneAndDelete(({ listId: req.user.id }), (err, doc) => {
-            console.log('1', doc)
-            console.log('2', err)
-        })
-        .then(result => console.log(result))
+        .findOneAndDelete({ listId: req.user.id })
+        .then(() => {})
         .catch(catchCallback);
 });
 

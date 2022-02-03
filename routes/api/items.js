@@ -15,8 +15,8 @@ router.post('/', auth, (req, res, next) => {
     const sum = Number(req.body.sum);
 
     // simple validation
-    if (!listId || !name || !desc || !sum) {
-        return res.status(400).json({ message: 'Request must include listId, name, desc, sum' });
+    if (!listId || !name || !sum) {
+        return res.status(400).json({ message: 'New item must include at least name and sum' });
     }
 
     // passing positive sumChange to req

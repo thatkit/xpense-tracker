@@ -103,7 +103,7 @@ router.delete('/:listId', auth, (req, res) => {
 
     // Removing all related items from Item model
     Item
-        .findOneAndDelete({ listId: req.user.id })
+        .deleteMany({ listId })
         .then(() => {})
         .catch(catchCallback);
 });
@@ -117,5 +117,15 @@ router.get('/all/all', (req, res) => {
         .then(lists => res.json(lists))
         .catch(catchCallback);
 });
+
+// // @route           GET api/lists
+// // @description     GET all lists
+// // @access          ADMIN
+// router.get('/checkDeletedItems', (req, res) => {
+//     List
+//         .find()
+//         .then(lists => res.json(lists))
+//         .catch(catchCallback);
+// });
 
 module.exports = router;

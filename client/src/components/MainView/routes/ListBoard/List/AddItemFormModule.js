@@ -10,6 +10,8 @@ import {
     Button
 } from 'reactstrap';
 import { ItemForm } from '../../../../utility/ItemForm';
+import { ErrorModule } from '../../../../utility/ErrorModule';
+import { useState } from 'react';  // # test area
 
 export const AddItemFormModule = (props) => {
     const dispatch = useDispatch();
@@ -27,6 +29,10 @@ export const AddItemFormModule = (props) => {
         dispatch(unselectItem());
         toggler();
     }
+
+    // # test area
+    const [isErrorOpen, setIsErrorOpen] = useState(false);
+    // # test area
 
     return (
         <>
@@ -51,7 +57,11 @@ export const AddItemFormModule = (props) => {
                     <Button onClick={toggler}>
                         Cancel
                     </Button>
+
+                    <Button onClick={() => setIsErrorOpen(!isErrorOpen)}>Error module</Button>
                 </ModalFooter>
+
+                <ErrorModule isOpen={isErrorOpen} errorMes='ERORRRR!!!!' />
             </Modal>
         </>
     )

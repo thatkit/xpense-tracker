@@ -12,9 +12,12 @@ import {
 import { ItemForm } from '../../../../utility/ItemForm';
 import { ErrorModule } from '../../../../utility/ErrorModule';
 
-export const AddItemFormModule = (props) => {
+export const AddItemFormModule = () => {
     const dispatch = useDispatch();
 
+    // selectors-validation
+    const { name, sum } = useSelector(({ validation }) => validation.item);
+    
     // Toggle behaviour
     const isOpen = useSelector(({ ui }) => ui.toggleStates.addItemFormModuleIsOpen);
     const toggler = () => {
@@ -24,7 +27,9 @@ export const AddItemFormModule = (props) => {
 
     // Send (add) a new item
     const addNewItem = () => {
-        dispatch(addItem());
+        if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+            dispatch(addItem());
+        }
         dispatch(unselectItem());
         dispatch(toggleAddItemFormModule());
     }
@@ -42,7 +47,9 @@ export const AddItemFormModule = (props) => {
                 toggle={toggler}
             >
                 <ModalHeader>Add new item</ModalHeader>
-                <ModalBody><ItemForm /></ModalBody>
+                <ModalBody>
+                    <ItemForm name={name} sum={sum} />
+                </ModalBody>
                 <ModalFooter>
                     <Button
                         color="success"

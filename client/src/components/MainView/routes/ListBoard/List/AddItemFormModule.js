@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../../../redux/actions/api/items';
 import { unselectItem } from '../../../../../redux/slices/apiSlice';
-import { toggleNewItemFormModule } from '../../../../../redux/slices/uiSlice';
+import { toggleAddItemFormModule, toggleErrorModuleIsOpen } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -11,28 +11,33 @@ import {
 } from 'reactstrap';
 import { ItemForm } from '../../../../utility/ItemForm';
 import { ErrorModule } from '../../../../utility/ErrorModule';
-import { useState } from 'react';  // # test area
+import { useEffect } from 'react';
 
 export const AddItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.newItemFormModuleIsOpen);
+    const isOpen = useSelector(({ ui }) => ui.toggleStates.addItemFormModuleIsOpen);
     const toggler = () => {
         dispatch(unselectItem());
-        dispatch(toggleNewItemFormModule());
+        dispatch(toggleAddItemFormModule());
     }
+
+
+    const { isError } = useSelector(({ api }) => api.items.addItem.error);
+
+    useEffect(() => {
+        dispatch(toggleErrorModuleIsOpen());
+    }, [dispatch, isError]);
+
 
     // Send (add) a new item
     const addNewItem = () => {
         dispatch(addItem());
         dispatch(unselectItem());
-        toggler();
+        console.log(isError);
+        !isError && dispatch(toggleAddItemFormModule());
     }
-
-    // # test area
-    const [isErrorOpen, setIsErrorOpen] = useState(false);
-    // # test area
 
     return (
         <>
@@ -57,11 +62,9 @@ export const AddItemFormModule = (props) => {
                     <Button onClick={toggler}>
                         Cancel
                     </Button>
-
-                    <Button onClick={() => setIsErrorOpen(!isErrorOpen)}>Error module</Button>
                 </ModalFooter>
 
-                <ErrorModule isOpen={isErrorOpen} errorMes='ERORRRR!!!!' />
+                <ErrorModule />
             </Modal>
         </>
     )

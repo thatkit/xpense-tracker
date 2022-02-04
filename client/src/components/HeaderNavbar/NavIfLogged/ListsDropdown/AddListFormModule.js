@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { typeList } from '../../../../redux/slices/apiSlice';
 import { addList } from '../../../../redux/actions/api/lists';
-import { toggleListsDropdown, toggleNewListFormModule } from '../../../../redux/slices/uiSlice';
+import { toggleListsDropdown, toggleAddListFormModule } from '../../../../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -22,10 +22,10 @@ export const AddListFormModule = (props) => {
     }
 
     // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.newListFormModuleIsOpen);
+    const isOpen = useSelector(({ ui }) => ui.toggleStates.addListFormModuleIsOpen);
     const toggler = () => {
         dispatch(toggleListsDropdown());
-        dispatch(toggleNewListFormModule());
+        dispatch(toggleAddListFormModule());
     }
 
     // Send (add) a new list

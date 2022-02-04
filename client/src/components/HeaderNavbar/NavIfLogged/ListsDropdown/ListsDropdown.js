@@ -15,7 +15,7 @@ export const ListsDropdown = () => {
     const dispatch = useDispatch();
 
     // Collapse toggle behaviour
-    const isOpen = useSelector(({ ui }) => ui.listsDropdownIsOpen);
+    const isOpen = useSelector(({ ui }) => ui.toggleStates.listsDropdownIsOpen);
     const toggler = () => dispatch(toggleListsDropdown());
 
     // Lists

@@ -16,7 +16,7 @@ export const EditItemFormModule = (props) => {
     const dispatch = useDispatch();
 
     // Toggle behaviour
-    const isOpen = useSelector(state => state.ui.editItemFormModuleIsOpen);
+    const isOpen = useSelector(({ ui }) => ui.toggleStates.editItemFormModuleIsOpen);
     const toggler = () => {
         dispatch(toggleEditItemFormModule());
     }

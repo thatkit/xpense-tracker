@@ -12,28 +12,32 @@ import {
     validateUserEmailFulfilled, validateUserEmailRejected,
     validateUserPasswordFulfilled, validateUserPasswordRejected,
     validateUserRepPasswordFulfilled, validateUserRepPasswordRejected
-} from '../extraReducers/validation/user'
+} from '../extraReducers/validation/user';
+
+const validationStateObj = {
+    isValid: false,
+    error: { isError: false, mes: ''}
+}
 
 export const validationSlice = createSlice({
     name: 'validation',
     initialState: {
         register: {
-            name: {
-                isValid: false,
-                error: { isError: false, mes: ''}
-            },
-            email: {
-                isValid: false,
-                error: { isError: false, mes: ''}
-            },
-            password: {
-                isValid: false,
-                error: { isError: false, mes: ''}
-            },
+            name: validationStateObj,
+            email: validationStateObj,
+            password: validationStateObj,
             repPassword: {
                 isMatched: false,
                 error: { isError: false, mes: ''}
             }
+        },
+        list: {
+            name: validationStateObj,
+            totalBudget: validationStateObj
+        },
+        item: {
+            name: validationStateObj,
+            sum: validationStateObj
         }
     },
     reducers: {},
@@ -51,6 +55,12 @@ export const validationSlice = createSlice({
         // @ user/repPassword
         builder.addCase(validateUserRepPassword.fulfilled, validateUserRepPasswordFulfilled);
         builder.addCase(validateUserRepPassword.rejected, validateUserRepPasswordRejected);
+        // LIST validation
+        // @ list/name
+        // @ list/totalBudget
+        // ITEM validation
+        // @ item/name
+        // @ item/sum
     }
 });
 

@@ -3,29 +3,69 @@ import { createSlice } from "@reduxjs/toolkit";
 export const uiSlice = createSlice({
     name: 'ui',
     initialState: {
-        listsDropdownIsOpen: false,
-        newListFormModuleIsOpen: false,
-        newItemFormModuleIsOpen: false,
-        editItemFormModuleIsOpen: false
+        toggleStates: {
+            listsDropdownIsOpen: false,
+            addListFormModuleIsOpen: false,
+            addItemFormModuleIsOpen: false,
+            editItemFormModuleIsOpen: false,
+            errorModuleIsOpen: false
+        }
     },
     reducers: {
         // @        reducers for isOpen reactstrap props
-        toggleListsDropdown(state) { state.listsDropdownIsOpen = !state.listsDropdownIsOpen },
-        toggleNewListFormModule(state) { state.newListFormModuleIsOpen = !state.newListFormModuleIsOpen },
-        toggleNewItemFormModule(state) { state.newItemFormModuleIsOpen = !state.newItemFormModuleIsOpen },
+        toggleListsDropdown(state) {
+            return {
+                ...state,
+                toggleStates: {
+                    ...state.toggleStates,
+                    listsDropdownIsOpen: !state.toggleStates.listsDropdownIsOpen
+                }
+            }
+        },
+        toggleAddListFormModule(state) {
+            return {
+                ...state,
+                toggleStates: {
+                    ...state.toggleStates,
+                    addListFormModuleIsOpen: !state.toggleStates.addListFormModuleIsOpen
+                }
+            }
+        },
+        toggleAddItemFormModule(state) {
+            return {
+                ...state,
+                toggleStates: {
+                    ...state.toggleStates,
+                    addItemFormModuleIsOpen: !state.toggleStates.addItemFormModuleIsOpen
+                }
+            }
+        },
         toggleEditItemFormModule(state) {
             return {
                 ...state,
-                editItemFormModuleIsOpen: !state.editItemFormModuleIsOpen
+                toggleStates: {
+                    ...state.toggleStates,
+                    editItemFormModuleIsOpen: !state.toggleStates.editItemFormModuleIsOpen
+                }
             }
         },
+        toggleErrorModuleIsOpen(state) {
+            return {
+                ...state,
+                toggleStates: {
+                    ...state.toggleStates,
+                    errorModuleIsOpen: !state.toggleStates.errorModuleIsOpen
+                }
+            }
+        }
     }
 });
 
 export const {
     toggleListsDropdown,
-    toggleNewListFormModule,
-    toggleNewItemFormModule,
-    toggleEditItemFormModule
+    toggleAddListFormModule,
+    toggleAddItemFormModule,
+    toggleEditItemFormModule,
+    toggleErrorModuleIsOpen
 } = uiSlice.actions;
 export default uiSlice.reducer;

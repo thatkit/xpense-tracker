@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../../../redux/actions/api/items';
 import { unselectItem } from '../../../../../redux/slices/apiSlice';
 import { toggleAddItemFormModule } from '../../../../../redux/slices/uiSlice';
+import { validateItemName, validateItemSum } from '../../../../../redux/actions/validation/item';
 import {
     Modal,
     ModalHeader,
@@ -12,9 +13,12 @@ import {
 import { ItemForm } from '../../../../utility/ItemForm';
 import { ErrorModule } from '../../../../utility/ErrorModule';
 
-export const AddItemFormModule = (props) => {
+export const AddItemFormModule = () => {
     const dispatch = useDispatch();
 
+    // selectors-validation
+    const { name, sum } = useSelector(({ validation }) => validation.item);
+    
     // Toggle behaviour
     const isOpen = useSelector(({ ui }) => ui.toggleStates.addItemFormModuleIsOpen);
     const toggler = () => {
@@ -24,9 +28,15 @@ export const AddItemFormModule = (props) => {
 
     // Send (add) a new item
     const addNewItem = () => {
-        dispatch(addItem());
-        dispatch(unselectItem());
-        dispatch(toggleAddItemFormModule());
+        if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+            dispatch(addItem());
+            dispatch(unselectItem());
+            dispatch(toggleAddItemFormModule());
+            return null;
+        }
+        // if a user clicks 'Add' without even touching input fields
+        dispatch(validateItemName());
+        dispatch(validateItemSum());
     }
 
     return (
@@ -42,7 +52,9 @@ export const AddItemFormModule = (props) => {
                 toggle={toggler}
             >
                 <ModalHeader>Add new item</ModalHeader>
-                <ModalBody><ItemForm /></ModalBody>
+                <ModalBody>
+                    <ItemForm name={name} sum={sum} />
+                </ModalBody>
                 <ModalFooter>
                     <Button
                         color="success"

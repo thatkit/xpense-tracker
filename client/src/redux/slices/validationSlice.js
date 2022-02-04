@@ -1,18 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 // ACTIONS
+// @    user
 import {
     validateUserName,
     validateUserEmail,
     validateUserPassword,
-    validateUserRepPassword
+    validateUserRepPassword,
 } from '../actions/validation/user';
+// @    list
+// @    item
+import { validateItemName, validateItemSum } from '../actions/validation/item';
 // EXTRA REDUCERS
+// @    user
 import {
     validateUserNameFulfilled, validateUserNameRejected,
     validateUserEmailFulfilled, validateUserEmailRejected,
     validateUserPasswordFulfilled, validateUserPasswordRejected,
-    validateUserRepPasswordFulfilled, validateUserRepPasswordRejected
+    validateUserRepPasswordFulfilled, validateUserRepPasswordRejected,
 } from '../extraReducers/validation/user';
+// @    list
+// @    item
+import {
+    validateItemNameFulfilled, validateItemNameRejected,
+    validateItemSumFulfilled, validateItemSumRejected
+} from '../extraReducers/validation/item';
 
 const validationStateObj = {
     isValid: false,
@@ -60,7 +71,11 @@ export const validationSlice = createSlice({
         // @ list/totalBudget
         // ITEM validation
         // @ item/name
+        builder.addCase(validateItemName.fulfilled, validateItemNameFulfilled);
+        builder.addCase(validateItemName.rejected, validateItemNameRejected);
         // @ item/sum
+        builder.addCase(validateItemSum.fulfilled, validateItemSumFulfilled);
+        builder.addCase(validateItemSum.rejected, validateItemSumRejected);
     }
 });
 

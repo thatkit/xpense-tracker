@@ -1,17 +1,24 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { typeItem } from '../../redux/slices/apiSlice';
+import { validateItemName, validateItemSum } from '../../redux/actions/validation/item';
 import {
     Form,
     FormGroup,
     Input,
-    Label
+    Label,
+    FormFeedback
 } from 'reactstrap';
 
 export const ItemForm = (props) => {
-    // Sending inputs to the Redux store
     const dispatch = useDispatch();
+    
+    // Sending inputs to the Redux store
     const handleOnChange = ({ target }, key) => {
         dispatch(typeItem({ [key]: target.value }));
+
+        // validate
+        key === 'name' && dispatch(validateItemName());
+        key === 'sum' && dispatch(validateItemSum());
     }
 
     // retrieving item data props for editting
@@ -27,8 +34,10 @@ export const ItemForm = (props) => {
                     placeholder='Name'
                     required
                     onChange={({ target }, key) => handleOnChange({ target }, 'name')}
+                    invalid={props.name.error.isError}
                 />
                 <Label for="name">Name</Label>
+                <FormFeedback tooltip>{props.name.error.mes}</FormFeedback>
             </FormGroup>
             <FormGroup floating>
                 <Input
@@ -48,8 +57,10 @@ export const ItemForm = (props) => {
                     placeholder='Sum'
                     required
                     onChange={({ target }, key) => handleOnChange({ target }, 'sum')}
+                    invalid={props.sum.error.isError}
                 />
                 <Label for="sum">Sum</Label>
+                <FormFeedback tooltip>{props.sum.error.mes}</FormFeedback>
             </FormGroup>
         </Form>
     );

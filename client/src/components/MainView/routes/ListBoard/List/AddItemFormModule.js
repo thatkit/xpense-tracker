@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../../../redux/actions/api/items';
 import { unselectItem } from '../../../../../redux/slices/apiSlice';
-import { toggleAddItemFormModule, toggleErrorModuleIsOpen } from '../../../../../redux/slices/uiSlice';
+import { toggleAddItemFormModule } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
     ModalHeader,
@@ -11,7 +11,6 @@ import {
 } from 'reactstrap';
 import { ItemForm } from '../../../../utility/ItemForm';
 import { ErrorModule } from '../../../../utility/ErrorModule';
-import { useEffect } from 'react';
 
 export const AddItemFormModule = (props) => {
     const dispatch = useDispatch();
@@ -23,20 +22,11 @@ export const AddItemFormModule = (props) => {
         dispatch(toggleAddItemFormModule());
     }
 
-
-    const { isError } = useSelector(({ api }) => api.items.addItem.error);
-
-    useEffect(() => {
-        dispatch(toggleErrorModuleIsOpen());
-    }, [dispatch, isError]);
-
-
     // Send (add) a new item
     const addNewItem = () => {
         dispatch(addItem());
         dispatch(unselectItem());
-        console.log(isError);
-        !isError && dispatch(toggleAddItemFormModule());
+        dispatch(toggleAddItemFormModule());
     }
 
     return (

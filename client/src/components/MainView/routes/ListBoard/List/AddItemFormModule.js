@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../../../../redux/actions/api/items';
 import { unselectItem } from '../../../../../redux/slices/apiSlice';
 import { toggleAddItemFormModule } from '../../../../../redux/slices/uiSlice';
+import { validateItemName, validateItemSum } from '../../../../../redux/actions/validation/item';
 import {
     Modal,
     ModalHeader,
@@ -29,9 +30,13 @@ export const AddItemFormModule = () => {
     const addNewItem = () => {
         if ([ name, sum ].every(({ isValid }) => isValid === true)) {
             dispatch(addItem());
+            dispatch(unselectItem());
+            dispatch(toggleAddItemFormModule());
+            return null;
         }
-        dispatch(unselectItem());
-        dispatch(toggleAddItemFormModule());
+        // if a user clicks 'Add' without even touching input fields
+        dispatch(validateItemName());
+        dispatch(validateItemSum());
     }
 
     return (

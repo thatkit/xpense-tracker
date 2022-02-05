@@ -12,8 +12,14 @@ import {
 } from 'reactstrap';
 import { ItemForm } from '../../../../utility/ItemForm';
 
-export const EditItemFormModule = (props) => {
+export const EditItemFormModule = () => {
     const dispatch = useDispatch();
+
+    // selectors-validation
+    const { itemId, name, sum } = useSelector(({ validation }) => validation.item);
+    // selectors for prev item data
+    const { name as , sum } = useSelector(({ api }) => api.lists.currentList.items)
+        .find(({ _id }) => _id === itemId);
 
     // Toggle behaviour
     const isOpen = useSelector(({ ui }) => ui.toggleStates.editItemFormModuleIsOpen);
@@ -23,9 +29,15 @@ export const EditItemFormModule = (props) => {
     
     // Edit (update) an item
     const editItem = () => {
-        dispatch(updateItem());
-        dispatch(unselectItem());
-        toggler();
+        // if no change
+        if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+            console.log('1')
+            dispatch(updateItem());
+            dispatch(unselectItem());
+            dispatch(toggleEditItemFormModule());
+            return null;
+        }
+        console.log('2')
     }
 
     return (
@@ -41,7 +53,7 @@ export const EditItemFormModule = (props) => {
                 toggle={toggler}
             >
                 <ModalHeader>Edit item</ModalHeader>
-                <ModalBody><ItemForm /></ModalBody>
+                <ModalBody><ItemForm name={name} sum={sum} /></ModalBody>
                 <ModalFooter>
                     <Button
                         color="warning"

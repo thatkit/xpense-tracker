@@ -4,6 +4,7 @@
   "description": "Expense tracker for personal needs",
   "main": "server.js",
   "scripts": {
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "client": "npm run start --prefix client",
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",

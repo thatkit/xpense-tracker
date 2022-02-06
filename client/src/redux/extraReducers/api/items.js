@@ -83,7 +83,7 @@ export const updateItemFulfilled = (state, { payload }) => ({
     ...state,
     items: {
         ...state.items,
-        addItem: {
+        updateItem: {
             isUpdated: true,
             updating: false,
             error: { isError: false, mes: '' }
@@ -96,7 +96,7 @@ export const updateItemPending = (state) => ({
     ...state,
     items: {
         ...state.items,
-        addItem: {
+        updateItem: {
             isUpdated: false,
             updating: true,
             error: { isError: false, mes: '' }
@@ -108,7 +108,7 @@ export const updateItemRejected = (state, { error }) => ({
     ...state,
     items: {
         ...state.items,
-        addItem: {
+        updateItem: {
             isUpdated: false,
             updating: false,
             error: { isError: true, mes: error.message }

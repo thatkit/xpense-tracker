@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem } from '../../../../../redux/actions/api/items';
 import { selectItem } from '../../../../../redux/slices/apiSlice';
@@ -14,10 +13,6 @@ import { EditItemFormModule } from './EditItemFormModule';
 
 export const ListItem = props => {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-
-    });
 
     // this is needed in order to escape selectItem() action from dispatching when actually editing
     const isFormOpen = useSelector(({ ui }) => ui.editItemFormModuleIsOpen);;

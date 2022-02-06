@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { typeItem } from '../../redux/slices/apiSlice';
 import { validateItemName, validateItemSum } from '../../redux/actions/validation/item';
@@ -12,11 +11,6 @@ import {
 
 export const ItemForm = (props) => {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(validateItemName());
-        dispatch(validateItemSum());
-    }, [dispatch]);
 
     // Sending inputs to the Redux store and validating
     const handleOnChange = ({ target }, key) => {

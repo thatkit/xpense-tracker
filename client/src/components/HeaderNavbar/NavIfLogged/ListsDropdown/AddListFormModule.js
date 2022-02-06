@@ -14,7 +14,9 @@ import {
     Label
 } from 'reactstrap';
 
-export const AddListFormModule = (props) => {
+export const AddListFormModule = () => {
+
+    
     // Sending inputs to the Redux store
     const dispatch = useDispatch();
     const handleOnChange = ({ target }, key) => {

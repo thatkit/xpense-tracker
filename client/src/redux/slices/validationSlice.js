@@ -8,8 +8,9 @@ import {
     validateUserRepPassword,
 } from '../actions/validation/user';
 // @    list
-// @    item
 import { validateItemName, validateItemSum } from '../actions/validation/item';
+// @    item
+import { validateListName, validateListTotalBudget } from '../actions/validation/list';
 // EXTRA REDUCERS
 // @    user
 import {
@@ -19,6 +20,10 @@ import {
     validateUserRepPasswordFulfilled, validateUserRepPasswordRejected,
 } from '../extraReducers/validation/user';
 // @    list
+import {
+    validateListNameFulfilled, validateListNameRejected,
+    validateListTotalBudgetFulfilled, validateListTotalBudgetRejected
+} from '../extraReducers/validation/list';
 // @    item
 import {
     validateItemNameFulfilled, validateItemNameRejected,
@@ -72,7 +77,11 @@ export const validationSlice = createSlice({
         builder.addCase(validateUserRepPassword.rejected, validateUserRepPasswordRejected);
         // LIST validation
         // @ list/name
+        builder.addCase(validateListName.fulfilled, validateListNameFulfilled);
+        builder.addCase(validateListName.rejected, validateListNameRejected);
         // @ list/totalBudget
+        builder.addCase(validateListTotalBudget.fulfilled, validateListTotalBudgetFulfilled);
+        builder.addCase(validateListTotalBudget.rejected, validateListTotalBudgetRejected);
         // ITEM validation
         // @ item/name
         builder.addCase(validateItemName.fulfilled, validateItemNameFulfilled);

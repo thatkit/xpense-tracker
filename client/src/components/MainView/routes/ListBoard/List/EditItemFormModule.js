@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateItem } from '../../../../../redux/actions/api/items';
 import { unselectItem } from '../../../../../redux/slices/apiSlice';
+import { validateItemName, validateItemSum } from '../../../../../redux/actions/validation/item';
 import { toggleEditItemFormModule } from '../../../../../redux/slices/uiSlice';
 import {
     Modal,
@@ -15,8 +17,13 @@ import { ItemForm } from '../../../../utility/ItemForm';
 export const EditItemFormModule = () => {
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(validateItemName());
+        dispatch(validateItemSum());
+    }, [dispatch]);
+
     // selectors-validation
-    const { name, sum } = useSelector(({ validation }) => validation.item);
+    const { name, desc, sum } = useSelector(({ validation }) => validation.item);
     // selectors for current item data
     const {
         itemId,
@@ -42,7 +49,7 @@ export const EditItemFormModule = () => {
         // if changes, proceed with validation
         if (prevName !== newName || prevDesc !== newDesc || prevSum !== newSum) {           
             // if validation is ok, update
-            if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+            if ([ name, desc, sum ].every(({ isValid }) => isValid === true)) {
                 dispatch(updateItem());
             }
         }

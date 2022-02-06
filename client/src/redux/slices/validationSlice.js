@@ -27,7 +27,7 @@ import {
 
 const validationStateObj = {
     isValid: false,
-    error: { isError: false, mes: ''}
+    error: { isError: false, mes: '' }
 }
 
 export const validationSlice = createSlice({
@@ -48,6 +48,10 @@ export const validationSlice = createSlice({
         },
         item: {
             name: validationStateObj,
+            desc: {
+                isValid: true,
+                error: { isError: false, mes: '' }
+            },
             sum: validationStateObj
         }
     },

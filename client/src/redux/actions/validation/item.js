@@ -8,7 +8,7 @@ export const validateItemName = createAsyncThunk(
         let { name } = getState().api.items.data;  
         
         if (!name) throw new Error('Item must have a name');
-        if (!validator.isAlphanumeric(name)) throw new Error('Please, use only letters or numbers');
+        if (!validator.isAscii(name)) throw new Error('Please, use only letters or numbers');
 
         return true;      
     }
@@ -21,7 +21,7 @@ export const validateItemSum = createAsyncThunk(
         let { sum } = getState().api.items.data;  
         
         if (!sum) throw new Error('Item must have a sum');
-        if (!validator.isDecimal(sum)) throw new Error('The sum must be a decimal number');
+        if (!validator.isDecimal(String(sum))) throw new Error('The sum must be a decimal number');
 
         return true;      
     }

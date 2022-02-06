@@ -12,8 +12,25 @@ import {
 } from 'reactstrap';
 import { ItemForm } from '../../../../utility/ItemForm';
 
-export const EditItemFormModule = (props) => {
+export const EditItemFormModule = () => {
     const dispatch = useDispatch();
+
+    // selectors-validation
+    const { name, sum } = useSelector(({ validation }) => validation.item);
+    // selectors for current item data
+    const {
+        itemId,
+        name: newName,
+        desc: newDesc,
+        sum: newSum
+    } = useSelector(({ api }) => api.items.data);
+    // selectors for prev item data
+    const {
+        name: prevName,
+        desc: prevDesc,
+        sum: prevSum
+    } = useSelector(({ api }) => api.lists.currentList.items)
+        .find(({ _id }) => _id === itemId);
 
     // Toggle behaviour
     const isOpen = useSelector(({ ui }) => ui.toggleStates.editItemFormModuleIsOpen);
@@ -21,11 +38,16 @@ export const EditItemFormModule = (props) => {
         dispatch(toggleEditItemFormModule());
     }
     
-    // Edit (update) an item
     const editItem = () => {
-        dispatch(updateItem());
+        // if changes, proceed with validation
+        if (prevName !== newName || prevDesc !== newDesc || prevSum !== newSum) {           
+            // if validation is ok, update
+            if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+                dispatch(updateItem());
+            }
+        }
         dispatch(unselectItem());
-        toggler();
+        dispatch(toggleEditItemFormModule());
     }
 
     return (
@@ -41,7 +63,7 @@ export const EditItemFormModule = (props) => {
                 toggle={toggler}
             >
                 <ModalHeader>Edit item</ModalHeader>
-                <ModalBody><ItemForm /></ModalBody>
+                <ModalBody><ItemForm name={name} sum={sum} /></ModalBody>
                 <ModalFooter>
                     <Button
                         color="warning"

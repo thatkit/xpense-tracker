@@ -16,9 +16,20 @@ export const EditItemFormModule = () => {
     const dispatch = useDispatch();
 
     // selectors-validation
-    const { itemId, name, sum } = useSelector(({ validation }) => validation.item);
+    const { name, sum } = useSelector(({ validation }) => validation.item);
+    // selectors for current item data
+    const {
+        itemId,
+        name: newName,
+        desc: newDesc,
+        sum: newSum
+    } = useSelector(({ api }) => api.items.data);
     // selectors for prev item data
-    const { name as , sum } = useSelector(({ api }) => api.lists.currentList.items)
+    const {
+        name: prevName,
+        desc: prevDesc,
+        sum: prevSum
+    } = useSelector(({ api }) => api.lists.currentList.items)
         .find(({ _id }) => _id === itemId);
 
     // Toggle behaviour
@@ -27,17 +38,16 @@ export const EditItemFormModule = () => {
         dispatch(toggleEditItemFormModule());
     }
     
-    // Edit (update) an item
     const editItem = () => {
-        // if no change
-        if ([ name, sum ].every(({ isValid }) => isValid === true)) {
-            console.log('1')
-            dispatch(updateItem());
-            dispatch(unselectItem());
-            dispatch(toggleEditItemFormModule());
-            return null;
+        // if changes, proceed with validation
+        if (prevName !== newName || prevDesc !== newDesc || prevSum !== newSum) {           
+            // if validation is ok, update
+            if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+                dispatch(updateItem());
+            }
         }
-        console.log('2')
+        dispatch(unselectItem());
+        dispatch(toggleEditItemFormModule());
     }
 
     return (

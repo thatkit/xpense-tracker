@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { typeItem } from '../../redux/slices/apiSlice';
 import { validateItemName, validateItemSum } from '../../redux/actions/validation/item';
@@ -11,14 +12,24 @@ import {
 
 export const ItemForm = (props) => {
     const dispatch = useDispatch();
-    
-    // Sending inputs to the Redux store
-    const handleOnChange = ({ target }, key) => {
-        dispatch(typeItem({ [key]: target.value }));
 
-        // validate
+    useEffect(() => {
+        dispatch(validateItemName());
+        dispatch(validateItemSum());
+    }, [dispatch]);
+
+    // Sending inputs to the Redux store and validating
+    const handleOnChange = ({ target }, key) => {
+        // for number type
+        if (key === 'sum') {
+            dispatch(typeItem({ [key]: Number(target.value) }));
+            dispatch(validateItemSum());
+            return null;
+        }
+
+        // for anything else
+        dispatch(typeItem({ [key]: target.value }));
         key === 'name' && dispatch(validateItemName());
-        key === 'sum' && dispatch(validateItemSum());
     }
 
     // retrieving item data props for editting
@@ -51,13 +62,14 @@ export const ItemForm = (props) => {
             </FormGroup>
             <FormGroup floating>
                 <Input
-                    value={sum ? sum : ''}
+                    value={sum}
                     id='sum'
                     name='sum'
                     placeholder='Sum'
                     required
                     onChange={({ target }, key) => handleOnChange({ target }, 'sum')}
                     invalid={props.sum.error.isError}
+                    type="number"
                 />
                 <Label for="sum">Sum</Label>
                 <FormFeedback tooltip>{props.sum.error.mes}</FormFeedback>

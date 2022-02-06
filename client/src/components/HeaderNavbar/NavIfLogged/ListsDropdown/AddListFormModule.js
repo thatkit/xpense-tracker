@@ -10,17 +10,29 @@ import {
     Button,
     Form,
     FormGroup,
+    FormFeedback,
     Input,
     Label
 } from 'reactstrap';
+import { validateListName, validateListTotalBudget } from '../../../../redux/actions/validation/list';
 
 export const AddListFormModule = () => {
-
+    // selectors-validation
+    const { name, totalBudget } = useSelector(({ validation }) => validation.list);
     
     // Sending inputs to the Redux store
     const dispatch = useDispatch();
     const handleOnChange = ({ target }, key) => {
+        // for number type
+        if (key === 'totalBudget') {
+            dispatch(typeList({ [key]: Number(target.value) }));
+            dispatch(validateListTotalBudget());
+            return null;
+        }
+
+        // for anything else
         dispatch(typeList({ [key]: target.value }));
+        key === 'name' && dispatch(validateListName());
     }
 
     // Toggle behaviour
@@ -32,6 +44,14 @@ export const AddListFormModule = () => {
 
     // Send (add) a new list
     const addNewList = () => {
+
+        // if ([ name, totalBudget ].every(({ isValid }) => isValid === true)) {
+        //     dispatch(addItem());
+        //     dispatch(unselectItem());
+        //     dispatch(toggleAddItemFormModule());
+        //     return null;
+        // }
+        
         dispatch(addList());
         toggler();
     }
@@ -58,8 +78,10 @@ export const AddListFormModule = () => {
                                 placeholder='List name'
                                 required
                                 onChange={({ target }, key) => handleOnChange({ target }, 'name')}
+                                invalid={name.error.isError}                                
                             />
                             <Label for="listName">List name</Label>
+                            <FormFeedback tooltip>{name.error.mes}</FormFeedback>
                         </FormGroup>
                         <FormGroup floating>
                             <Input 
@@ -68,8 +90,11 @@ export const AddListFormModule = () => {
                                 placeholder='List budget'
                                 required
                                 onChange={({ target }, key) => handleOnChange({ target }, 'totalBudget')}
+                                invalid={totalBudget.error.isError}                                
+                                type="number"                             
                             />
                             <Label for="budget">List budget</Label>
+                            <FormFeedback tooltip>{totalBudget.error.mes}</FormFeedback>
                         </FormGroup>
                     </Form>
                 </ModalBody>

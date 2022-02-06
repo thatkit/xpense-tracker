@@ -5,7 +5,7 @@ import { isValidSum } from "../../../helpers/validation";
 export const validateListName = createAsyncThunk(
     'validation/list/name',
     (arg, { getState }) => {
-        let { name } = getState().api.items.data;  
+        let { name } = getState().api.lists.newList;  
         
         if (!name) throw new Error('List must have a name');
 
@@ -17,10 +17,10 @@ export const validateListName = createAsyncThunk(
 export const validateListTotalBudget = createAsyncThunk(
     'validation/list/totalBudget',
     (arg, { getState }) => {
-        let { sum } = getState().api.items.data;  
+        let { totalBudget } = getState().api.lists.newList;  
         
-        if (!sum) throw new Error('List must have total budget');
-        if (!isValidSum(sum)) throw new Error('The total budget must be a decimal number');
+        if (!totalBudget) throw new Error('List must have total budget');
+        if (!isValidSum(totalBudget)) throw new Error('The total budget must be a decimal number');
 
         return true;      
     }

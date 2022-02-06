@@ -10,6 +10,7 @@ import {
     ListGroupItemText
 } from 'reactstrap';
 import { EditItemFormModule } from './EditItemFormModule';
+import { convertDate } from '../../../../../helpers/date';
 
 export const ListItem = props => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export const ListItem = props => {
                 </Col>
                 <Col>
                     <ListGroupItemText>{props.itemSum} RUB</ListGroupItemText>
-                    <ListGroupItemText>{props.itemDate}</ListGroupItemText>                      
+                    <ListGroupItemText>{convertDate(props.itemDate)}</ListGroupItemText>                      
                 </Col>
             </Row>
             {props.itemId === curItemId && (

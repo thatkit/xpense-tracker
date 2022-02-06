@@ -17,26 +17,26 @@ export const AddItemFormModule = () => {
     const dispatch = useDispatch();
 
     // selectors-validation
-    const { name, sum } = useSelector(({ validation }) => validation.item);
+    const { name, desc, sum } = useSelector(({ validation }) => validation.item);
     
     // Toggle behaviour
     const isOpen = useSelector(({ ui }) => ui.toggleStates.addItemFormModuleIsOpen);
     const toggler = () => {
         dispatch(unselectItem());
         dispatch(toggleAddItemFormModule());
+        // if a user clicks 'Add' without even touching input fields
+        dispatch(validateItemName());
+        dispatch(validateItemSum());
     }
 
     // Send (add) a new item
     const addNewItem = () => {
-        if ([ name, sum ].every(({ isValid }) => isValid === true)) {
+        if ([ name, desc, sum ].every(({ isValid }) => isValid === true)) {
             dispatch(addItem());
             dispatch(unselectItem());
             dispatch(toggleAddItemFormModule());
             return null;
         }
-        // if a user clicks 'Add' without even touching input fields
-        dispatch(validateItemName());
-        dispatch(validateItemSum());
     }
 
     return (
